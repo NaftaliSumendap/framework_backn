@@ -69,7 +69,7 @@
     </div>
 
     <!-- Navbar User -->
-    <div id="navbar-placeholder"></div>
+    <x-navbar></x-navbar>
   
 
     <!-- Main Container -->
@@ -414,16 +414,6 @@
   <div id="footer-placeholder"></div>
 
 <script>
-  fetch("html/navbar.html")
-    .then((res) => res.text())
-    .then((data) => {
-      const navbarDiv = document.getElementById("navbar-placeholder");
-      navbarDiv.innerHTML = data;
-
-      // Setelah navbar dimuat, jalankan fungsi toggle
-      attachNavbarEvents();
-    });
-
   function attachNavbarEvents() {
     const toggleBtn = document.getElementById("toggleMenu");
     const mobileMenu = document.getElementById("mobileMenu");
@@ -436,25 +426,8 @@
       console.warn("Element toggleMenu atau mobileMenu tidak ditemukan");
     }
   }
-  // Fungsi untuk memuat footer
-  function loadFooter() {
-    fetch('html/footer.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('footer-placeholder').innerHTML = data;
-      })
-      .catch(error => {
-        console.error('Error loading footer:', error);
-        document.getElementById('footer-placeholder').innerHTML = `
-          <footer class="bg-slate-800 text-white text-center p-4">
-            <p>© ${new Date().getFullYear()} Toko Alat Musik</p>
-          </footer>
-        `;
-      });
-  }
-
-  // Panggil fungsi saat halaman selesai dimuat
-  document.addEventListener('DOMContentLoaded', loadFooter);
 </script>
 </body>
+ <!-- Bagian Footer -->
+  <x-footer></x-footer>
 </html>

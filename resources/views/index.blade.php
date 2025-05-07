@@ -11,6 +11,7 @@
 
     <!-- Pajangan Utama -->
     <div class="pt-16">
+    <x-navbar></x-navbar>
       <!-- Hero Section -->
       <div class="container mx-auto px-6 py-8">
         <div class="bg-amber-400 rounded-lg p-8 text-white">
@@ -221,54 +222,7 @@
               </button>
           </div>
       </div>
-  </div>
-
-  <!-- Footer -->
-  <div id="footer-placeholder"></div>
-
-    <script>
-      fetch("html/navbar.html")
-        .then((res) => res.text())
-        .then((data) => {
-          const navbarDiv = document.getElementById("navbar-placeholder");
-          navbarDiv.innerHTML = data;
-
-          // Setelah navbar dimuat, jalankan fungsi toggle
-          attachNavbarEvents();
-        });
-
-      function attachNavbarEvents() {
-        const toggleBtn = document.getElementById("toggleMenu");
-        const mobileMenu = document.getElementById("mobileMenu");
-
-        if (toggleBtn && mobileMenu) {
-          toggleBtn.addEventListener("click", () => {
-            mobileMenu.classList.toggle("hidden");
-          });
-        } else {
-          console.warn("Element toggleMenu atau mobileMenu tidak ditemukan");
-        }
-      }
-      
-        // Footeer
-  function loadFooter() {
-    fetch('html/footer.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('footer-placeholder').innerHTML = data;
-      })
-      .catch(error => {
-        console.error('Error loading footer:', error);
-        document.getElementById('footer-placeholder').innerHTML = `
-          <footer class="bg-slate-800 text-white text-center p-4">
-            <p>© ${new Date().getFullYear()} Toko Alat Musik</p>
-          </footer>
-        `;
-      });
-  }
-
-  // Panggil fungsi saat halaman selesai dimuat
-  document.addEventListener('DOMContentLoaded', loadFooter);
-    </script>
   </body>
-</html>
+  <!-- Bagian Footer -->
+   <x-footer></x-footer>
+  </html>

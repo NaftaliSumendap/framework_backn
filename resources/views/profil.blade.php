@@ -7,11 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-    <!-- Navbar User -->
-    <div id="navbar-placeholder"></div>
+<!-- Navbar User -->
+<x-navbar></x-navbar>
 
 <!-- Profile Content -->
-<div class="mt-20 bg-white rounded-lg shadow-sm p-6">
+<body> 
+  <div class="mt-20 bg-white rounded-lg shadow-sm p-6">
     <div class="flex flex-col md:flex-row">
       <!-- Left Side - Profile Image -->
       <div class="md:w-1/3 mb-6 md:mb-0">
@@ -86,9 +87,6 @@
       </div>
     </div> <!-- Penutup untuk flex container -->
   </div> <!-- Penutup untuk bg-white container -->
- 
-  <!-- Footer -->
-  <div id="footer-placeholder"></div>
 
   <!-- Modal Edit -->
   <div id="editModal" class="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50 hidden">
@@ -117,6 +115,8 @@
   </div>
 
 </body>
+<!-- Footer -->
+<x-footer></x-footer>
 </html>
 
 <script>
@@ -212,47 +212,4 @@
     alert("Anda telah berhasil logout");
     window.location.href = "/sign-in"; // Ganti dengan halaman login Anda
   }
-
-      fetch("html/navbar.html")
-        .then((res) => res.text())
-        .then((data) => {
-          const navbarDiv = document.getElementById("navbar-placeholder");
-          navbarDiv.innerHTML = data;
-
-          // Setelah navbar dimuat, jalankan fungsi toggle
-          attachNavbarEvents();
-        });
-
-      function attachNavbarEvents() {
-        const toggleBtn = document.getElementById("toggleMenu");
-        const mobileMenu = document.getElementById("mobileMenu");
-
-        if (toggleBtn && mobileMenu) {
-          toggleBtn.addEventListener("click", () => {
-            mobileMenu.classList.toggle("hidden");
-          });
-        } else {
-          console.warn("Element toggleMenu atau mobileMenu tidak ditemukan");
-        }
-      }
-  // Fungsi untuk memuat footer
-  function loadFooter() {
-    fetch('html/footer.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('footer-placeholder').innerHTML = data;
-      })
-      .catch(error => {
-        console.error('Error loading footer:', error);
-        document.getElementById('footer-placeholder').innerHTML = `
-          <footer class="bg-slate-800 text-white text-center p-4">
-            <p>© ${new Date().getFullYear()} Toko Alat Musik</p>
-          </footer>
-        `;
-      });
-  }
-
-  // Panggil fungsi saat halaman selesai dimuat
-  document.addEventListener('DOMContentLoaded', loadFooter);
-
 </script>

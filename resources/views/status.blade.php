@@ -33,7 +33,7 @@
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
   <!-- Navbar User -->
-  <div id="navbar-placeholder"></div>
+  <x-navbar></x-navbar>
 
   <!-- Main Content -->
   <main class="flex-grow container mx-auto px-4 py-20 space-y-6">
@@ -197,11 +197,10 @@
       </button>
     </div>
   </main>
-
-  <!-- Footer -->
-  <div id="footer-placeholder"></div>
-
-  <script>
+</body>
+<!-- Footer -->
+<x-footer></x-footer>
+<script>
     // Update progress bar based on current step
     document.addEventListener('DOMContentLoaded', function () {
       // In a real app, you would get the current step from your backend
@@ -229,49 +228,5 @@
         }
       }
     });
-    fetch("html/navbar.html")
-      .then((res) => res.text())
-      .then((data) => {
-        const navbarDiv = document.getElementById("navbar-placeholder");
-        navbarDiv.innerHTML = data;
-
-        // Setelah navbar dimuat, jalankan fungsi toggle
-        attachNavbarEvents();
-      });
-
-    function attachNavbarEvents() {
-      const toggleBtn = document.getElementById("toggleMenu");
-      const mobileMenu = document.getElementById("mobileMenu");
-
-      if (toggleBtn && mobileMenu) {
-        toggleBtn.addEventListener("click", () => {
-          mobileMenu.classList.toggle("hidden");
-        });
-      } else {
-        console.warn("Element toggleMenu atau mobileMenu tidak ditemukan");
-      }
-    }
-
-    // Fungsi untuk memuat footer
-    function loadFooter() {
-      fetch('html/footer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('footer-placeholder').innerHTML = data;
-        })
-        .catch(error => {
-          console.error('Error loading footer:', error);
-          document.getElementById('footer-placeholder').innerHTML = `
-          <footer class="bg-slate-800 text-white text-center p-4">
-            <p>© ${new Date().getFullYear()} Toko Alat Musik</p>
-          </footer>
-        `;
-        });
-    }
-
-    // Panggil fungsi saat halaman selesai dimuat
-    document.addEventListener('DOMContentLoaded', loadFooter);
   </script>
-</body>
-
 </html>

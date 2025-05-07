@@ -148,27 +148,7 @@
 
   <!-- Footer -->
   <div id="footer-placeholder"></div>
-
-<script>
-  // Fungsi untuk memuat footer
-  function loadFooter() {
-    fetch('html/footer.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('footer-placeholder').innerHTML = data;
-      })
-      .catch(error => {
-        console.error('Error loading footer:', error);
-        document.getElementById('footer-placeholder').innerHTML = `
-          <footer class="bg-slate-800 text-white text-center p-4">
-            <p>© ${new Date().getFullYear()} Toko Alat Musik</p>
-          </footer>
-        `;
-      });
-  }
-
-  // Panggil fungsi saat halaman selesai dimuat
-  document.addEventListener('DOMContentLoaded', loadFooter);
-</script>
 </body>
+<!-- Bagian Footer -->
+ <x-footer></x-footer>
 </html>

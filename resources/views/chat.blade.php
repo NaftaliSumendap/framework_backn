@@ -9,7 +9,7 @@
 <body class="bg-gray-100">
 
     <!-- Navbar User -->
-    <div id="navbar-placeholder"></div>
+    <x-navbar></x-navbar>
 
 
     <!-- Chat Section -->
@@ -41,30 +41,5 @@
             <button class="ml-2 px-4 py-2 bg-amber-400 text-white rounded-lg hover:bg-amber-500">Kirim</button>
         </div>
     </div>
-
-    <script>
-      fetch("html/navbar.html")
-        .then((res) => res.text())
-        .then((data) => {
-          const navbarDiv = document.getElementById("navbar-placeholder");
-          navbarDiv.innerHTML = data;
-
-          // Setelah navbar dimuat, jalankan fungsi toggle
-          attachNavbarEvents();
-        });
-
-      function attachNavbarEvents() {
-        const toggleBtn = document.getElementById("toggleMenu");
-        const mobileMenu = document.getElementById("mobileMenu");
-
-        if (toggleBtn && mobileMenu) {
-          toggleBtn.addEventListener("click", () => {
-            mobileMenu.classList.toggle("hidden");
-          });
-        } else {
-          console.warn("Element toggleMenu atau mobileMenu tidak ditemukan");
-        }
-      }
-    </script>
   </body>
 </html>

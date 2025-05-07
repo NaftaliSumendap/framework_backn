@@ -9,7 +9,7 @@
 <body class="bg-gray-100">
 
     <!-- Navbar User -->
-    <div id="navbar-placeholder"></div>
+  <x-navbar></x-navbar>
 
     <!-- Konten Utama -->
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-20">
