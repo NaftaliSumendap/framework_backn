@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Arr;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,7 +39,7 @@ Route::get('/privacy', function () {
 });
 
 Route::get('/profil', function () {
-    return view('profil');
+    return view('profil', ['user' => $user, 'users' => User::all()]);
 });
 
 Route::get('/search', function () {

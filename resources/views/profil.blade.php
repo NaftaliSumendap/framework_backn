@@ -37,7 +37,7 @@
             <div class="flex items-center justify-between">
               <span class="text-gray-600">Nama</span>
               <div class="flex items-center">
-                <span class="text-gray-700 mr-2" id="nama-value">Andro Lay</span>
+                <span class="text-gray-700 mr-2" id="nama-value">{{$user['name']}}</span>
                 <button onclick="openModal('Nama', 'nama-value', 'text')" class="text-amber-400 hover:text-amber-500 text-lg font-bold">&gt;</button>
               </div>
             </div>
