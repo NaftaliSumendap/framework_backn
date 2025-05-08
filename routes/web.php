@@ -18,7 +18,7 @@ Route::get('/about-us', function () {
 });
 
 Route::get('/detail/{product:slug}', function (Product $product) {
-    return view('detail', ['product' => $product]); 
+    return view('detail', ['product' => $product, 'products' => Product::all()->except($product->id), 'categories' => Category::all()]); 
 });
 
 Route::get('/chat', function () {
@@ -30,7 +30,7 @@ Route::get('/cart', function () {
 });
 
 Route::get('/index_guest', function () {
-    return view('index_guest');
+    return view('index_guest', ['categories' => Category::all(), 'products' => Product::all()]);
 });
 
 Route::get('/privacy', function () {

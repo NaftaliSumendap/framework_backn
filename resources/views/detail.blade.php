@@ -175,24 +175,26 @@
       <h2 class="text-2xl font-bold text-gray-800 text-center pb-4">Produk lainnya</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
       <!-- Produk Card -->
+      @foreach ($products as $product)
       <div class="bg-white rounded shadow hover:shadow-md transition p-4 w-full">
           <!-- Link ke product.html -->
-          <a href="detail.html">
+          <a href="/detail/{{$product['slug']}}">
           <div class="relative w-full h-64">
-              <img src="img/gitar.jpg" alt="Produk" class="w-full h-full object-cover rounded">
+              <img src="../img/{{$product['image_path']}}" alt="Produk" class="w-full h-full object-cover rounded">
           </div>
           <!-- Konten Produk -->
-          <p class="mt-2 text-sm font-medium line-clamp-2">Gitar Yamaha</p>
-          <p class="text-red-600 font-bold text-sm mt-1">Rp 1.800.000</p>
+          <p class="mt-2 text-sm font-medium line-clamp-2">{{$product['name']}}</p>
+          <p class="text-red-600 font-bold text-sm mt-1">{{$product['discount_price']}}</p>
           <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
               <span class="text-yellow-500">★ 4.6 | 20 Terjual</span>
           </div>
           </a>
           <!-- Tombol Tambahkan tetap di luar <a> -->
-          <button onclick = "window.location.href='cart.html'"class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
+          <button onclick = "window.location.href='/cart'"class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
           Tambahkan
           </button>
       </div>
+      @endforeach
       </div>
   </div>
 
@@ -249,7 +251,7 @@
         });
 
         buyNowBtn.addEventListener('click', () => {
-            window.location.href = 'transaksi.html';
+            window.location.href = '/transaksi';
         });
 
         // Review Modal functionality
