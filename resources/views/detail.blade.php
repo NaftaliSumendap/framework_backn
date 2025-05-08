@@ -78,22 +78,22 @@
         <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">
             <!-- Bagian Kiri: Gambar Produk -->
             <div class="w-full md:w-1/3">
-                <img src="img/gitar.jpg" alt="Product Image" class="w-full h-full object-cover">
+                <img src="../img/{{$product['image_path']}}" alt="Product Image" class="w-full h-full object-cover">
             </div>
 
             <!-- Bagian Tengah: Informasi Produk dan Informasi Tambahan -->
             <div class="w-full md:w-1/3 p-6">
                 <!-- Product Title -->
-                <h1 class="text-3xl font-bold text-gray-800 mb-4">Gitar Akustik Yamaha C40</h1>
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">{{$product['name']}}</h1>
                 <!-- Product Description -->
                 <p class="text-gray-600 mb-6">
-                    Deskripsi produk yang menarik dan informatif. Produk ini memiliki fitur-fitur unggulan seperti bahan berkualitas tinggi.
+                  {{$product['description']}}
                 </p>
 
                 <!-- Product Price -->
                 <div class="flex items-center mb-6">
-                    <span class="text-2xl font-bold text-gray-800">Rp 1.500.000</span>
-                    <span class="text-sm text-gray-500 line-through ml-2">Rp 2.000.000</span>
+                    <span class="text-2xl font-bold text-gray-800">{{$product['discount_price']}}</span>
+                    <span class="text-sm text-gray-500 line-through ml-2">{{$product['price']}}</span>
                     <span class="text-sm text-green-600 ml-2">(25% off)</span>
                 </div>
 
@@ -149,7 +149,7 @@
 
                 <!-- Stock Information -->
                 <div class="mb-6">
-                    <p class="text-gray-700">Stok Tersedia: <span class="font-bold">50</span></p>
+                    <p class="text-gray-700">Stok Tersedia: <span class="font-bold">{{$product['stock']}}</span></p>
                 </div>
 
                 <!-- Dynamic Price -->
@@ -193,119 +193,6 @@
           Tambahkan
           </button>
       </div>
-
-      <div class="bg-white rounded shadow hover:shadow-md transition p-4 w-full">
-          <!-- Link ke product.html -->
-          <a href="detail.html">
-          <div class="relative w-full h-64">
-              <img src="img/gitar2.jpg" alt="Produk" class="w-full h-full object-cover rounded">
-          </div>
-          <!-- Konten Produk -->
-          <p class="mt-2 text-sm font-medium line-clamp-2">Gitar Akustik Yamaha</p>
-          <p class="text-red-600 font-bold text-sm mt-1">Rp 2.500.000</p>
-          <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
-              <span class="text-yellow-500">★ 4.6 | 20 Terjual</span>
-          </div>
-          </a>
-          <!-- Tombol Tambahkan tetap di luar <a> -->
-          <button onclick = "window.location.href='cart.html'"class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
-          Tambahkan
-          </button>
-      </div>
-
-      <div class="bg-white rounded shadow hover:shadow-md transition p-4 w-full">
-          <!-- Link ke product.html -->
-          <a href="detail.html">
-          <div class="relative w-full h-64">
-              <img src="img/GitarListrik.jpg" alt="Produk" class="w-full h-full object-cover rounded">
-          </div>
-          <!-- Konten Produk -->
-          <p class="mt-2 text-sm font-medium line-clamp-2">Gitar Listrik Yamaha</p>
-          <p class="text-red-600 font-bold text-sm mt-1">Rp 3.100.000</p>
-          <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
-              <span class="text-yellow-500">★ 4.6 | 20 Terjual</span>
-          </div>
-          </a>
-          <!-- Tombol Tambahkan tetap di luar <a> -->
-          <button onclick = "window.location.href='cart.html'"class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
-          Tambahkan
-          </button>
-      </div>
-
-          <div class="bg-white rounded shadow hover:shadow-md transition p-4 w-full">
-              <div class="relative w-full h-64">
-                  <img src="img/piano.jpg" alt="Produk" class="w-full h-full object-cover rounded">
-              </div>
-              <!-- Konten Produk -->
-              <p class="mt-2 text-sm font-medium line-clamp-2">Keyboard</p>
-              <p class="text-red-600 font-bold text-sm mt-1">Rp 6.500.000</p>
-              <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
-                  <span class="text-yellow-500">★ 4.6 | 20 Terjual</span>
-              </div>
-              <button onclick = "window.location.href='cart.html'"class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
-                  Tambahkan
-              </button>
-          </div>
-
-          <div class="bg-white rounded shadow hover:shadow-md transition p-4 w-full">
-            <div class="relative w-full h-64">
-                <img src="img/piano2.jpg" alt="Produk" class="w-full h-full object-cover rounded">
-            </div>
-            <!-- Konten Produk -->
-            <p class="mt-2 text-sm font-medium line-clamp-2">Keyboard Donner</p>
-            <p class="text-red-600 font-bold text-sm mt-1">Rp 9.500.000</p>
-            <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
-                <span class="text-yellow-500">★ 4.6 | 20 Terjual</span>
-            </div>
-            <button onclick = "window.location.href='cart.html'"class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
-                Tambahkan
-            </button>
-        </div>
-
-        <div class="bg-white rounded shadow hover:shadow-md transition p-4 w-full">
-          <div class="relative w-full h-64">
-              <img src="img/drum2.jpg" alt="Produk" class="w-full h-full object-cover rounded">
-          </div>
-          <!-- Konten Produk -->
-          <p class="mt-2 text-sm font-medium line-clamp-2">Drum set Pearl</p>
-          <p class="text-red-600 font-bold text-sm mt-1">Rp 13.500.000</p>
-          <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
-              <span class="text-yellow-500">★ 4.6 | 20 Terjual</span>
-          </div>
-          <button onclick = "window.location.href='cart.html'"class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
-              Tambahkan
-          </button>
-      </div>
-
-      <div class="bg-white rounded shadow hover:shadow-md transition p-4 w-full">
-        <div class="relative w-full h-64">
-            <img src="img/GitarListrik.jpg" alt="Produk" class="w-full h-full object-cover rounded">
-        </div>
-        <!-- Konten Produk -->
-        <p class="mt-2 text-sm font-medium line-clamp-2">Gitar Listrik</p>
-        <p class="text-red-600 font-bold text-sm mt-1">Rp 7.500.000</p>
-        <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
-            <span class="text-yellow-500">★ 4.6 | 20 Terjual</span>
-        </div>
-        <button class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
-            Tambahkan
-        </button>
-    </div>
-      
-          <div class="bg-white rounded shadow hover:shadow-md transition p-4 w-full">
-              <div class="relative w-full h-64">
-                  <img src="img/drum.jpg" alt="Produk" class="w-full h-full object-cover rounded">
-              </div>
-              <!-- Konten Produk -->
-              <p class="mt-2 text-sm font-medium line-clamp-2">Drum set</p>
-              <p class="text-red-600 font-bold text-sm mt-1">Rp 7.600.000</p>
-              <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
-                  <span class="text-yellow-500">★ 4.6 | 20 Terjual</span>
-              </div>
-              <button onclick = "window.location.href='cart.html'"class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
-                  Tambahkan
-              </button>
-          </div>
       </div>
   </div>
 

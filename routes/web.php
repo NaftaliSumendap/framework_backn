@@ -17,16 +17,16 @@ Route::get('/about-us', function () {
     return view('about-us');
 });
 
-Route::get('/cart', function () {
-    return view('cart');
+Route::get('/detail/{product:slug}', function (Product $product) {
+    return view('detail', ['product' => $product]); 
 });
 
 Route::get('/chat', function () {
     return view('chat');
 });
 
-Route::get('/detail', function () {
-    return view('detail');
+Route::get('/cart', function () {
+    return view('cart');
 });
 
 Route::get('/index_guest', function () {

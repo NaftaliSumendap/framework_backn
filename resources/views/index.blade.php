@@ -47,9 +47,9 @@
       @foreach ($products as $product)
       <div class="bg-white rounded shadow hover:shadow-md transition p-4 w-full">
           <!-- Link ke product.html -->
-          <a href="/detail">
+          <a href="/detail/{{$product['slug']}}">
           <div class="relative w-full h-64">
-              <img src="img/gitar.jpg" alt="Produk" class="w-full h-full object-cover rounded">
+              <img src="img/{{$product['image_path']}}" alt="Produk" class="w-full h-full object-cover rounded">
           </div>
           <!-- Konten Produk -->
           <p class="mt-2 text-sm font-medium line-clamp-2">{{$product['name']}}</p>
@@ -59,8 +59,8 @@
           </div>
           </a>
           <!-- Tombol Tambahkan tetap di luar <a> -->
-          <button onclick = "window.location.href='/cart'"class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
-          Tambahkan
+          <button class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
+          <a href="/cart/{{$product['slug']}}">Tambahkan</a>
           </button>
       </div>
       @endforeach

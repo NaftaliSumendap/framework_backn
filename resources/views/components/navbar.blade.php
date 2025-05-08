@@ -4,7 +4,7 @@
       <!-- Logo -->
       <div class="flex items-center">
         <a href="/index" class="flex items-center">
-          <img src="img/SounDeal.svg" alt="SounDeal Logo" class="h-16">
+          <img src="../img/SounDeal.svg" alt="SounDeal Logo" class="h-16">
         </a>
       </div>
 
@@ -111,7 +111,7 @@
               >Andro Lay</span
             >
             <img
-              src="img/Foto Almamater Andro.png"
+              src="../img/Foto Almamater Andro.png"
               alt="Profile"
               class="w-9 h-9 rounded-full object-cover border-2 border-gray-300 group-hover:border-amber-400 transition"
             />

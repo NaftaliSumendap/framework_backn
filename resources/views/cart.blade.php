@@ -25,7 +25,7 @@
           <input type="checkbox" class="mt-10 mr-4 w-5 h-5 border-gray-300" />
           <img src="img/gitar.jpg" alt="Gitar" class="w-24 h-24 object-cover rounded mr-4" />
           <div>
-            <h3 class="text-lg font-semibold">Gitar Akustik</h3>
+            <h3 class="text-lg font-semibold">{{$product['name']}}}</h3>
             <p class="text-sm text-gray-500">Stok: 10</p>
             <div class="flex items-center mt-3 space-x-2">
               <button class="text-gray-500 hover:text-red-500"><i class="far fa-trash-alt"></i></button>
