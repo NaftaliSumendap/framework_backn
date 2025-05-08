@@ -45,10 +45,9 @@
     </style>
 </head>
 <body class="bg-gray-100">
-
+    <main>
     <!-- Navbar User -->
     <x-navbar></x-navbar>
-
     <!-- Konten Utama -->
     <div class="pt-16">
         <!-- Hero Section Tentang Kami -->
@@ -205,10 +204,10 @@
             </div>
         </div>
     </div>
-
-  <!-- Footer -->
-  <div id="footer-placeholder"></div>
-
+    </main>
+</body>
+<!-- Bagian Footer -->
+<x-footer></x-footer>
 <script>
     // Intersection Observer untuk animasi scroll
     document.addEventListener('DOMContentLoaded', function() {
@@ -230,11 +229,4 @@
         });
     });
 </script>
-
-<!-- Bagian Footer -->
- <x-footer></x-footer>
-
-</body>
-</html>
-</body>
 </html>

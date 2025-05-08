@@ -1,13 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Arr;
+use App\Models\Category;
+use App\Models\Product;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/index', function () {
-    return view('index');
+    return view('index', ['categories' => Category::all(), 'products' => Product::all()]);
 });
 
 Route::get('/about-us', function () {

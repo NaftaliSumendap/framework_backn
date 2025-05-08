@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->id()->unique();
             $table->foreignId('category_id')->constrained();
             $table->string('name');
             $table->string('slug')->unique();
@@ -17,7 +17,6 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->decimal('discount_price', 10, 2)->nullable();
             $table->integer('stock')->default(0);
-            $table->string('sku')->unique();
             $table->json('specifications')->nullable();
             $table->string('brand')->nullable();
             $table->boolean('is_featured')->default(false);
