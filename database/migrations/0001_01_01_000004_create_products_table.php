@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('brand')->nullable();
             $table->boolean('is_featured')->default(false);
             $table->timestamps();
+            $table->string('image_path')->nullable();
         });
     }
 
