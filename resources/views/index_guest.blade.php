@@ -11,7 +11,7 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
-                    <a href="#" class="text-2xl font-bold text-gray-800">Toko Alat Musik</a>
+                  <img src="../img/SounDeal.svg" alt="SounDeal Logo" class="h-16">
                 </div>
                 <div class="flex-1 mx-4 max-w-lg">
                     <div class="relative">
@@ -22,8 +22,8 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                  <a href="sign-in.html" class="text-gray-800 hover:text-amber-400">Masuk</a>
-                  <a href="sign-up.html" class="text-gray-800 hover:text-amber-400">Daftar</a>
+                  <a href="/sign-in" class="text-gray-800 hover:text-amber-400">Masuk</a>
+                  <a href="sign-up" class="text-gray-800 hover:text-amber-400">Daftar</a>
                 </div>
             </div>
         </div>
@@ -113,52 +113,33 @@
         <button onclick="hideLoginModal()" class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100">
           Batal
         </button>
-        <button onclick="window.location.href='sign-up.html'" class="px-4 py-2 bg-amber-400 text-black rounded hover:bg-amber-500">
+        <button onclick="window.location.href='/sign-up'" class="px-4 py-2 bg-amber-400 text-black rounded hover:bg-amber-500">
           Login / Daftar
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <div id="footer-placeholder"></div>
-    <script>
-          // Fungsi untuk menampilkan modal
-  function showLoginModal() {
-    document.getElementById('loginModal').classList.remove('hidden');
-  }
+  <x-footer></x-footer>
+  <script>
+    // Fungsi untuk menampilkan modal
+function showLoginModal() {
+document.getElementById('loginModal').classList.remove('hidden');
+}
 
-  // Fungsi untuk menyembunyikan modal
-  function hideLoginModal() {
-    document.getElementById('loginModal').classList.add('hidden');
-  }
+// Fungsi untuk menyembunyikan modal
+function hideLoginModal() {
+document.getElementById('loginModal').classList.add('hidden');
+}
 
-  // Tutup modal ketika klik di luar area modal
-  window.addEventListener('click', function(event) {
-    const modal = document.getElementById('loginModal');
-    if (event.target === modal) {
-      hideLoginModal();
-    }
-  });
-        // Footeer
-  function loadFooter() {
-    fetch('html/footer.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('footer-placeholder').innerHTML = data;
-      })
-      .catch(error => {
-        console.error('Error loading footer:', error);
-        document.getElementById('footer-placeholder').innerHTML = `
-          <footer class="bg-slate-800 text-white text-center p-4">
-            <p>© ${new Date().getFullYear()} Toko Alat Musik</p>
-          </footer>
-        `;
-      });
-  }
+// Tutup modal ketika klik di luar area modal
+window.addEventListener('click', function(event) {
+const modal = document.getElementById('loginModal');
+if (event.target === modal) {
+hideLoginModal();
+}
+});
 
-  // Panggil fungsi saat halaman selesai dimuat
-  document.addEventListener('DOMContentLoaded', loadFooter);
-    </script>
+</script>
   </body>
 </html>

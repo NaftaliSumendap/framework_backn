@@ -117,4 +117,103 @@
 </body>
 <!-- Footer -->
 <x-footer></x-footer>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+
+<script>
+  let currentFieldId = null;
+  let currentInputType = null;
+
+  // Fungsi untuk buka modal dengan tipe input yang berbeda
+  function openModal(fieldName, fieldId, inputType, options = null) {
+    document.getElementById("modalFieldName").innerText = fieldName;
+    const currentValue = document.getElementById(fieldId).innerText;
+    const inputContainer = document.getElementById("modalInputContainer");
+    inputContainer.innerHTML = '';
+    
+    currentFieldId = fieldId;
+    currentInputType = inputType;
+    
+    if (inputType === 'textarea') {
+      // Textarea untuk alamat
+      const textarea = document.createElement('textarea');
+      textarea.className = 'w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-amber-400';
+      textarea.rows = 4;
+      textarea.value = currentValue;
+      inputContainer.appendChild(textarea);
+    } else if (inputType === 'select' && options) {
+      // Select dropdown untuk jenis kelamin
+      const select = document.createElement('select');
+      select.className = 'w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-amber-400';
+      
+      options.forEach(option => {
+        const optElement = document.createElement('option');
+        optElement.value = option;
+        optElement.textContent = option;
+        if (option === currentValue) optElement.selected = true;
+        select.appendChild(optElement);
+      });
+      
+      inputContainer.appendChild(select);
+    } else {
+      // Input standar untuk tipe lainnya
+      const input = document.createElement('input');
+      input.type = inputType === 'date' ? 'date' : 
+                  inputType === 'email' ? 'email' : 
+                  inputType === 'tel' ? 'tel' : 'text';
+      input.className = 'w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-amber-400';
+      input.value = currentValue;
+      inputContainer.appendChild(input);
+    }
+    
+    document.getElementById("editModal").classList.remove("hidden");
+  }
+
+  // Fungsi untuk simpan perubahan
+  function saveModal() {
+    const inputContainer = document.getElementById("modalInputContainer");
+    let newValue = '';
+    
+    if (currentInputType === 'textarea') {
+      newValue = inputContainer.querySelector('textarea').value;
+    } else if (currentInputType === 'select') {
+      newValue = inputContainer.querySelector('select').value;
+    } else {
+      newValue = inputContainer.querySelector('input').value;
+    }
+    
+    if (currentFieldId) {
+      document.getElementById(currentFieldId).innerText = newValue;
+    }
+    closeModal();
+  }
+
+  // Fungsi tutup modal
+  function closeModal() {
+    document.getElementById("editModal").classList.add("hidden");
+    currentFieldId = null;
+    currentInputType = null;
+  }
+
+  // Fungsi untuk menampilkan konfirmasi logout
+  function showLogoutConfirmation() {
+    document.getElementById("logoutModal").classList.remove("hidden");
+  }
+
+  // Fungsi untuk menyembunyikan konfirmasi logout
+  function hideLogoutConfirmation() {
+    document.getElementById("logoutModal").classList.add("hidden");
+  }
+
+  // Fungsi untuk melakukan logout
+  function performLogout() {
+    // Di sini Anda bisa menambahkan logika logout seperti:
+    // - Membersihkan session/local storage
+    // - Redirect ke halaman login
+    alert("Anda telah berhasil logout");
+    window.location.href = "/logout"; // Ganti dengan halaman login Anda
+  }
+</script>
+>>>>>>> 155ec11c3cc08382d18e36b1e14a3af5b073a402
