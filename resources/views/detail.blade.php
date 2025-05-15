@@ -92,8 +92,8 @@
 
                 <!-- Product Price -->
                 <div class="flex items-center mb-6">
-                    <span class="text-2xl font-bold text-gray-800">{{$product['discount_price']}}</span>
-                    <span class="text-sm text-gray-500 line-through ml-2">{{$product['price']}}</span>
+                    <span class="text-2xl font-bold text-gray-800">Rp{{number_format($product['discount_price'], 0, ',', '.')}}</span>
+                    <span class="text-sm text-gray-500 line-through ml-2">Rp{{number_format($product['price'], 0, ',', '.')}}</span>
                     <span class="text-sm text-green-600 ml-2">(25% off)</span>
                 </div>
 
