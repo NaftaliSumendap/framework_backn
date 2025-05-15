@@ -38,18 +38,24 @@
                 </div>
 
                 <!-- Sign In Form -->
-                <form class="space-y-6">
+                <form action="{{ route('login') }}" method="POST" class="space-y-6">
+                    @csrf
                     <div>
-                        <input type="email" placeholder="Email" class="w-full px-4 py-3 bg-gray-50 rounded-lg shadow-sm 
-                                  focus:outline-none focus:ring-2 focus:ring-amber-400">
+                        <input type="email" id="email" name="email" placeholder="Email" class="w-full px-4 py-3 bg-gray-50 rounded-lg shadow-sm 
+                                  focus:outline-none focus:ring-2 focus:ring-amber-400" value="{{ old('email') }}">
+                                  
                     </div>
                     
                     <div>
-                        <input type="password" placeholder="Password" class="w-full px-4 py-3 bg-gray-50 rounded-lg shadow-sm 
+                        <input type="password" id="password" name="password" placeholder="Password" class="w-full px-4 py-3 bg-gray-50 rounded-lg shadow-sm 
                                   focus:outline-none focus:ring-2 focus:ring-amber-400">
+                                
                     </div>
+                    @error('login')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                     @enderror
 
-                    <button type="button" onclick="window.location.href='/index'" class="w-full bg-amber-400 text-white py-3 rounded-lg shadow-md hover:bg-amber-500 
+                    <button type="submit" class="w-full bg-amber-400 text-white py-3 rounded-lg shadow-md hover:bg-amber-500 
                               transition duration-300">
                         Sign In
                     </button>

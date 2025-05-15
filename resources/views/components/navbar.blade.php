@@ -108,7 +108,10 @@
           <a href="/profil" class="flex items-center space-x-2 group">
             <span
               class="text-gray-800 font-medium group-hover:text-amber-400 transition"
-              >Andro Lay</span
+              >
+              {{ Auth::user()->name }}
+              
+              </span
             >
             <img
               src="../img/Foto Almamater Andro.png"
@@ -203,7 +206,8 @@
           alt="Profile"
           class="w-6 h-6 rounded-full border border-gray-300"
         />
-        Profil
+        {{ Auth::user()->name }}
+        
       </a>
     </div>
   </div>

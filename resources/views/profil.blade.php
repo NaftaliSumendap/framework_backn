@@ -210,6 +210,6 @@
     // - Membersihkan session/local storage
     // - Redirect ke halaman login
     alert("Anda telah berhasil logout");
-    window.location.href = "/sign-in"; // Ganti dengan halaman login Anda
+    window.location.href = "/logout"; // Ganti dengan halaman login Anda
   }
 </script>
