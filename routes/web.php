@@ -91,22 +91,18 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::middleware('guest')->group(function(){
 
-        Route::middleware('guest')->group(function(){
-
-
-            Route::get('/sign-in',[Authentication::class, 'login'])->name('login');
-            Route::post('/sign-in',[Authentication::class, 'autentikasi']);
+    Route::get('/sign-in',[Authentication::class, 'login'])->name('login');
+    Route::post('/sign-in',[Authentication::class, 'autentikasi']);
      
-            Route::get('/sign-up', function () {
-                return view('sign-up');
-               });
-               
-               Route::get('/index_guest', function () {
-                    return view('index_guest', ['categories' => Category::all(), 'products' => Product::all()]);
-               });
-               
-               
-               
-            });
+    Route::get('/sign-up', function () {
+    return view('sign-up');
+    });
+
+    Route::get('/', function () {
+    return view('/index_guest', ['categories' => Category::all(), 'products' => Product::all()]);
+    });
+            
+});
         

@@ -23,7 +23,7 @@
                 </div>
                 <div class="flex items-center space-x-4">
                   <a href="/sign-in" class="text-gray-800 hover:text-amber-400">Masuk</a>
-                  <a href="sign-up" class="text-gray-800 hover:text-amber-400">Daftar</a>
+                  <a href="/sign-up" class="text-gray-800 hover:text-amber-400">Daftar</a>
                 </div>
             </div>
         </div>
@@ -83,7 +83,7 @@
           </div>
           <!-- Konten Produk -->
           <p class="mt-2 text-sm font-medium line-clamp-2">{{$product['name']}}</p>
-          <p class="text-red-600 font-bold text-sm mt-1">{{$product['discount_price']}}</p>
+          <p class="text-red-600 font-bold text-sm mt-1">Rp{{number_format($product['discount_price'], 0, ',', '.')}}</p>
           <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
               <span class="text-yellow-500">★ 4.6 | 20 Terjual</span>
           </div>
@@ -121,6 +121,8 @@
   </div>
 
   <x-footer></x-footer>
+  </body>
+</html>
   <script>
     // Fungsi untuk menampilkan modal
 function showLoginModal() {
@@ -141,5 +143,3 @@ hideLoginModal();
 });
 
 </script>
-  </body>
-</html>
