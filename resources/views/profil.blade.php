@@ -117,9 +117,6 @@
 </body>
 <!-- Footer -->
 <x-footer></x-footer>
-<<<<<<< HEAD
-</html>
-=======
 </html>
 
 <script>
@@ -216,4 +213,3 @@
     window.location.href = "/logout"; // Ganti dengan halaman login Anda
   }
 </script>
->>>>>>> 155ec11c3cc08382d18e36b1e14a3af5b073a402
