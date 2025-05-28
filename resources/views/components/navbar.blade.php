@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center h-16">
       <!-- Logo -->
       <div class="flex items-center">
-        <a href="/index" class="flex items-center">
+        <a href="/" class="flex items-center">
           <img src="../img/SounDeal.svg" alt="SounDeal Logo" class="h-16">
         </a>
       </div>

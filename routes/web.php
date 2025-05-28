@@ -9,10 +9,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication;
 
 
-
 Route::middleware('auth')->group(function () {
 
-    Route::get('/index', function () {
+    Route::get('/', function () {
         return view('index', ['categories' => Category::all(), 'products' => Product::all()]);
     })->name('index');
     
@@ -95,13 +94,19 @@ Route::middleware('guest')->group(function(){
 
     Route::get('/sign-in',[Authentication::class, 'login'])->name('login');
     Route::post('/sign-in',[Authentication::class, 'autentikasi']);
-     
-    Route::get('/sign-up', function () {
-    return view('sign-up');
-    });
+    Route::get('/sign-up', [Authentication::class, 'register'])->name('register');
+    Route::post('/sign-up', [Authentication::class, 'createuser']);
 
-    Route::get('/', function () {
-    return view('/index_guest', ['categories' => Category::all(), 'products' => Product::all()]);
+    Route::get('/auth-google-redirect',[Authentication::class, 'google_redirect']);
+    Route::get('/auth-google-callback',[Authentication::class, 'google_callback']);
+    
+
+    // Route::get('/sign-up', function () {
+    // return view('sign-up');
+    // });
+
+    Route::get('/index_guest', function () {
+    return view('index_guest', ['categories' => Category::all(), 'products' => Product::all()]);
     });
             
 });

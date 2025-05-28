@@ -13,7 +13,7 @@
 <!-- Profile Content -->
 <body> 
   <div class="mt-20 bg-white rounded-lg shadow-sm p-6">
-    <div class="flex flex-col md:flex-row">
+    <div class="flex flex-col md:flex-row mb-[51px]">
       <!-- Left Side - Profile Image -->
       <div class="md:w-1/3 mb-6 md:mb-0">
         <h2 class="text-lg font-medium text-gray-700 mb-4">Profil Pribadi</h2>

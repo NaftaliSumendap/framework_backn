@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <script src="https://cdn.tailwindcss.com"></script>
+   
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.21.0/dist/sweetalert2.all.min.js"></script>
 </head>
 <body class="bg-gray-100">
     <!-- Main Container -->
@@ -50,25 +52,31 @@
                 </div>
 
                 <!-- Sign Up Form -->
-                <form class="space-y-6">
+                <form method="POST" action="{{ route('register') }}" class="space-y-6">
+                    @csrf
                     <div>
-                        <input type="text" placeholder="Name" class="w-full px-4 py-3 bg-gray-50 rounded-lg shadow-sm 
+                        <input type="text" placeholder="Name" id="name" name="name"  value="{{ old('name') }}" class="w-full px-4 py-3 bg-gray-50 rounded-lg shadow-sm 
                                   focus:outline-none focus:ring-2 focus:ring-amber-400">
+                                  @error('name')
+                                  <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                              @enderror 
                     </div>
 
-                    <div>
-                        <input type="text" placeholder="Username" class="w-full px-4 py-3 bg-gray-50 rounded-lg shadow-sm 
-                                  focus:outline-none focus:ring-2 focus:ring-amber-400">
-                    </div>
 
                     <div>
-                        <input type="email" placeholder="Email" class="w-full px-4 py-3 bg-gray-50 rounded-lg shadow-sm 
+                        <input type="email" name="email" id="email" placeholder="Email"  value="{{ old('email') }}" class="w-full px-4 py-3 bg-gray-50 rounded-lg shadow-sm 
                                   focus:outline-none focus:ring-2 focus:ring-amber-400">
+                                  @error('email')
+                                  <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                              @enderror
                     </div>
                     
                     <div>
-                        <input type="password" placeholder="Password" class="w-full px-4 py-3 bg-gray-50 rounded-lg shadow-sm 
+                        <input type="password" name="password" id="password" placeholder="Password" class="w-full px-4 py-3 bg-gray-50 rounded-lg shadow-sm 
                                   focus:outline-none focus:ring-2 focus:ring-amber-400">
+                                  @error('password')
+                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                    @enderror
                     </div>
 
                     <div class="flex items-center">
@@ -80,12 +88,29 @@
                     </div>
 
                     <button class="w-full bg-amber-400 text-white py-3 rounded-lg shadow-md hover:bg-amber-600 
-                              transition duration-300">
+                              transition duration-300" type="submit">
                         Sign Up
                     </button>
+                   
+                    
                 </form>
             </div>
         </div>
-    </div>
+    </div> 
+
+    @if (session('success'))
+<script>
+  Swal.fire({
+    title: 'Berhasil!',
+    text: "{{ session('success') }}",
+    icon: 'success',
+    confirmButtonText: 'OK'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = "{{ route('login') }}";
+    }
+  });
+</script>
+@endif
 </body>
 </html>
