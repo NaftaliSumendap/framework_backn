@@ -18,15 +18,14 @@
 
     <!-- Produk List -->
     <div class="space-y-4">
-      <!-- Loop produk 3x -->
-      <!-- Item -->
+      @foreach ($carts as $cart)
       <div class="bg-white p-4 rounded-lg shadow-md flex items-start justify-between">
         <div class="flex items-start">
           <input type="checkbox" class="mt-10 mr-4 w-5 h-5 border-gray-300" />
-          <img src="img/gitar.jpg" alt="Gitar" class="w-24 h-24 object-cover rounded mr-4" />
+          <img src="img/{{$cart->product->image_path}}" alt="Gitar" class="w-24 h-24 object-cover rounded mr-4" />
           <div>
-            <h3 class="text-lg font-semibold"></h3>
-            <p class="text-sm text-gray-500">Stok: 10</p>
+            <h3 class="text-lg font-semibold">{{$cart->product->name}}</h3>
+            <p class="text-sm text-gray-500">Stok : {{$cart->product->stock}}</p>
             <div class="flex items-center mt-3 space-x-2">
               <button class="text-gray-500 hover:text-red-500"><i class="far fa-trash-alt"></i></button>
               <button class="text-gray-500 hover:text-amber-400"><i class="far fa-heart"></i></button>
@@ -39,34 +38,11 @@
             <input type="text" value="1" readonly class="w-10 text-center bg-transparent border-none" />
             <button class="px-2 border rounded"><i class="fas fa-plus text-gray-400"></i></button>
           </div>
-          <p class="font-bold text-lg">Rp1.500.000</p>
+          <p class="font-bold text-lg">Rp{{number_format($cart->product->discount_price, 0, ',', '.')}}</p>
         </div>
       </div>
-
-      <!-- Duplikat item sebanyak 2 lagi -->
-      <!-- Item 2 -->
-      <div class="bg-white p-4 rounded-lg shadow-md flex items-start justify-between">
-        <div class="flex items-start">
-          <input type="checkbox" class="mt-10 mr-4 w-5 h-5 border-gray-300" />
-          <img src="img/gitar.jpg" alt="Gitar" class="w-24 h-24 object-cover rounded mr-4" />
-          <div>
-            <h3 class="text-lg font-semibold">Gitar Akustik</h3>
-            <p class="text-sm text-gray-500">Stok: 10</p>
-            <div class="flex items-center mt-3 space-x-2">
-              <button class="text-gray-500 hover:text-red-500"><i class="far fa-trash-alt"></i></button>
-              <button class="text-gray-500 hover:text-amber-400"><i class="far fa-heart"></i></button>
-            </div>
-          </div>
-        </div>
-        <div class="text-right">
-          <div class="flex items-center justify-end mb-2">
-            <button class="px-2 border rounded"><i class="fas fa-minus text-gray-400"></i></button>
-            <input type="text" value="1" readonly class="w-10 text-center bg-transparent border-none" />
-            <button class="px-2 border rounded"><i class="fas fa-plus text-gray-400"></i></button>
-          </div>
-          <p class="font-bold text-lg">Rp1.500.000</p>
-        </div>
-      </div>
+      @endforeach
+    </div>
 
     <!-- Ringkasan Belanja -->
     <div class="bg-white mt-10 p-6 rounded-lg shadow-md w-full">

@@ -3,6 +3,7 @@
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Cart;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -29,7 +30,7 @@ Route::middleware('auth')->group(function () {
     });
     
     Route::get('/cart', function () {
-        return view('cart');
+        return view('cart', ['carts' => Cart::all(), 'products' => Product::all(), 'categories' => Category::all()]);
     });
     
     
