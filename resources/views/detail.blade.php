@@ -156,7 +156,7 @@
 
                 <!-- Dynamic Price -->
                 <div class="mb-6">
-                    <p class="text-gray-700">Total Harga: <span class="font-bold text-red-600">Rp 1.500.000</span></p>
+                    <p class="text-gray-700">Total Harga: <span class="font-bold text-red-600">Rp{{number_format($product['discount_price'], 0, ',', '.')}}</span></p>
                 </div>
 
                 <!-- Add to Cart Button -->
