@@ -14,7 +14,7 @@
     <!-- Konten Utama -->
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-20">
         <h2 class="text-lg md:text-xl font-semibold mt-6 mb-4">
-          Hasil pencarian untuk '<span class="text-red-500">{{$category['slug']}}</span>''
+          Hasil pencarian untuk '<span class="text-red-500">{{$category['slug']}}</span>'
         </h2>
 
         <div class="flex flex-wrap gap-2 mb-6">

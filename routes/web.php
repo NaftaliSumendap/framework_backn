@@ -45,12 +45,6 @@ Route::middleware('auth')->group(function () {
         return view('privacy');
     });
     
-    Route::get('/search/kategori={category:slug}', function (Category $category) {
-        // Ambil produk berdasarkan kategori yang dipilih
-        $products = Product::where('category_id', $category->id)->get();
-        return view('search', ['products' => $products, 'categories' => Category::all(), 'category' => $category]);
-    });
-
     // Route::get('/profil', function () {
         //     return view('profil', ['user' => $user, 'users' => User::all()]);
         // });
@@ -70,7 +64,12 @@ Route::middleware('auth')->group(function () {
             //     return view('sign-in');
             // });
             
-           
+            Route::get('/search/kategori={category:slug}', function (Category $category) {
+            // Ambil produk berdasarkan kategori yang dipilih
+            $products = Product::where('category_id', $category->id)->get();
+            return view('search', ['products' => $products, 'categories' => Category::all(), 'category' => $category]);
+            });
+
             
             Route::get('/status', function () {
                 return view('status');
