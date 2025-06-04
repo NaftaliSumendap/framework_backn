@@ -156,7 +156,7 @@
 
                 <!-- Dynamic Price -->
                 <div class="mb-6">
-                    <p class="text-gray-700">Total Harga: <span class="font-bold text-red-600">Rp{{number_format($product['discount_price'], 0, ',', '.')}}</span></p>
+                    <p class="text-gray-700">Total Harga: <span id="total_price" name="total_price" class="font-bold text-red-600">Rp{{number_format($product['discount_price'], 0, ',', '.')}}</span></p>
                 </div>
 
                 <!-- Add to Cart Button -->
@@ -188,7 +188,7 @@
           <p class="mt-2 text-sm font-medium line-clamp-2">{{$product['name']}}</p>
           <p class="text-red-600 font-bold text-sm mt-1">Rp{{number_format($product['discount_price'], 0, ',', '.')}}</p>
           <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
-              <span class="text-yellow-500">★ 4.6 | 20 Terjual</span>
+              <span class="text-yellow-500">★ 4.6 | {{$product['sold']}} Terjual</span>
           </div>
           </a>
           <!-- Tombol Tambahkan tetap di luar <a> -->
@@ -199,30 +199,27 @@
       @endforeach
       </div>
   </div>
-
-
-    <!-- JavaScript untuk Validasi dan Menghitung Total Harga -->
-    <script>
+   <script>
         const quantityInput = document.getElementById('quantity');
-        const priceElement = document.querySelector('.text-amber-400');
+        const priceElement = document.getElementById('total_price');
         const warningElement = document.getElementById('warning');
-        const basePrice = 1500000; // Harga dasar produk
+        const basePrice = "{{$product['discount_price']}}"; // pastikan nilainya ada
 
         quantityInput.addEventListener('input', () => {
-            const quantity = parseInt(quantityInput.value);
+            let quantity = parseInt(quantityInput.value);
 
-            // Validasi jumlah
-            if (quantity < 1 || isNaN(quantity)) {
-                quantityInput.value = 1; // Reset ke 1 jika nilai tidak valid
-                warningElement.classList.remove('hidden'); // Tampilkan peringatan
+            if (isNaN(quantity) || quantity < 1) {
+                quantity = 1;
+                quantityInput.value = 1;
+                warningElement.classList.remove('hidden');
             } else {
-                warningElement.classList.add('hidden'); // Sembunyikan peringatan
+                warningElement.classList.add('hidden');
             }
 
-            // Hitung total harga
             const totalPrice = basePrice * quantity;
-            priceElement.textContent = `Rp ${totalPrice.toLocaleString()}`;
+            priceElement.textContent = `Rp ${totalPrice.toLocaleString('id-ID')}`;
         });
+
 
         // Validasi saat form submit (opsional)
         document.querySelector('form')?.addEventListener('submit', (e) => {
@@ -300,24 +297,6 @@
             }
         });
     </script>
-
-  <!-- Footer -->
-  <div id="footer-placeholder"></div>
-
-<script>
-  function attachNavbarEvents() {
-    const toggleBtn = document.getElementById("toggleMenu");
-    const mobileMenu = document.getElementById("mobileMenu");
-
-    if (toggleBtn && mobileMenu) {
-      toggleBtn.addEventListener("click", () => {
-        mobileMenu.classList.toggle("hidden");
-      });
-    } else {
-      console.warn("Element toggleMenu atau mobileMenu tidak ditemukan");
-    }
-  }
-</script>
 </body>
  <!-- Bagian Footer -->
   <x-footer></x-footer>
