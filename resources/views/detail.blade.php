@@ -118,8 +118,8 @@
                       <i class="bx bx-edit mr-1"></i> Buat Ulasan
                     </button>
                   </div>
-                  @foreach ($reviews as $review)
                   <div class="mt-4 space-y-4">
+                    @foreach ($reviews as $review)
                     <div class="flex items-center space-x-2 group">
                       <img src="img/Naftali.jpg" alt="Profile" class="w-9 h-9 rounded-full object-cover border-2 border-gray-300 group-hover:border-amber-400 transition-colors duration-200" />
                       <span class="text-gray-800 font-medium">{{$review->user->name}}</span>
@@ -131,7 +131,7 @@
                       <i class="bx bxs-star text-amber-400"></i>
                       <i class="bx bxs-star text-gray-300"></i>
                     </div>
-                    <p class="text-gray-600">{{$review->comment}}</p>
+                    <p class="text-gray-600">{{$review->comment ?? 'belum ada review'}}</p>
                     @endforeach
                   </div>
                 </div>  

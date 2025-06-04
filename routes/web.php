@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     });
     
     Route::get('/detail/{product:slug}', function (Product $product) {
-        return view('detail', ['product' => $product, 'products' => Product::all()->except($product->id), 'categories' => Category::all(), 'reviews' => Review::where('product_id', $product->id)->with('user')->get()]); 
+        return view('detail', ['product' => $product, 'products' => Product::all()->except($product->id), 'categories' => Category::all(), 'reviews' => Review::where('product_id', $product->id)->get()]); 
     });
     
     Route::get('/chat', function () {
