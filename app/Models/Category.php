@@ -5,9 +5,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    public function category()
+    public function product()
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasMany(Product::class);
     }
 }
 ?>
