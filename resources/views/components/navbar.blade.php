@@ -114,7 +114,7 @@
               </span
             >
             <img
-              src="../img/Foto Almamater Andro.png"
+              src="/img/{{ Auth::user()->image }}"
               alt="Profile"
               class="w-9 h-9 rounded-full object-cover border-2 border-gray-300 group-hover:border-amber-400 transition"
             />
@@ -202,7 +202,7 @@
         class="flex items-center gap-2 text-gray-800 hover:text-amber-400"
       >
         <img
-          src="img/Foto Almamater Andro.png"
+          src="img/{{ Auth::user()->image }}"
           alt="Profile"
           class="w-6 h-6 rounded-full border border-gray-300"
         />
