@@ -191,7 +191,7 @@
         </a>
       </button>
       <button class="bg-amber-400 text-white py-2 px-6 rounded-lg hover:bg-amber-500 transition">
-        <a href="/index">
+        <a href="/">
           <i class="fas fa-home mr-2"></i>Kembali ke Beranda
         </a>
       </button>
