@@ -4,6 +4,7 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Cart;
+use App\Models\Review;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,7 @@ Route::middleware('auth')->group(function () {
     });
     
     Route::get('/detail/{product:slug}', function (Product $product) {
-        return view('detail', ['product' => $product, 'products' => Product::all()->except($product->id), 'categories' => Category::all()]); 
+        return view('detail', ['product' => $product, 'products' => Product::all()->except($product->id), 'categories' => Category::all(), 'reviews' => Review::where('product_id', $product->id)->with('user')->get()]); 
     });
     
     Route::get('/chat', function () {
