@@ -6,12 +6,16 @@ use App\Models\Category;
 use App\Models\Cart;
 use App\Models\Review;
 use Illuminate\Support\Arr;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication;
 
 
 Route::middleware('auth')->group(function () {
+
+    Route::post('/profile/update-ajax', [UserController::class, 'updateField'])->name('profile.update.ajax');
+
 
     Route::get('/', function () {
         return view('index', ['categories' => Category::all(), 'products' => Product::all()]);
@@ -74,7 +78,7 @@ Route::middleware('auth')->group(function () {
                 return view('transaksi');
             });
             
-            Route::get('/dashboard/dashboard', function () {
+            Route::get('/dashboard', function () {
                 return view('dashboard/dashboard');
             });
             
@@ -83,11 +87,11 @@ Route::middleware('auth')->group(function () {
             });
             
             Route::get('/dashboard/store', function () {
-                return view('dashboard/store');
+                return view('dashboard/store', ['categories' => Category::all(), 'products' => Product::all()]);
             });
             
             Route::get('/dashboard/users', function () {
-                return view('dashboard/users');
+                return view('dashboard/users', ['users' => User::all()]);
             });
             Route::get('/logout', [Authentication::class, 'logout']);
 

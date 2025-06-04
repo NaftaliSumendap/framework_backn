@@ -238,7 +238,7 @@
           <ul class="space-y-2">
             <li>
               <a
-                href="/dashboard/dashboard"
+                href="/dashboard"
                 class="flex items-center p-3 hover:text-amber-400"
                 ><i class="bx bxs-dashboard mr-2"></i>Dashboard</a
               >
@@ -349,12 +349,13 @@
                 </tr>
               </thead>
               <tbody>
+                @foreach ($products as $product)
                 <tr class="border-b hover:bg-gray-50">
-                  <td class="py-2">Keyboard Yamaha</td>
-                  <td>Rp 5.000.000</td>
-                  <td>10</td>
-                  <td>Keyboard</td>
-                  <td>Keyboard digital untuk profesional</td>
+                  <td class="py-2">{{$product['name']}}</td>
+                  <td>Rp{{number_format($product['discount_price'], 0, ',', '.')}}</td>
+                  <td>{{$product['stock']}}</td>
+                  <td>{{ $product->category->name }}</td>
+                  <td>{{ Str::limit($product['description'], 50) }}</td>
                   <td class="space-x-2">
                     <button
                       class="edit-btn bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
@@ -370,27 +371,7 @@
                     </button>
                   </td>
                 </tr>
-                <tr class="border-b hover:bg-gray-50">
-                  <td class="py-2">Gitar listrik Yamaha</td>
-                  <td>Rp 2.200.000</td>
-                  <td>30</td>
-                  <td>Gitar</td>
-                  <td>Gitar listrik yamaha single coil</td>
-                  <td class="space-x-2">
-                    <button
-                      class="edit-btn bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-                      data-product="Gitar listrik Yamaha"
-                    >
-                      <i class="bx bxs-edit"></i>
-                    </button>
-                    <button
-                      class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                      data-product="Gitar listrik Yamaha"
-                    >
-                      <i class="bx bxs-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+                @endforeach
               </tbody>
             </table>
           </div>

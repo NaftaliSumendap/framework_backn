@@ -44,14 +44,14 @@
             <div class="flex items-center justify-between">
               <span class="text-gray-600">Tanggal Lahir</span>
               <div class="flex items-center">
-                <span class="text-gray-700 mr-2" id="tanggal-lahir-value">25 April 2005</span>
+                <span class="text-gray-700 mr-2" id="tanggal-lahir-value">Belum diatur</span>
                 <button onclick="openModal('Tanggal Lahir', 'tanggal-lahir-value', 'date')" class="text-amber-400 hover:text-amber-500 text-lg font-bold">&gt;</button>
               </div>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-gray-600">Jenis Kelamin</span>
               <div class="flex items-center">
-                <span class="text-gray-700 mr-2" id="jenis-kelamin-value">Laki-laki</span>
+                <span class="text-gray-700 mr-2" id="jenis-kelamin-value">Belum diatur</span>
                 <button onclick="openModal('Jenis Kelamin', 'jenis-kelamin-value', 'select', ['Laki-laki', 'Perempuan'])" class="text-amber-400 hover:text-amber-500 text-lg font-bold">&gt;</button>
               </div>
             </div>
@@ -88,20 +88,6 @@
     </div> <!-- Penutup untuk flex container -->
   </div> <!-- Penutup untuk bg-white container -->
 
-  <!-- Modal Edit -->
-  <div id="editModal" class="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50 hidden">
-    <div class="bg-white rounded-lg p-6 w-96 shadow-lg">
-      <h3 class="text-lg font-semibold mb-4">Ubah <span id="modalFieldName">Data</span></h3>
-      <div id="modalInputContainer">
-        <!-- Input field will be inserted here dynamically -->
-      </div>
-      <div class="flex justify-end mt-4 space-x-2">
-        <button onclick="closeModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>
-        <button onclick="saveModal()" class="bg-amber-400 hover:bg-amber-500 text-white px-4 py-2 rounded">Simpan</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Logout Confirmation Modal -->
   <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50 hidden">
     <div class="bg-white rounded-lg p-6 w-96 shadow-lg">
@@ -114,6 +100,24 @@
     </div>
   </div>
 
+    <!-- Modal Edit -->
+
+  <div id="editModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white p-6 rounded-lg w-96">
+    <h3 id="modalTitle" class="text-lg font-semibold mb-4"></h3>
+    
+    <form id="editForm" method="POST" action="{{ route('profile.update.ajax') }}">
+      @csrf
+      <input type="hidden" name="field" id="fieldName">
+      <div id="inputContainer" class="mb-4"></div>
+      <div class="flex justify-end gap-2">
+        <button type="button" onclick="closeModal()" class="text-gray-600 hover:text-gray-900">Batal</button>
+        <button type="submit" class="bg-amber-400 hover:bg-amber-500 text-white px-4 py-1 rounded">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 </body>
 <!-- Footer -->
 <x-footer></x-footer>
@@ -124,85 +128,34 @@
   let currentInputType = null;
 
   // Fungsi untuk buka modal dengan tipe input yang berbeda
-  function openModal(fieldName, fieldId, inputType, options = null) {
-    document.getElementById("modalFieldName").innerText = fieldName;
-    const currentValue = document.getElementById(fieldId).innerText;
-    const inputContainer = document.getElementById("modalInputContainer");
-    inputContainer.innerHTML = '';
-    
-    currentFieldId = fieldId;
-    currentInputType = inputType;
-    
+function openModal(title, spanId, inputType, options = []) {
+    const modal = document.getElementById('editModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const inputContainer = document.getElementById('inputContainer');
+    const fieldName = document.getElementById('fieldName');
+    const currentValue = document.getElementById(spanId).textContent.trim();
+
+    modalTitle.textContent = `Ubah ${title}`;
+    fieldName.value = spanId.replace('-value', '').replace('-', '_');
+
+    let inputHTML = '';
     if (inputType === 'textarea') {
-      // Textarea untuk alamat
-      const textarea = document.createElement('textarea');
-      textarea.className = 'w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-amber-400';
-      textarea.rows = 4;
-      textarea.value = currentValue;
-      inputContainer.appendChild(textarea);
-    } else if (inputType === 'select' && options) {
-      // Select dropdown untuk jenis kelamin
-      const select = document.createElement('select');
-      select.className = 'w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-amber-400';
-      
-      options.forEach(option => {
-        const optElement = document.createElement('option');
-        optElement.value = option;
-        optElement.textContent = option;
-        if (option === currentValue) optElement.selected = true;
-        select.appendChild(optElement);
-      });
-      
-      inputContainer.appendChild(select);
+        inputHTML = `<textarea name="value" class="w-full border rounded p-2" rows="3">${currentValue}</textarea>`;
+    } else if (inputType === 'select') {
+        inputHTML = `<select name="value" class="w-full border rounded p-2">
+            ${options.map(opt => `<option value="${opt}" ${opt === currentValue ? 'selected' : ''}>${opt}</option>`).join('')}
+        </select>`;
     } else {
-      // Input standar untuk tipe lainnya
-      const input = document.createElement('input');
-      input.type = inputType === 'date' ? 'date' : 
-                  inputType === 'email' ? 'email' : 
-                  inputType === 'tel' ? 'tel' : 'text';
-      input.className = 'w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-amber-400';
-      input.value = currentValue;
-      inputContainer.appendChild(input);
+        inputHTML = `<input type="${inputType}" name="value" value="${currentValue}" class="w-full border rounded p-2">`;
     }
-    
-    document.getElementById("editModal").classList.remove("hidden");
-  }
 
-  // Fungsi untuk simpan perubahan
-  function saveModal() {
-    const inputContainer = document.getElementById("modalInputContainer");
-    let newValue = '';
-    
-    if (currentInputType === 'textarea') {
-      newValue = inputContainer.querySelector('textarea').value;
-    } else if (currentInputType === 'select') {
-      newValue = inputContainer.querySelector('select').value;
-    } else {
-      newValue = inputContainer.querySelector('input').value;
-    }
-    
-    if (currentFieldId) {
-      document.getElementById(currentFieldId).innerText = newValue;
-    }
-    closeModal();
-  }
+    inputContainer.innerHTML = inputHTML;
+    modal.classList.remove('hidden');
+}
 
-  // Fungsi tutup modal
-  function closeModal() {
-    document.getElementById("editModal").classList.add("hidden");
-    currentFieldId = null;
-    currentInputType = null;
-  }
-
-  // Fungsi untuk menampilkan konfirmasi logout
-  function showLogoutConfirmation() {
-    document.getElementById("logoutModal").classList.remove("hidden");
-  }
-
-  // Fungsi untuk menyembunyikan konfirmasi logout
-  function hideLogoutConfirmation() {
-    document.getElementById("logoutModal").classList.add("hidden");
-  }
+function closeModal() {
+    document.getElementById('editModal').classList.add('hidden');
+}
 
   // Fungsi untuk melakukan logout
   function performLogout() {

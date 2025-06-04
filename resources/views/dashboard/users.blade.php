@@ -256,7 +256,7 @@
           <ul class="space-y-2">
             <li>
               <a
-                href="/dashboard/dashboard"
+                href="/dashboard"
                 class="flex items-center p-3 hover:text-amber-400"
                 ><i class="bx bxs-dashboard mr-2"></i>Dashboard</a
               >
@@ -367,21 +367,22 @@
                 </tr>
               </thead>
               <tbody>
+                @foreach ($users as $user)
                 <tr class="border-b hover:bg-gray-50">
                   <td class="py-2">
                     <img
-                      src="../../image/Foto Almamater Andro.png"
+                      src="../img/{{$user['image']}}"
                       class="w-8 h-8 rounded-full object-cover"
                       alt="Profile"
                     />
                   </td>
-                  <td>admin123</td>
-                  <td>Admin Utama</td>
-                  <td>admin@example.com</td>
+                  <td>{{$user['name']}}</td>
+                  <td>{{$user['name']}}</td>
+                  <td>{{$user['email']}}</td>
                   <td>
                     <span
                       class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full"
-                      >Admin</span
+                      >{{$user['role']}}</span
                     >
                   </td>
                   <td class="space-x-2">
@@ -399,62 +400,7 @@
                     </button>
                   </td>
                 </tr>
-                <tr class="border-b hover:bg-gray-50">
-                  <td class="py-2">
-                    <i class="bx bx-user-circle text-2xl text-gray-400"></i>
-                  </td>
-                  <td>user456</td>
-                  <td>Pengguna Biasa</td>
-                  <td>user@example.com</td>
-                  <td>
-                    <span
-                      class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
-                      >User</span
-                    >
-                  </td>
-                  <td class="space-x-2">
-                    <button
-                      class="edit-btn bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-                      data-user="user456"
-                    >
-                      <i class="bx bxs-edit"></i>
-                    </button>
-                    <button
-                      class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                      data-user="user456"
-                    >
-                      <i class="bx bxs-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr class="border-b hover:bg-gray-50">
-                  <td class="py-2">
-                    <i class="bx bx-user-circle text-2xl text-gray-400"></i>
-                  </td>
-                  <td>guest789</td>
-                  <td>Tamu</td>
-                  <td>guest@example.com</td>
-                  <td>
-                    <span
-                      class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full"
-                      >Guest</span
-                    >
-                  </td>
-                  <td class="space-x-2">
-                    <button
-                      class="edit-btn bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-                      data-user="guest789"
-                    >
-                      <i class="bx bxs-edit"></i>
-                    </button>
-                    <button
-                      class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                      data-user="guest789"
-                    >
-                      <i class="bx bxs-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+                @endforeach
               </tbody>
             </table>
           </div>

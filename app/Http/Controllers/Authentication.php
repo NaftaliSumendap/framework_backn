@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 use Laravel\Socialite\Facades\Socialite;
 
+
 class Authentication extends Controller 
 { 
     function login() {

@@ -47,7 +47,7 @@
           <ul class="space-y-2">
             <li>
               <a
-                href="/dashboard/dashboard"
+                href="/dashboard"
                 class="flex items-center p-3 hover:text-amber-400"
                 ><i class="bx bxs-dashboard mr-2"></i>Dashboard</a
               >
