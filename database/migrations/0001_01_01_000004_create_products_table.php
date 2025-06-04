@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->decimal('discount_price', 10, 2)->nullable();
             $table->integer('stock')->default(0);
+            $table->integer('sold')->default(0);
             $table->json('specifications')->nullable();
             $table->string('brand')->nullable();
             $table->boolean('is_featured')->default(false);
