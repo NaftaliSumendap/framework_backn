@@ -30,8 +30,10 @@ Route::middleware('auth')->group(function () {
         return view('chat');
     });
     
-    Route::get('/cart', function () {
-        return view('cart', ['carts' => Cart::all(), 'products' => Product::all(), 'categories' => Category::all()]);
+    Route::get('/cart', function (Cart $cart) {
+        // Ambil cart berdasarkan user yang sedang login
+        $user_id = Auth::id(); // Ambil ID user yang sedang login
+        return view('cart', ['cart' => $cart, 'carts' => Cart::with('product') -> where('user_id', $user_id)->get(), 'products' => Product::all(), 'categories' => Category::all()]);
     });
     
     
