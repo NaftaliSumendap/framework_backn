@@ -160,9 +160,12 @@
                 </div>
 
                 <!-- Add to Cart Button -->
+                <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                  @csrf
                 <button id="addToCartBtn" class="w-full bg-amber-400 text-white py-3 rounded-lg hover:bg-amber-500 transition duration-300 mb-4">
-                    Tambahkan ke Keranjang
+                  Tambahkan ke Keranjang
                 </button>
+                </form>
 
                 <!-- Buy Now Button -->
                 <button id="buyNowBtn" class="w-full bg-gray-0 border-2 border-amber-400 text-amber-400 py-3 rounded-lg hover:bg-gray-100 transition duration-300">

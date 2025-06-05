@@ -4,9 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Status Pengiriman</title>
+  <title>Status Pengiriman - SounDeal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js" rel="stylesheet"></link>
   <style>
     .step-active {
       color: #f59e0b;
@@ -39,160 +40,90 @@
   <main class="flex-grow container mx-auto px-4 py-20 space-y-6">
     <!-- Tracking Order Section -->
     <div class="bg-white p-6 rounded-lg shadow-md">
-      <h2 class="text-2xl font-bold mb-6">Status Pengiriman</h2>
-      <p class="text-gray-600 mb-6">No. Pesanan: #ORD-20240515-001</p>
+      <h2 class="text-2xl font-bold mb-6">Status Pengiriman Pesanan #{{ $order->order_number }}</h2>
+      <p class="text-gray-600 mb-4">Status saat ini: <span class="font-semibold text-amber-500">{{ ucfirst($order->status) }}</span></p>
 
-      <!-- Tracking Steps -->
-      <div class="relative">
-        <!-- Progress Line -->
-        <div class="absolute left-4 top-0 h-full w-1 bg-gray-200 -z-10"></div>
-        <div class="absolute left-4 top-0 h-1/2 w-1 bg-amber-400 -z-10" id="progressBar"></div>
+      <div class="relative flex flex-col items-center py-4">
+        <!-- Progress Bar (Vertical) -->
+        <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gray-200 rounded-full">
+          <div id="progressBar" class="absolute bottom-0 w-full bg-amber-400 rounded-full transition-all duration-500 ease-in-out" style="height: 0%;"></div>
+        </div>
 
         <!-- Steps -->
-        <div class="space-y-8">
+        <div class="flex flex-col items-center w-full">
           <!-- Step 1: Dikonfirmasi -->
-          <div class="flex items-start step-completed" id="step1">
-            <div
-              class="flex-shrink-0 w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white mr-4 step-icon-completed">
-              <i class="fas fa-check"></i>
+          <div id="step1" class="flex items-center w-full py-4 relative">
+            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center z-10 transition-colors duration-300">
+              <i class="bx bx-check text-white text-xl"></i>
             </div>
-            <div>
-              <h3 class="font-semibold">Dikonfirmasi</h3>
-              <p class="text-gray-500 text-sm">Pesanan Anda telah dikonfirmasi</p>
-              <p class="text-gray-400 text-xs mt-1">15 Mei 2024, 10:30 WIB</p>
+            <div class="ml-4 flex-grow">
+              <p class="text-gray-500 font-medium">Pesanan Dikonfirmasi</p>
+              <p class="text-gray-400 text-sm">Pesanan Anda telah diterima dan dikonfirmasi.</p>
             </div>
           </div>
 
           <!-- Step 2: Packaging -->
-          <div class="flex items-start step-active" id="step2">
-            <div
-              class="flex-shrink-0 w-8 h-8 rounded-full bg-amber-400 flex items-center justify-center text-white mr-4 step-icon-active">
-              <i class="fas fa-box"></i>
+          <div id="step2" class="flex items-center w-full py-4 relative">
+            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center z-10 transition-colors duration-300">
+              <i class="bx bx-package text-white text-xl"></i>
             </div>
-            <div>
-              <h3 class="font-semibold">Packaging</h3>
-              <p class="text-gray-500 text-sm">Pesanan sedang dipersiapkan</p>
-              <p class="text-gray-400 text-xs mt-1">15 Mei 2024, 12:45 WIB</p>
+            <div class="ml-4 flex-grow">
+              <p class="text-gray-500 font-medium">Sedang Dikemas</p>
+              <p class="text-gray-400 text-sm">Produk Anda sedang disiapkan untuk pengiriman.</p>
             </div>
           </div>
 
           <!-- Step 3: Pengantaran -->
-          <div class="flex items-start" id="step3">
-            <div
-              class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 mr-4">
-              <i class="fas fa-truck"></i>
+          <div id="step3" class="flex items-center w-full py-4 relative">
+            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center z-10 transition-colors duration-300">
+              <i class="bx bx-truck text-white text-xl"></i>
             </div>
-            <div>
-              <h3 class="font-semibold text-gray-400">Pengantaran</h3>
-              <p class="text-gray-400 text-sm">Menunggu proses pengantaran</p>
+            <div class="ml-4 flex-grow">
+              <p class="text-gray-500 font-medium">Dalam Pengantaran</p>
+              <p class="text-gray-400 text-sm">Pesanan Anda sedang dalam perjalanan.</p>
             </div>
           </div>
 
           <!-- Step 4: Diterima -->
-          <div class="flex items-start" id="step4">
-            <div
-              class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 mr-4">
-              <i class="fas fa-home"></i>
+          <div id="step4" class="flex items-center w-full py-4 relative">
+            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center z-10 transition-colors duration-300">
+              <i class="bx bx-home text-white text-xl"></i>
             </div>
-            <div>
-              <h3 class="font-semibold text-gray-400">Diterima</h3>
-              <p class="text-gray-400 text-sm">Pesanan akan dicatat saat diterima</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Delivery Info -->
-      <div class="mt-8 border-t pt-6">
-        <h3 class="font-semibold mb-4">Informasi Pengiriman</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <p class="text-gray-600">Kurir</p>
-            <p class="font-medium">JNE REG</p>
-          </div>
-          <div>
-            <p class="text-gray-600">No. Resi</p>
-            <p class="font-medium">JNE000123456789</p>
-          </div>
-          <div>
-            <p class="text-gray-600">Estimasi Sampai</p>
-            <p class="font-medium">18 Mei 2024</p>
-          </div>
-          <div>
-            <p class="text-gray-600">Alamat Pengiriman</p>
-            <p class="font-medium">Jl. Melodi No. 123, Jakarta Selatan</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Order Details -->
-    <div class="bg-white p-6 rounded-lg shadow-md">
-      <h2 class="text-2xl font-bold mb-6">Detail Pesanan</h2>
-
-      <!-- Product List -->
-      <div class="space-y-4">
-        <!-- Product 1 -->
-        <div class="flex items-start justify-between border-b pb-4">
-          <div class="flex items-start">
-            <img src="img/gitar.jpg" alt="Gitar" class="w-16 h-16 object-cover rounded mr-4" />
-            <div>
-              <h3 class="font-semibold">Gitar Akustik Yamaha C40</h3>
-              <p class="text-gray-500 text-sm">1 x Rp1.500.000</p>
+            <div class="ml-4 flex-grow">
+              <p class="text-gray-500 font-medium">Pesanan Diterima</p>
+              <p class="text-gray-400 text-sm">Pesanan Anda telah berhasil diterima.</p>
             </div>
           </div>
-          <p class="font-bold">Rp1.500.000</p>
-        </div>
-
-        <!-- Product 2 -->
-        <div class="flex items-start justify-between border-b pb-4">
-          <div class="flex items-start">
-            <img src="img/gitar2.jpg" alt="gitar" class="w-16 h-16 object-cover rounded mr-4" />
-            <div>
-              <h3 class="font-semibold">Gitar Akustik</h3>
-              <p class="text-gray-500 text-sm">1 x Rp1.500.000</p>
-            </div>
-          </div>
-          <p class="font-bold">Rp1.500.000</p>
         </div>
       </div>
 
-      <!-- Order Summary -->
-      <div class="mt-6 space-y-3">
-        <div class="flex justify-between">
-          <span class="text-gray-600">Subtotal</span>
-          <span>Rp3.000.000</span>
+      <!-- Detail Pesanan -->
+      <div class="bg-white p-6 rounded-lg shadow-md mt-6">
+        <h3 class="text-xl font-bold mb-4">Detail Pesanan</h3>
+        <div class="space-y-2 text-gray-700">
+          <p><strong>Nomor Pesanan:</strong> {{ $order->order_number }}</p>
+          <p><strong>Tanggal Pesanan:</strong> {{ $order->created_at->translatedFormat('d F Y H:i') }}</p>
+          <p><strong>Total Pembayaran:</strong> Rp{{ number_format($order->total_amount, 0, ',', '.') }}</p>
+          <p><strong>Metode Pengiriman:</strong> {{ $order->shipping_method }}</p>
+          <p><strong>Metode Pembayaran:</strong> {{ $order->payment_method }}</p>
+          <p><strong>Alamat Pengiriman:</strong> {{ $order->shipping_address }}</p>
         </div>
-        <div class="flex justify-between font-bold text-lg mt-4">
-          <span>Total Pembayaran</span>
-          <span class="text-amber-400">Rp3.000.000</span>
-        </div>
+
+        <h4 class="text-lg font-semibold mt-6 mb-3">Item Pesanan:</h4>
+        <ul class="space-y-2">
+          @foreach ($order->orderItems as $item)
+          <li class="flex justify-between items-center text-gray-600 border-b pb-2">
+            <span>{{ $item->product->name }} (x{{ $item->quantity }})</span>
+            <span>Rp{{ number_format($item->price * $item->quantity, 0, ',', '.') }}</span>
+          </li>
+          @endforeach
+        </ul>
       </div>
 
-      <!-- Payment Info -->
-      <div class="mt-6 border-t pt-6">
-        <h3 class="font-semibold mb-4">Informasi Pembayaran</h3>
-        <div class="flex justify-between">
-          <span class="text-gray-600">Metode Pembayaran</span>
-          <span>Transfer Bank BCA</span>
-        </div>
-        <div class="flex justify-between mt-2">
-          <span class="text-gray-600">Status Pembayaran</span>
-          <span class="text-green-500 font-semibold">Lunas</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 mt-6">
-      <button class="bg-white border border-gray-300 text-gray-700 py-2 px-6 rounded-lg hover:bg-gray-50 transition">
-        <a href="/chat">
-          <i class="fas fa-question-circle mr-2"></i>Butuh Bantuan?
-        </a>
-      </button>
-      <button class="bg-amber-400 text-white py-2 px-6 rounded-lg hover:bg-amber-500 transition">
-        <a href="/index">
-          <i class="fas fa-home mr-2"></i>Kembali ke Beranda
+      <!-- Tombol Kembali ke Beranda -->
+      <button class="w-full mt-6 bg-amber-400 text-white py-2 px-6 rounded-lg hover:bg-amber-500 transition">
+        <a href="{{ route('index') }}">
+          <i class="bx bx-home mr-2"></i>Kembali ke Beranda
         </a>
       </button>
     </div>
@@ -201,32 +132,74 @@
 <!-- Footer -->
 <x-footer></x-footer>
 <script>
-    // Update progress bar based on current step
     document.addEventListener('DOMContentLoaded', function () {
-      // In a real app, you would get the current step from your backend
-      const currentStep = 2; // 1: Dikonfirmasi, 2: Packaging, 3: Pengantaran, 4: Diterima
+        // Mendapatkan status pesanan dari data yang dikirimkan oleh controller
+        const orderStatus = "{{ $order->status }}"; // Contoh: 'pending', 'processing', 'shipped', 'delivered'
+        let currentStep = 0;
 
-      // Update progress bar height
-      const progressBar = document.getElementById('progressBar');
-      if (currentStep >= 2) {
-        progressBar.style.height = '50%'; // Halfway for step 2 (Packaging)
-      } else if (currentStep >= 3) {
-        progressBar.style.height = '75%'; // Three quarters for step 3 (Pengantaran)
-      } else if (currentStep >= 4) {
-        progressBar.style.height = '100%'; // Full for step 4 (Diterima)
-      }
-
-      // Highlight current step
-      for (let i = 1; i <= 4; i++) {
-        const step = document.getElementById(`step${i}`);
-        if (i < currentStep) {
-          step.classList.add('step-completed');
-          step.querySelector('div:first-child').classList.add('step-icon-completed');
-        } else if (i === currentStep) {
-          step.classList.add('step-active');
-          step.querySelector('div:first-child').classList.add('step-icon-active');
+        // Menentukan langkah saat ini berdasarkan status pesanan
+        if (orderStatus === 'pending') {
+            currentStep = 1;
+        } else if (orderStatus === 'processing') {
+            currentStep = 2;
+        } else if (orderStatus === 'shipped') {
+            currentStep = 3;
+        } else if (orderStatus === 'delivered') {
+            currentStep = 4;
         }
-      }
+
+        // Memperbarui tinggi progress bar
+        const progressBar = document.getElementById('progressBar');
+        if (currentStep === 1) {
+            progressBar.style.height = '25%';
+        } else if (currentStep === 2) {
+            progressBar.style.height = '50%';
+        } else if (currentStep === 3) {
+            progressBar.style.height = '75%';
+        } else if (currentStep === 4) {
+            progressBar.style.height = '100%';
+        } else {
+            progressBar.style.height = '0%'; // Jika status tidak dikenal atau belum dimulai
+        }
+
+        // Menyorot langkah yang sudah selesai dan aktif
+        for (let i = 1; i <= 4; i++) {
+            const step = document.getElementById(`step${i}`);
+            const icon = step.querySelector('div:first-child');
+            const text = step.querySelector('p:first-child');
+
+            if (i < currentStep) {
+                // Langkah yang sudah selesai
+                step.classList.add('step-completed');
+                icon.classList.remove('bg-gray-300');
+                icon.classList.add('step-icon-completed');
+                text.classList.remove('text-gray-500');
+                text.classList.add('step-completed');
+            } else if (i === currentStep) {
+                // Langkah saat ini
+                step.classList.add('step-active');
+                icon.classList.remove('bg-gray-300');
+                icon.classList.add('step-icon-active');
+                text.classList.remove('text-gray-500');
+                text.classList.add('step-active');
+            } else {
+                // Langkah yang belum tercapai
+                step.classList.remove('step-active', 'step-completed');
+                icon.classList.remove('step-icon-active', 'step-icon-completed');
+                icon.classList.add('bg-gray-300');
+                text.classList.remove('step-active', 'step-completed');
+                text.classList.add('text-gray-500');
+            }
+        }
     });
-  </script>
+
+    // Tampilkan pesan sukses/error dari session Laravel (jika ada)
+    @if(session('success'))
+        alert("{{ session('success') }}"); // Ganti dengan modal kustom Anda jika diperlukan
+    @endif
+
+    @if(session('error'))
+        alert("{{ session('error') }}"); // Ganti dengan modal kustom Anda jika diperlukan
+    @endif
+</script>
 </html>

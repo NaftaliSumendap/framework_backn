@@ -5,197 +5,353 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Transaksi - SounDeal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    {{-- Perbaikan: Menggunakan <script> untuk Boxicons JS --}}
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
   </head>
   <body class="bg-gray-100">
     <!-- Navbar User -->
     <x-navbar></x-navbar>
 
-    <!-- Konten -->
+    <!-- Konten Utama Halaman Transaksi -->
     <main class="pt-20 pb-12 px-4 md:px-10">
       <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">
           Ringkasan Transaksi
         </h2>
 
-        <!-- Informasi Transaksi -->
-        <div class="mb-6 text-sm text-gray-600 space-y-1">
-          <p><strong>Tanggal Pesanan:</strong> 10 April 2025</p>
-          <p>
-            <strong>Alamat Pengiriman:</strong> Jl. Melodi Indah No. 123,
-            Jakarta Selatan, DKI Jakarta 12430
-          </p>
-          <p><strong>Estimasi Sampai:</strong> 16 April - 18 April 2025</p>
-        </div>
+        {{-- Form untuk memproses pesanan --}}
+        <form action="{{ route('checkout.process') }}" method="POST" id="paymentForm">
+          @csrf
 
-        <!-- Daftar Produk -->
-        <div class="space-y-6">
-          <div
-            class="flex items-center justify-between border-b border-t-2 pt-6 pb-6"
-          >
-            <div class="flex items-center space-x-4">
-              <img
-                src="img/gitar.jpg"
-                alt="Gitar"
-                class="w-20 h-20 object-cover rounded border"
-              />
-              <div>
-                <h3 class="font-semibold text-gray-700">
-                  Gitar Akustik Yamaha C40
-                </h3>
-                <p class="text-sm text-gray-500">Jumlah: 1</p>
-              </div>
-            </div>
-            <p class="font-bold text-gray-800">Rp 1.500.000</p>
+          <!-- Informasi Transaksi -->
+          <div class="mb-6 text-sm text-gray-600 space-y-1">
+            <p><strong>Tanggal Pesanan:</strong> {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+            {{-- Alamat Pengiriman (ambil dari data user yang login) --}}
+            <p>
+              <strong>Alamat Pengiriman:</strong>
+              <span id="shipping-address-display">{{ $user->address ?? 'Belum diatur. Silakan perbarui di profil.' }}</span>
+              <button type="button" onclick="openAddressModal()" class="text-amber-400 hover:text-amber-500 ml-2 text-sm">Ubah</button>
+            </p>
+            <p><strong>Estimasi Sampai:</strong> 3-5 hari kerja setelah pembayaran dikonfirmasi</p>
           </div>
 
-          <div class="flex items-center justify-between border-b pb-4">
-            <div class="flex items-center space-x-4">
-              <img
-                src="img/gitar.jpg"
-                alt="Gitar"
-                class="w-20 h-20 object-cover rounded border"
-              />
-              <div>
-                <h3 class="font-semibold text-gray-700">
-                  Gitar Akustik Yamaha C40
-                </h3>
-                <p class="text-sm text-gray-500">Jumlah: 1</p>
+          <!-- Daftar Produk di Keranjang -->
+          <div class="space-y-6">
+            @foreach ($carts as $cart)
+            <div class="flex items-center justify-between border-b border-t-0 border-gray-200 py-4 first:border-t">
+              <div class="flex items-center">
+                <img src="img/{{$cart->product->image_path}}" alt="{{$cart->product->name}}" class="w-16 h-16 object-cover rounded mr-4" />
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-800">{{$cart->product->name}}</h3>
+                  <p class="text-gray-600 text-sm">Jumlah: {{ $cart->quantity }}</p>
+                </div>
               </div>
+              <p class="font-bold text-gray-800">Rp{{number_format($cart->product->discount_price * $cart->quantity, 0, ',', '.')}}</p>
             </div>
-            <p class="font-bold text-gray-800">Rp 1.500.000</p>
+            @endforeach
           </div>
 
-        <!-- Total -->
-        <div class="flex justify-between items-center mt-6 border-t pt-4">
-          <h4 class="text-lg font-semibold text-gray-700">Total Pembayaran</h4>
-          <p class="text-xl font-bold text-amber-500">Rp 3.000.000</p>
-        </div>
+          <!-- Ringkasan Pembayaran -->
+          <div class="mt-8 border-t border-gray-200 pt-6">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-gray-600">Total Harga Barang</span>
+              <span class="font-bold text-gray-800">Rp{{number_format($totalAmount, 0, ',', '.')}}</span>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-gray-600">Biaya Pengiriman</span>
+              <span class="font-bold text-gray-800">Rp0</span> {{-- Anda bisa menambahkan logika biaya pengiriman di sini --}}
+            </div>
+            <hr class="my-4" />
+            <div class="flex justify-between items-center text-xl font-bold text-amber-400">
+              <span>Total Pembayaran</span>
+              <span>Rp{{number_format($totalAmount, 0, ',', '.')}}</span>
+            </div>
+          </div>
 
-        <!-- Form Pembayaran -->
-        <div class="mt-8">
-          <h3 class="text-lg font-semibold mb-4 text-gray-800">
-            Pilih Metode Pembayaran
-          </h3>
-          <form action="#" method="POST" class="space-y-4" id="paymentForm">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <label class="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="metode"
-                  value="bank"
-                  class="accent-amber-400"
-                  checked
-                />
-                <span>Transfer Bank</span>
+          <!-- Metode Pengiriman -->
+          <div class="mt-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Metode Pengiriman</h3>
+            <div class="space-y-3">
+              <label class="flex items-center bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition">
+                <input type="radio" name="shipping_method" value="JNE" class="form-radio text-amber-400 h-5 w-5" checked />
+                <span class="ml-3 text-gray-700 font-medium">JNE</span>
+                <span class="ml-auto text-gray-600">Gratis</span>
               </label>
-              <label class="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="metode"
-                  value="cod"
-                  class="accent-amber-400"
-                />
-                <span>Cash on Delivery (COD)</span>
+              <label class="flex items-center bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition">
+                <input type="radio" name="shipping_method" value="POS" class="form-radio text-amber-400 h-5 w-5" />
+                <span class="ml-3 text-gray-700 font-medium">POS Indonesia</span>
+                <span class="ml-auto text-gray-600">Gratis</span>
               </label>
-              <label class="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="metode"
-                  value="gopay"
-                  class="accent-amber-400"
-                />
-                <span>GoPay (via Midtrans)</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="metode"
-                  value="qris"
-                  class="accent-amber-400"
-                />
-                <span>QRIS (via Midtrans)</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="metode"
-                  value="va_bca"
-                  class="accent-amber-400"
-                />
-                <span>Virtual Account BCA (via Midtrans)</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="metode"
-                  value="va_bni"
-                  class="accent-amber-400"
-                />
-                <span>Virtual Account BNI (via Midtrans)</span>
+              <label class="flex items-center bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition">
+                <input type="radio" name="shipping_method" value="TIKI" class="form-radio text-amber-400 h-5 w-5" />
+                <span class="ml-3 text-gray-700 font-medium">TIKI</span>
+                <span class="ml-auto text-gray-600">Gratis</span>
               </label>
             </div>
+          </div>
+
+          <!-- Metode Pembayaran -->
+          <div class="mt-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Metode Pembayaran</h3>
+            <div class="space-y-3">
+              <label class="flex items-center bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition">
+                <input type="radio" name="payment_method" value="Transfer Bank" class="form-radio text-amber-400 h-5 w-5" checked />
+                <span class="ml-3 text-gray-700 font-medium">Transfer Bank</span>
+              </label>
+              <label class="flex items-center bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition">
+                <input type="radio" name="payment_method" value="Kartu Kredit" class="form-radio text-amber-400 h-5 w-5" />
+                <span class="ml-3 text-gray-700 font-medium">Kartu Kredit</span>
+              </label>
+              <label class="flex items-center bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition">
+                <input type="radio" name="payment_method" value="E-Wallet" class="form-radio text-amber-400 h-5 w-5" />
+                <span class="ml-3 text-gray-700 font-medium">E-Wallet</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Tombol Bayar Sekarang -->
+          <div class="mt-8">
             <button
-              type="button"
-              onclick="processPayment()"
-              class="w-full bg-amber-400 text-white py-2 rounded hover:bg-amber-500 transition"
+              type="submit"
+              class="w-full bg-amber-400 text-white py-3 rounded-lg shadow-md hover:bg-amber-500 transition duration-300"
             >
-              Konfirmasi Pembayaran
+              Bayar Sekarang
             </button>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </main>
-    <!-- Success Modal -->
-    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-      <div class="bg-white rounded-lg p-6 w-96 shadow-xl">
+
+    <!-- Success Modal (untuk pesan sukses umum dan pembuatan pesanan) -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-sm">
         <div class="text-center">
           <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-            <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
+            <i class="bx bx-check text-green-600 text-2xl"></i>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 mt-3">Transaksi Berhasil!</h3>
+          <h3 id="successModalTitle" class="text-lg font-medium text-gray-900 mt-3">Berhasil!</h3>
           <div class="mt-2">
-            <p class="text-sm text-gray-500">
-              Pembayaran Anda telah berhasil diproses. Detail transaksi telah dikirim ke email Anda.
-            </p>
+            <p id="successModalMessage" class="text-sm text-gray-500"></p>
           </div>
           <div class="mt-4">
+            {{-- Tombol aksi untuk melihat status pesanan (hanya muncul jika ada orderId) --}}
             <button
+              id="successModalActionButton"
+              type="button"
+              class="w-full bg-amber-400 text-white py-2 rounded hover:bg-amber-500 transition hidden"
+            >
+              Lihat Status Pesanan
+            </button>
+            {{-- Tombol tutup generik (muncul jika tidak ada orderId) --}}
+            <button
+              id="successModalCloseButton"
               type="button"
               onclick="closeSuccessModal()"
-              class="w-full bg-amber-400 text-white py-2 rounded hover:bg-amber-500 transition"
+              class="w-full bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400 transition mt-2 hidden"
             >
-              Kembali ke Beranda
+              Tutup
             </button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Error Modal (untuk menampilkan error validasi atau error lainnya) -->
+    <div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-sm">
+        <div class="text-center">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+            <i class="bx bx-x text-red-600 text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 mt-3">Terjadi Kesalahan!</h3>
+          <div class="mt-2">
+            <p id="errorMessage" class="text-sm text-gray-500"></p>
+          </div>
+          <div class="mt-4">
+            <button
+              type="button"
+              onclick="closeErrorModal()"
+              class="w-full bg-amber-400 text-white py-2 rounded hover:bg-amber-500 transition"
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Address Edit Modal -->
+    <div id="addressModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Ubah Alamat Pengiriman</h3>
+          <button type="button" onclick="closeAddressModal()" class="text-gray-500 hover:text-gray-700">
+            <i class="bx bx-x text-2xl"></i>
+          </button>
+        </div>
+        <form id="addressUpdateForm">
+          @csrf
+          {{-- Gunakan PATCH atau PUT jika Anda memiliki rute untuk update alamat di UserController --}}
+          {{-- <input type="hidden" name="_method" value="PATCH"> --}}
+          <div class="mb-4">
+            <label for="new_shipping_address" class="block text-gray-700 text-sm font-bold mb-2">Alamat Lengkap:</label>
+            <textarea id="new_shipping_address" name="address" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ $user->address ?? '' }}</textarea>
+          </div>
+          <div class="flex justify-end">
+            <button type="button" onclick="saveAddress()" class="bg-amber-400 hover:bg-amber-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+              Simpan Alamat
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
   </body>
   <!-- Footer -->
   <x-footer></x-footer>
-  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-    <script>
-      function processPayment() {
-        // Here you would normally process the payment
-        // For demo purposes, we'll just show the success modal
-        document.getElementById('successModal').classList.remove('hidden');
-        
-        // Prevent form submission (since we're just demoing the modal)
-        return false;
-      }
+  <script>
+    // Fungsi untuk menampilkan modal sukses
+    function showSuccessModal(message, orderId = null) {
+        const successModal = document.getElementById('successModal');
+        const successModalTitle = document.getElementById('successModalTitle');
+        const successModalMessage = document.getElementById('successModalMessage');
+        const successModalActionButton = document.getElementById('successModalActionButton');
+        const successModalCloseButton = document.getElementById('successModalCloseButton');
 
-      function closeSuccessModal() {
+        successModalTitle.innerText = 'Berhasil!'; // Judul umum untuk sukses
+        successModalMessage.innerText = message; // Pesan yang dinamis
+
+        if (orderId) {
+            // Jika ada orderId, ini adalah sukses pesanan
+            successModal.dataset.orderId = orderId;
+            successModalActionButton.classList.remove('hidden'); // Tampilkan tombol aksi
+            successModalActionButton.innerHTML = '<i class="bx bx-check mr-2"></i>Lihat Status Pesanan';
+            // Pastikan URL redirect menggunakan orderId yang benar
+            successModalActionButton.onclick = () => {
+                 window.location.href = `{{ route('status.order', ['order' => 'PLACEHOLDER']) }}`.replace('PLACEHOLDER', orderId);
+            };
+            successModalCloseButton.classList.add('hidden'); // Sembunyikan tombol tutup generik
+        } else {
+            // Jika tidak ada orderId, ini adalah sukses umum (misal update alamat)
+            successModal.removeAttribute('data-order-id'); // Hapus data-order-id jika ada
+            successModalActionButton.classList.add('hidden'); // Sembunyikan tombol aksi
+            successModalCloseButton.classList.remove('hidden'); // Tampilkan tombol tutup generik
+            successModalCloseButton.onclick = () => closeSuccessModal(); // Pastikan tombol ini menutup modal
+        }
+
+        successModal.classList.remove('hidden');
+    }
+
+    // Fungsi untuk menutup modal sukses (hanya menyembunyikan)
+    function closeSuccessModal() {
         document.getElementById('successModal').classList.add('hidden');
-        // Redirect to home page or wherever you want
-        window.location.href = "index.html";
-      }
+    }
 
-      // Prevent form submission when pressing enter
-      document.getElementById('paymentForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        processPayment();
-      });
-    </script>
+    // Fungsi untuk menampilkan modal error
+    function showErrorModal(message) {
+        document.getElementById('errorMessage').innerText = message;
+        document.getElementById('errorModal').classList.remove('hidden');
+    }
+
+    // Fungsi untuk menutup modal error
+    function closeErrorModal() {
+        document.getElementById('errorModal').classList.add('hidden');
+    }
+
+    // Fungsi untuk membuka modal alamat
+    function openAddressModal() {
+        document.getElementById('addressModal').classList.remove('hidden');
+    }
+
+    // Fungsi untuk menutup modal alamat
+    function closeAddressModal() {
+        console.log('closeAddressModal() called'); // Debug log
+        document.getElementById('addressModal').classList.add('hidden');
+        console.log('addressModal hidden class added'); // Debug log
+    }
+
+    // Fungsi untuk menyimpan alamat (menggunakan AJAX)
+    async function saveAddress() {
+        console.log('saveAddress() called'); // Debug log
+        const newAddress = document.getElementById('new_shipping_address').value;
+        console.log('New address:', newAddress); // Debug log
+
+        try {
+            console.log('Sending fetch request...'); // Debug log
+            const response = await fetch('{{ route('profile.update.ajax') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ field: 'address', value: newAddress })
+            });
+            console.log('Fetch request completed. Response status:', response.status); // Debug log
+
+            const data = await response.json();
+            console.log('Response data:', data); // Debug log
+
+            if (response.ok) {
+                console.log('Response OK. Updating display and closing modal...'); // Debug log
+                document.getElementById('shipping-address-display').innerText = newAddress;
+                closeAddressModal(); // Ini akan menutup modal alamat
+                showSuccessModal('Alamat berhasil diperbarui!'); // Panggil showSuccessModal dengan pesan saja
+                console.log('Address update successful flow completed.'); // Debug log
+            } else {
+                console.log('Response not OK. Showing error modal.'); // Debug log
+                showErrorModal(data.message || 'Gagal memperbarui alamat.');
+            }
+        } catch (error) {
+            console.error('Error in saveAddress:', error); // Debug log
+            showErrorModal('Terjadi kesalahan jaringan atau server.');
+        }
+    }
+
+
+    // Tangani submit form pembayaran
+    document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+        e.preventDefault(); // Mencegah submit form default
+
+        const formData = new FormData(this);
+        const requestBody = {};
+        formData.forEach((value, key) => {
+            requestBody[key] = value;
+        });
+
+        try {
+            const response = await fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Jika berhasil, tampilkan modal sukses dan redirect ke halaman status
+                showSuccessModal('Pesanan Anda berhasil dibuat!', result.order_id); // Pass pesan dan orderId
+            } else {
+                // Jika ada error (misal validasi), tampilkan modal error
+                showErrorModal(result.message || 'Terjadi kesalahan saat memproses pembayaran.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showErrorModal('Terjadi kesalahan jaringan atau server.');
+        }
+    });
+
+    // Tampilkan pesan sukses/error dari session Laravel saat halaman dimuat
+    @if(session('success'))
+        showSuccessModal('{{ session('success') }}'); // Ini akan menampilkan pesan sukses umum
+    @endif
+
+    @if(session('error'))
+        showErrorModal('{{ session('error') }}');
+    @endif
+
+  </script>
 </html>

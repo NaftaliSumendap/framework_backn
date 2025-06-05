@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Keranjang Belanja</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
@@ -21,25 +21,41 @@
       @foreach ($carts as $cart)
       <div class="bg-white p-4 rounded-lg shadow-md flex items-start justify-between">
         <div class="flex items-start">
-          <input type="checkbox" class="mt-10 mr-4 w-5 h-5 border-gray-300" />
-          <img src="img/{{$cart->product->image_path}}" alt="Gitar" class="w-24 h-24 object-cover rounded mr-4" />
+          {{-- Checkbox removed as per original request --}}
+          <img src="img/{{$cart->product->image_path}}" alt="{{$cart->product->name}}" class="w-24 h-24 object-cover rounded mr-4" />
           <div>
             <h3 class="text-lg font-semibold">{{$cart->product->name}}</h3>
-            <p class="text-sm text-gray-500">Stok : {{$cart->product->stock}}</p>
-            <div class="flex items-center mt-3 space-x-2">
-              <button class="text-gray-500 hover:text-red-500"><i class="far fa-trash-alt"></i></button>
-              <button class="text-gray-500 hover:text-amber-400"><i class="far fa-heart"></i></button>
-            </div>
+            <p class="text-gray-600">Harga: Rp{{number_format($cart->product->discount_price, 0, ',', '.')}}</p>
+            
+            {{-- Form untuk Update Quantity --}}
+            <form action="{{ route('cart.update', $cart->id) }}" method="POST" class="flex items-center mt-2">
+              @csrf
+              @method('PUT') {{-- Gunakan metode PUT untuk update --}}
+              <label for="quantity-{{$cart->id}}" class="sr-only">Jumlah</label>
+              <input
+                type="number"
+                id="quantity-{{$cart->id}}"
+                name="quantity"
+                value="{{ $cart->quantity }}"
+                min="1"
+                class="w-20 px-2 py-1 border rounded-md text-center"
+                onchange="this.form.submit()" {{-- Submit form saat jumlah berubah --}}
+              />
+              {{-- Tombol submit tersembunyi, submit via onchange --}}
+              <button type="submit" class="hidden">Update</button>
+            </form>
+
+            {{-- Form untuk Hapus Produk --}}
+            <form action="{{ route('cart.destroy', $cart->id) }}" method="POST" class="mt-2">
+                @csrf
+                @method('DELETE') {{-- Gunakan metode DELETE untuk hapus --}}
+                <button type="submit" class="text-red-500 hover:text-red-700 text-sm">
+                    Hapus
+                </button>
+            </form>
           </div>
         </div>
-        <div class="text-right">
-          <div class="flex items-center justify-end mb-2">
-            <button class="px-2 border rounded"><i class="fas fa-minus text-gray-400"></i></button>
-            <input type="text" value="1" readonly class="w-10 text-center bg-transparent border-none" />
-            <button class="px-2 border rounded"><i class="fas fa-plus text-gray-400"></i></button>
-          </div>
-          <p class="font-bold text-lg">Rp{{number_format($cart->product->discount_price, 0, ',', '.')}}</p>
-        </div>
+        <p class="font-bold text-lg">Rp{{number_format($cart->product->discount_price * $cart->quantity, 0, ',', '.')}}</p>
       </div>
       @endforeach
     </div>
@@ -50,22 +66,36 @@
       <div class="space-y-4">
         <div class="flex justify-between">
           <span class="text-gray-600">Total Harga</span>
-          <span class="font-bold">Rp3.000.000</span>
+          <span class="font-bold">Rp{{number_format($carts->sum(function ($cart) { return $cart->product->discount_price * $cart->quantity; }), 0, ',', '.')}}</span>
         </div>
         <hr class="my-2" />
         <div class="flex justify-between">
           <span class="text-gray-600">Total Pembayaran</span>
-          <span class="font-bold text-amber-400">Rp3.000.000</span>
+          <span class="font-bold text-amber-400">Rp{{number_format($carts->sum(function ($cart) { return $cart->product->discount_price * $cart->quantity; }), 0, ',', '.')}}</span>
         </div>
         <a href="/transaksi">
-          <button class="w-full bg-amber-400 text-white py-3 rounded-lg shadow-md hover:bg-amber-500 transition duration-300 mt-4">
-            Belanja Sekarang
+          <button class="w-full bg-amber-400 text-white py-2 px-4 rounded-lg hover:bg-amber-500 transition">
+            Lanjutkan ke Pembayaran
           </button>
         </a>
       </div>
     </div>
   </main>
-  </body>
-  <!-- Bagian Footer -->
-   <x-footer></x-footer>
+
+</body>
+<!-- Bagian Footer -->
+<x-footer></x-footer>
+<script>
+    // Anda bisa menambahkan SweetAlert2 atau modal kustom di sini
+    // untuk notifikasi sukses/gagal jika diperlukan,
+    // mirip dengan yang Anda gunakan di sign-up.blade.php.
+    // Misalnya, untuk menampilkan pesan 'success' dari session:
+    @if(session('success'))
+        alert("{{ session('success') }}"); // Ganti dengan modal kustom Anda
+    @endif
+
+    @if(session('error'))
+        alert("{{ session('error') }}"); // Ganti dengan modal kustom Anda
+    @endif
+</script>
 </html>
