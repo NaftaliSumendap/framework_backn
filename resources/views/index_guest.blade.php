@@ -85,7 +85,7 @@
           <p class="mt-2 text-sm font-medium line-clamp-2">{{$product['name']}}</p>
           <p class="text-red-600 font-bold text-sm mt-1">Rp{{number_format($product['discount_price'], 0, ',', '.')}}</p>
           <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
-              <span class="text-yellow-500">★ 4.6 | 20 Terjual</span>
+              <span class="text-yellow-500">★ {{ number_format($product->reviews->avg('rating'), 1) ?? '0.0' }} | {{$product['sold']}} Terjual</span>
           </div>
           </a>
           <!-- Tombol Tambahkan tetap di luar <a> -->

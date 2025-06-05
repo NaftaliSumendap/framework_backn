@@ -20,15 +20,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/update-ajax', [UserController::class, 'updateField'])->name('profile.update.ajax');
 
     Route::get('/', function () {
-        return view('index', ['categories' => Category::all(), 'products' => Product::all()]);
+        return view('index', ['categories' => Category::all(), 'products' => Product::all(), 'reviews' => Review::all()]);
     })->name('index');
 
     Route::get('/about-us', function () {
         return view('about-us');
-    });
-
-    Route::get('/detail/{product:slug}', function (Product $product) {
-        return view('detail', ['product' => $product, 'products' => Product::all()->except($product->id), 'categories' => Category::all(), 'reviews' => Review::where('product_id', $product->id)->get()]); 
     });
 
     Route::get('/chat', function () {
@@ -39,6 +35,10 @@ Route::middleware('auth')->group(function () {
         $user_id = Auth::id();
         return view('cart', ['cart' => $cart, 'carts' => Cart::with('product') -> where('user_id', $user_id)->get(), 'products' => Product::all(), 'categories' => Category::all()]);
     })->name('cart.index'); // Pastikan ada name untuk rute cart
+
+    Route::get('/detail/{product:slug}', function (Product $product) {
+        return view('detail', ['product' => $product, 'products' => Product::all()->except($product->id), 'categories' => Category::all(), 'reviews' => Review::where('product_id', $product->id)->get()]); 
+    });
 
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::put('/cart/update/{cart}', [CartController::class, 'update'])->name('cart.update');

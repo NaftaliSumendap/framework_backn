@@ -10,4 +10,6 @@ abstract class Controller
         $reviews = Review::with(['user', 'product'])->get(); // eager loading relasi
         return view('reviews.index', compact('reviews'));
     }
+
+    
 }
