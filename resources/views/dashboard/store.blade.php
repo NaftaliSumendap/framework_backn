@@ -188,9 +188,6 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <form method="GET" enctype="multipart/form-data" action="">
-      @csrf
-      @method('DELETE')
     <div
       id="deleteProductModal"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
@@ -222,16 +219,19 @@
           >
             Batal
           </button>
+          <form id="delete-form" method="POST" enctype="multipart/form-data" action="">
+            @csrf
+            @method('DELETE')
           <button
             type="submit"
             class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
           >
             Hapus Produk
           </button>
+          </form>
         </div>
       </div>
     </div>
-    </form>
 
     <div class="flex min-h-screen">
       <!-- Sidebar -->
@@ -386,7 +386,7 @@
                     <i class="bx bxs-edit"></i>
                   </button>
 
-                  <button
+                  <button 
                     class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                     data-id="{{ $product->id }}"
                     data-name="{{ $product->name }}"
@@ -476,15 +476,20 @@
       });
 
       // Delete Product Modal
-      const deleteButtons = document.querySelectorAll(".delete-btn");
-      const closeDeleteBtn = document.getElementById("closeDeleteModal");
-      const cancelDeleteBtn = document.getElementById("cancelDelete");
+      // ...existing code...
+const deleteButtons = document.querySelectorAll(".delete-btn");
+const closeDeleteBtn = document.getElementById("closeDeleteModal");
+const cancelDeleteBtn = document.getElementById("cancelDelete");
+const deleteForm = document.getElementById("delete-form");
 
       deleteButtons.forEach((button) => {
         button.addEventListener("click", () => {
+          const id = button.getAttribute("data-id");
           const productName = button.getAttribute("data-name");
           const deleteText = deleteModal.querySelector("span");
           deleteText.textContent = `"${productName}"`;
+          // Set action form delete ke produk yang dipilih
+          deleteForm.action = `/products/${id}`;
           deleteModal.classList.remove("hidden");
         });
       });
@@ -496,7 +501,7 @@
       cancelDeleteBtn.addEventListener("click", () => {
         deleteModal.classList.add("hidden");
       });
-
+// ...existing code...
       // Close modals when clicking outside
       window.addEventListener("click", (e) => {
         if (e.target === addModal) {

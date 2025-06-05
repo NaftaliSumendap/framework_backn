@@ -99,7 +99,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
-        Route::delete('/dashboard/store/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+        Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
 
     });

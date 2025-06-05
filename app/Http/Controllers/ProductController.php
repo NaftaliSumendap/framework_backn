@@ -36,9 +36,8 @@ public function update(Request $request, $id)
 
     public function destroy($id)
     {
-    $product = Product::findOrFail($id);
-    $product->delete();
-
-    return redirect()->back()->with('success', 'Product deleted successfully.');
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return redirect()->back()->with('success', 'Produk berhasil dihapus!');
     }
 }
