@@ -96,10 +96,7 @@
     </div>
 
     <!-- Edit Product Modal -->
-    <div
-      id="editProductModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
-    >
+    <div id="editProductModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
       <div class="bg-white rounded-lg p-6 w-full max-w-md">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-xl font-bold">Edit Produk</h3>
@@ -107,14 +104,16 @@
             <i class="bx bx-x text-2xl"></i>
           </button>
         </div>
-        <form>
+        <form id="edit-form" method="POST" enctype="multipart/form-data" action="">
+          @csrf
+          @method('PUT')
           <div class="mb-4">
             <label class="block text-gray-700 mb-2">Gambar Produk</label>
             <div
               class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center"
             >
               <img
-                src="../img/piano.jpg"
+                src="../img/"
                 alt="Current Product"
                 class="mx-auto mb-2 h-20 object-cover"
               />
@@ -123,6 +122,7 @@
               </p>
               <input type="file" class="hidden" id="editProductImage" />
               <button
+                name="image"
                 type="button"
                 onclick="document.getElementById('editProductImage').click()"
                 class="mt-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-sm"
@@ -134,6 +134,7 @@
           <div class="mb-4">
             <label class="block text-gray-700 mb-2">Nama Produk</label>
             <input
+              name="name"
               type="text"
               value="Keyboard Yamaha"
               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
@@ -142,14 +143,15 @@
           <div class="mb-4">
             <label class="block text-gray-700 mb-2">Harga</label>
             <input
+              name="discount_price"
               type="number"
-              value="5000000"
               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
             />
           </div>
           <div class="mb-4">
             <label class="block text-gray-700 mb-2">Stok</label>
             <input
+              name ="stock"
               type="number"
               value="10"
               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
@@ -158,13 +160,12 @@
           <div class="mb-6">
             <label class="block text-gray-700 mb-2">Kategori</label>
             <select
+            name="category_id"
               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
             >
-              <option value="">Pilih Kategori</option>
-              <option value="gitar" selected>Gitar</option>
-              <option value="keyboard">Keyboard</option>
-              <option value="drum">Drum</option>
-              <option value="tradisional">Tradisional</option>
+              @foreach ($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+              @endforeach
             </select>
           </div>
           <div class="flex justify-end space-x-3">
@@ -187,6 +188,9 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
+    <form method="GET" enctype="multipart/form-data" action="">
+      @csrf
+      @method('DELETE')
     <div
       id="deleteProductModal"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
@@ -204,7 +208,7 @@
         <div class="mb-6">
           <p class="text-gray-700">
             Apakah Anda yakin ingin menghapus produk
-            <span class="font-semibold">"Keyboard Yamaha"</span>?
+            <span class="font-semibold"></span>?
           </p>
           <p class="text-red-500 mt-2 text-sm">
             Aksi ini tidak dapat dibatalkan!
@@ -219,7 +223,7 @@
             Batal
           </button>
           <button
-            type="button"
+            type="submit"
             class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
           >
             Hapus Produk
@@ -227,6 +231,7 @@
         </div>
       </div>
     </div>
+    </form>
 
     <div class="flex min-h-screen">
       <!-- Sidebar -->
@@ -327,7 +332,18 @@
               <i class="bx bx-plus mr-2"></i> Tambah Produk
             </button>
           </div>
-
+          @if (session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative my-2" role="alert">
+                <strong class="font-bold">Berhasil!</strong>
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+          @endif
+            @if (session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative my-2" role="alert">
+                <strong class="font-bold">Gagal!</strong>
+                <span class="block sm:inline">{{ session('error') }}</span>
+            </div>
+          @endif
           <!-- Product Table -->
           <div class="bg-white p-4 rounded shadow">
             <div class="flex justify-between items-center mb-4">
@@ -357,18 +373,26 @@
                   <td>{{ $product->category->name }}</td>
                   <td>{{ Str::limit($product['description'], 50) }}</td>
                   <td class="space-x-2">
-                    <button
-                      class="edit-btn bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-                      data-product="Keyboard Yamaha"
-                    >
-                      <i class="bx bxs-edit"></i>
-                    </button>
-                    <button
-                      class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                      data-product="Keyboard Yamaha"
-                    >
-                      <i class="bx bxs-trash"></i>
-                    </button>
+                  <button
+                    class="edit-btn bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                    data-id="{{ $product->id }}"
+                    data-name="{{ $product->name }}"
+                    data-price="{{ $product->discount_price }}"
+                    data-stock="{{ $product->stock }}"
+                    data-category="{{ $product->category->name }}"
+                    data-description="{{ $product->description }}"
+                    data-image="{{ $product->image_path }}"
+                  >
+                    <i class="bx bxs-edit"></i>
+                  </button>
+
+                  <button
+                    class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                    data-id="{{ $product->id }}"
+                    data-name="{{ $product->name }}"
+                  >
+                    <i class="bx bxs-trash"></i>
+                  </button>
                   </td>
                 </tr>
                 @endforeach
@@ -380,6 +404,10 @@
     </div>
 
     <script>
+      setTimeout(() => {
+        document.querySelectorAll('[role="alert"]').forEach(el => el.remove());
+      }, 3000); // 3 detik
+
       document
         .getElementById("toggleSidebar")
         ?.addEventListener("click", () => {
@@ -415,12 +443,29 @@
 
       editButtons.forEach((button) => {
         button.addEventListener("click", () => {
-          const productName = button.getAttribute("data-product");
-          // In a real app, you would fetch the product data here
-          // For demo, we're just showing the modal with the product name
+          const id = button.getAttribute("data-id");
+          document.getElementById("edit-form").action = `/products/${id}`;
+          const name = button.getAttribute("data-name");
+          const price = button.getAttribute("data-price");
+          const stock = button.getAttribute("data-stock");
+          const category = button.getAttribute("data-category");
+          const image = button.getAttribute("data-image");
+
+
+          // Isi input field modal edit
+          editModal.querySelector('input[type="text"]').value = name;
+          editModal.querySelector('input[type="number"]').value = price;
+          editModal.querySelectorAll('input[type="number"]')[1].value = stock;
+          editModal.querySelector('select[name="category_id"]').value = category;
+          // editModal.querySelector("select").value = category.toLowerCase(); // Pastikan opsi select pakai value lowercase sesuai ini
+
+          const imgPreview = editModal.querySelector("img");
+          imgPreview.src = `/img/${image}`;
+
           editModal.classList.remove("hidden");
         });
       });
+
 
       closeEditBtn.addEventListener("click", () => {
         editModal.classList.add("hidden");
@@ -437,8 +482,7 @@
 
       deleteButtons.forEach((button) => {
         button.addEventListener("click", () => {
-          const productName = button.getAttribute("data-product");
-          // Update the product name in the delete confirmation
+          const productName = button.getAttribute("data-name");
           const deleteText = deleteModal.querySelector("span");
           deleteText.textContent = `"${productName}"`;
           deleteModal.classList.remove("hidden");

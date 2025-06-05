@@ -6,12 +6,12 @@ use App\Models\Order;
 use App\Models\Review;
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController; // Tambahkan ini
 
 Route::middleware('auth')->group(function () {
@@ -97,6 +97,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard/users', function () {
             return view('dashboard/users', ['users' => User::all()]);
         });
+
+        Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/dashboard/store/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+
     });
 
 });
