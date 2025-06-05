@@ -13,11 +13,12 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('order_number')->unique();
             $table->decimal('total_amount', 10, 2);
-            $table->enum('status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled'])->default('pending');
+            $table->enum('status', ['Menunggu', 'Diterima', 'Packaging', 'Pengantaran', 'Dibatalkan'])->default('Menunggu');
             $table->text('shipping_address');
             $table->string('shipping_method');
             $table->string('payment_method');
             $table->boolean('payment_status')->default(false);
+            $table->string('color');
             $table->timestamps();
         });
     }

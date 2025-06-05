@@ -120,10 +120,49 @@
         </ul>
       </div>
 
+<<<<<<< HEAD
       <!-- Tombol Kembali ke Beranda -->
       <button class="w-full mt-6 bg-amber-400 text-white py-2 px-6 rounded-lg hover:bg-amber-500 transition">
         <a href="{{ route('index') }}">
           <i class="bx bx-home mr-2"></i>Kembali ke Beranda
+=======
+      <!-- Order Summary -->
+      <div class="mt-6 space-y-3">
+        <div class="flex justify-between">
+          <span class="text-gray-600">Subtotal</span>
+          <span>Rp3.000.000</span>
+        </div>
+        <div class="flex justify-between font-bold text-lg mt-4">
+          <span>Total Pembayaran</span>
+          <span class="text-amber-400">Rp3.000.000</span>
+        </div>
+      </div>
+
+      <!-- Payment Info -->
+      <div class="mt-6 border-t pt-6">
+        <h3 class="font-semibold mb-4">Informasi Pembayaran</h3>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Metode Pembayaran</span>
+          <span>Transfer Bank BCA</span>
+        </div>
+        <div class="flex justify-between mt-2">
+          <span class="text-gray-600">Status Pembayaran</span>
+          <span class="text-green-500 font-semibold">Lunas</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 mt-6">
+      <button class="bg-white border border-gray-300 text-gray-700 py-2 px-6 rounded-lg hover:bg-gray-50 transition">
+        <a href="/chat">
+          <i class="fas fa-question-circle mr-2"></i>Butuh Bantuan?
+        </a>
+      </button>
+      <button class="bg-amber-400 text-white py-2 px-6 rounded-lg hover:bg-amber-500 transition">
+        <a href="/">
+          <i class="fas fa-home mr-2"></i>Kembali ke Beranda
+>>>>>>> 60722fea16dc7dec8838775e05b780c37f792fc1
         </a>
       </button>
     </div>
