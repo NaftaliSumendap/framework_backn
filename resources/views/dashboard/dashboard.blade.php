@@ -56,7 +56,7 @@
             </li>
           </ul>
           <div class="mt-10 border-t pt-4">
-            <a href="../sign-in" class="flex items-center text-red-600 p-3">
+            <a href="../logout" class="flex items-center text-red-600 p-3">
               <i class="bx bxs-log-out-circle mr-2"></i> Logout
             </a>
           </div>
