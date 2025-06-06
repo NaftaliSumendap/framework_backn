@@ -26,5 +26,21 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    protected $fillable = [
+    'name',
+    'slug',
+    'price',
+    'stock',
+    'category_id',
+    'description',
+    'brand',
+    'specifications',
+    'discount_price',
+    'is_featured',
+    'image_path',
+    ];
+
+
+
 }
 ?>

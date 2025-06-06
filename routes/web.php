@@ -86,9 +86,6 @@ Route::middleware('auth')->group(function () {
 
     // Group khusus untuk dashboard / admin panel (hanya admin yang bisa mengakses)
     Route::middleware('role:admin')->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'], function () {
-            return view('dashboard/dashboard');
-        });
 
         Route::get('/dashboard/orders', function () {
             return view('dashboard/orders');
@@ -105,6 +102,12 @@ Route::middleware('auth')->group(function () {
         Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
+        Route::get('/dashboard/store/create', [ProductController::class, 'create'])->name('products.create');
+
+        // Simpan produk baru
+
+        Route::post('/dashboard/store', [ProductController::class, 'store'])->name('dashboard.store');
+        Route::get('/dashboard/', [DashboardController::class, 'index'])->name('dashboard.index');
 
     });
 

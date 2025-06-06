@@ -12,10 +12,7 @@
   </head>
   <body class="bg-gray-100 font-sans text-gray-800">
     <!-- Add Product Modal -->
-    <div
-      id="addProductModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
-    >
+    <div id="addProductModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
       <div class="bg-white rounded-lg p-6 w-full max-w-md">
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-xl font-bold">Tambah Produk Baru</h3>
@@ -23,77 +20,122 @@
             <i class="bx bx-x text-2xl"></i>
           </button>
         </div>
-        <form>
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Gambar Produk</label>
-            <div
-              class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center"
-            >
-              <i class="bx bx-cloud-upload text-4xl text-gray-400 mb-2"></i>
-              <p class="text-gray-500">
-                Drag & drop gambar atau klik untuk memilih
-              </p>
-              <input type="file" class="hidden" id="productImage" />
-              <button
-                type="button"
-                onclick="document.getElementById('productImage').click()"
-                class="mt-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-sm"
-              >
-                Pilih Gambar
+      <div>
+        <div class="max-w-xl w-full mx-auto bg-white p-6 rounded shadow-lg max-h-[90vh] overflow-y-auto">
+          <form 
+              action="/dashboard/store" 
+              method="POST" 
+              enctype="multipart/form-data"
+              class="space-y-4"
+          >
+            @csrf
+            <div>
+              <label class="block font-semibold mb-1">Gambar Produk</label>
+              <input type="file" name="image" @change="previewImage" accept="image/*" 
+                    class="w-full border p-2 rounded @error('image') border-red-500 @enderror" required>
+              <template x-if="imageUrl">
+                <img :src="imageUrl" alt="Preview Gambar" class="mt-2 rounded w-32 h-32 object-cover">
+              </template>
+              @error('image')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1">Nama Produk</label>
+              <input type="text" name="name" class="w-full border p-2 rounded @error('name') border-red-500 @enderror" 
+                    value="{{ old('name') }}" required>
+              @error('name')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1">Harga</label>
+              <input type="number" name="price" class="w-full border p-2 rounded @error('price') border-red-500 @enderror"
+                    value="{{ old('price') }}" required>
+              @error('price')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1">Harga Diskon (Opsional)</label>
+              <input type="number" name="discount_price" class="w-full border p-2 rounded @error('discount_price') border-red-500 @enderror"
+                    value="{{ old('discount_price') }}">
+              @error('discount_price')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1">Stok</label>
+              <input type="number" name="stock" class="w-full border p-2 rounded @error('stock') border-red-500 @enderror"
+                    value="{{ old('stock') }}" required>
+              @error('stock')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1">Merek (Opsional)</label>
+              <input type="text" name="brand" class="w-full border p-2 rounded @error('brand') border-red-500 @enderror"
+                    value="{{ old('brand') }}">
+              @error('brand')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1">Spesifikasi (Opsional)</label>
+              <textarea name="specifications" class="w-full border p-2 rounded @error('specifications') border-red-500 @enderror"
+                        rows="3">{{ old('specifications') }}</textarea>
+              @error('specifications')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1">Deskripsi</label>
+              <textarea name="description" class="w-full border p-2 rounded @error('description') border-red-500 @enderror"
+                        rows="3" required>{{ old('description') }}</textarea>
+              @error('description')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div>
+              <label class="block font-semibold mb-1">Kategori</label>
+              <select name="category_id" class="w-full border p-2 rounded @error('category_id') border-red-500 @enderror" required>
+                <option value="">Pilih Kategori</option>
+                @foreach($categories as $category)
+                  <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                    {{ $category->name }}
+                  </option>
+                @endforeach
+              </select>
+              @error('category_id')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div class="flex items-center gap-2">
+              <input type="checkbox" name="is_featured" value="1" class="accent-amber-400"
+                    {{ old('is_featured') ? 'checked' : '' }}>
+              <label class="font-medium">Tandai sebagai produk unggulan</label>
+            </div>
+
+            <div class="flex justify-end gap-4">
+              <button type="submit" class="px-4 py-2 bg-amber-400 text-white rounded hover:bg-amber-500" :disabled="isLoading">
+                <span x-show="!isLoading">Tambahkan</span>
               </button>
             </div>
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Nama Produk</label>
-            <input
-              type="text"
-              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
-            />
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Harga</label>
-            <input
-              type="number"
-              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
-            />
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Stok</label>
-            <input
-              type="number"
-              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
-            />
-          </div>
-          <div class="mb-6">
-            <label class="block text-gray-700 mb-2">Kategori</label>
-            <select
-              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
-            >
-              <option value="">Pilih Kategori</option>
-              <option value="jajanan">Gitar</option>
-              <option value="minuman">Keyboard</option>
-              <option value="makanan">Drum</option>
-              <option value="snack">Tradisional</option>
-            </select>
-          </div>
-          <div class="flex justify-end space-x-3">
-            <button
-              type="button"
-              id="cancelAdd"
-              class="px-4 py-2 border rounded-lg hover:bg-gray-100"
-            >
-              Batal
-            </button>
-            <button
-              type="submit"
-              class="px-4 py-2 bg-amber-400 text-white rounded-lg hover:bg-amber-500"
-            >
-              Tambahkan
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
+    </div>
+
 
     <!-- Edit Product Modal -->
     <div id="editProductModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
@@ -329,138 +371,151 @@
       </div>
     </div>
 
-    <script>
-      setTimeout(() => {
-        document.querySelectorAll('[role="alert"]').forEach(el => el.remove());
-      }, 3000); // 3 detik
+  <script>
+  // Auto-remove alert
+  setTimeout(() => {
+    document.querySelectorAll('[role="alert"]').forEach(el => el.remove());
+  }, 3000);
 
-      document
-        .getElementById("toggleSidebar")
-        ?.addEventListener("click", () => {
-          document.getElementById("sidebar")?.classList.toggle("hidden");
+  // Helper untuk toggle modal
+  function setupModal({ openBtnId, modalId, closeBtnId, cancelBtnId }) {
+    const openBtn = document.getElementById(openBtnId);
+    const modal = document.getElementById(modalId);
+    const closeBtn = document.getElementById(closeBtnId);
+    const cancelBtn = document.getElementById(cancelBtnId);
+
+    if (openBtn && modal) {
+      openBtn.addEventListener("click", () => {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      });
+    }
+
+    [closeBtn, cancelBtn].forEach(btn => {
+      if (btn && modal) {
+        btn.addEventListener("click", () => {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex");
         });
+      }
+    });
 
-      // Modal functionality
-      const addModal = document.getElementById("addProductModal");
-      const editModal = document.getElementById("editProductModal");
-      const deleteModal = document.getElementById("deleteProductModal");
-
-      // Add Product Modal
-      const openAddBtn = document.getElementById("openAddProduct");
-      const closeAddBtn = document.getElementById("closeAddModal");
-      const cancelAddBtn = document.getElementById("cancelAdd");
-
-      openAddBtn.addEventListener("click", () => {
-        addModal.classList.remove("hidden");
-      });
-
-      closeAddBtn.addEventListener("click", () => {
-        addModal.classList.add("hidden");
-      });
-
-      cancelAddBtn.addEventListener("click", () => {
-        addModal.classList.add("hidden");
-      });
-
-      // Edit Product Modal
-      const editButtons = document.querySelectorAll(".edit-btn");
-      const closeEditBtn = document.getElementById("closeEditModal");
-      const cancelEditBtn = document.getElementById("cancelEdit");
-
-      editButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          const id = button.getAttribute("data-id");
-          document.getElementById("edit-form").action = `/products/${id}`;
-          const name = button.getAttribute("data-name");
-          const price = button.getAttribute("data-price");
-          const stock = button.getAttribute("data-stock");
-          const category = button.getAttribute("data-category");
-          const image = button.getAttribute("data-image");
-
-
-          // Isi input field modal edit
-          editModal.querySelector('input[type="text"]').value = name;
-          editModal.querySelector('input[type="number"]').value = price;
-          editModal.querySelectorAll('input[type="number"]')[1].value = stock;
-          editModal.querySelector('select[name="category_id"]').value = category;
-          // editModal.querySelector("select").value = category.toLowerCase(); // Pastikan opsi select pakai value lowercase sesuai ini
-
-          const imgPreview = editModal.querySelector("img");
-          imgPreview.src = `/img/${image}`;
-
-          editModal.classList.remove("hidden");
-        });
-      });
-
-
-      closeEditBtn.addEventListener("click", () => {
-        editModal.classList.add("hidden");
-      });
-
-      cancelEditBtn.addEventListener("click", () => {
-        editModal.classList.add("hidden");
-      });
-
-      // Delete Product Modal
-      // ...existing code...
-const deleteButtons = document.querySelectorAll(".delete-btn");
-const closeDeleteBtn = document.getElementById("closeDeleteModal");
-const cancelDeleteBtn = document.getElementById("cancelDelete");
-const deleteForm = document.getElementById("delete-form");
-
-      deleteButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          const id = button.getAttribute("data-id");
-          const productName = button.getAttribute("data-name");
-          const deleteText = deleteModal.querySelector("span");
-          deleteText.textContent = `"${productName}"`;
-          // Set action form delete ke produk yang dipilih
-          deleteForm.action = `/products/${id}`;
-          deleteModal.classList.remove("hidden");
-        });
-      });
-
-      closeDeleteBtn.addEventListener("click", () => {
-        deleteModal.classList.add("hidden");
-      });
-
-      cancelDeleteBtn.addEventListener("click", () => {
-        deleteModal.classList.add("hidden");
-      });
-// ...existing code...
-      // Close modals when clicking outside
+    // Close modal when clicking outside
+    if (modal) {
       window.addEventListener("click", (e) => {
-        if (e.target === addModal) {
-          addModal.classList.add("hidden");
-        }
-        if (e.target === editModal) {
-          editModal.classList.add("hidden");
-        }
-        if (e.target === deleteModal) {
-          deleteModal.classList.add("hidden");
+        if (e.target === modal) {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex");
         }
       });
+    }
+  }
 
-      const openLogoutModal = document.getElementById("openLogoutModal");
-      const logoutModal = document.getElementById("logoutModal");
-      const cancelLogout = document.getElementById("cancelLogout");
+  // Sidebar toggle
+  const toggleSidebar = document.getElementById("toggleSidebar");
+  toggleSidebar?.addEventListener("click", () => {
+    document.getElementById("sidebar")?.classList.toggle("hidden");
+  });
 
-      openLogoutModal.addEventListener("click", () => {
-        logoutModal.classList.remove("hidden");
-        logoutModal.classList.add("flex");
-      });
+  // Setup Modals
+  setupModal({ openBtnId: "openAddProduct", modalId: "addProductModal", closeBtnId: "closeAddModal", cancelBtnId: "cancelAdd" });
+  setupModal({ openBtnId: "openLogoutModal", modalId: "logoutModal", closeBtnId: "cancelLogout", cancelBtnId: "cancelLogout" });
 
-      cancelLogout.addEventListener("click", () => {
-        logoutModal.classList.add("hidden");
-        logoutModal.classList.remove("flex");
-      });
-
-      logoutModal.addEventListener("click", (e) => {
-        if (e.target === logoutModal) {
-          logoutModal.classList.add("hidden");
-          logoutModal.classList.remove("flex");
+  // ESC key close modals
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      ["addProductModal", "editProductModal", "deleteProductModal", "logoutModal"].forEach(id => {
+        const modal = document.getElementById(id);
+        if (modal && !modal.classList.contains("hidden")) {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex");
         }
       });
-    </script>
+    }
+  });
+
+  // Edit Product Modal
+  const editModal = document.getElementById("editProductModal");
+  const closeEdit = document.getElementById("closeEditModal");
+  const cancelEdit = document.getElementById("cancelEdit");
+
+  if (editModal) {
+    const editForm = document.getElementById("edit-form");
+    const editButtons = document.querySelectorAll(".edit-btn");
+
+    editButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.id;
+        const name = button.dataset.name;
+        const price = button.dataset.price;
+        const stock = button.dataset.stock;
+        const category = button.dataset.category;
+        const image = button.dataset.image;
+
+        if (editForm) editForm.action = `/products/${id}`;
+        editModal.querySelector('input[name="name"]').value = name;
+        editModal.querySelector('input[name="discount_price"]').value = price;
+        editModal.querySelector('input[name="stock"]').value = stock;
+        editModal.querySelector('select[name="category_id"]').value = category;
+        editModal.querySelector("img").src = `/img/${image}`;
+
+        editModal.classList.remove("hidden");
+        editModal.classList.add("flex");
+      });
+    });
+
+    [closeEdit, cancelEdit].forEach(btn => {
+      btn?.addEventListener("click", () => {
+        editModal.classList.add("hidden");
+        editModal.classList.remove("flex");
+      });
+    });
+
+    // Close on click outside
+    window.addEventListener("click", (e) => {
+      if (e.target === editModal) {
+        editModal.classList.add("hidden");
+        editModal.classList.remove("flex");
+      }
+    });
+  }
+
+  // Delete Product Modal
+  const deleteModal = document.getElementById("deleteProductModal");
+  const closeDelete = document.getElementById("closeDeleteModal");
+  const cancelDelete = document.getElementById("cancelDelete");
+  const deleteForm = document.getElementById("delete-form");
+
+  if (deleteModal) {
+    const deleteButtons = document.querySelectorAll(".delete-btn");
+
+    deleteButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.id;
+        const name = button.dataset.name;
+        deleteModal.querySelector("span").textContent = `"${name}"`;
+        if (deleteForm) deleteForm.action = `/products/${id}`;
+        deleteModal.classList.remove("hidden");
+        deleteModal.classList.add("flex");
+      });
+    });
+
+    [closeDelete, cancelDelete].forEach(btn => {
+      btn?.addEventListener("click", () => {
+        deleteModal.classList.add("hidden");
+        deleteModal.classList.remove("flex");
+      });
+    });
+
+    // Click outside to close
+    window.addEventListener("click", (e) => {
+      if (e.target === deleteModal) {
+        deleteModal.classList.add("hidden");
+        deleteModal.classList.remove("flex");
+      }
+    });
+  }
+</script>
+
   </body>
 </html>

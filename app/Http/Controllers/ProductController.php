@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -40,4 +41,51 @@ public function update(Request $request, $id)
         $product->delete();
         return redirect()->back()->with('success', 'Produk berhasil dihapus!');
     }
+
+    public function create()
+    {
+        return view('dashboard.store.create');
+    }
+
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'price' => 'required|integer|min:0',
+        'stock' => 'required|integer|min:0',
+        'category_id' => 'required|exists:categories,id',
+        'description' => 'required|string',
+        'brand' => 'nullable|string',
+        'specifications' => 'nullable|string',
+        'discount_price' => 'nullable|numeric|min:0',
+        'is_featured' => 'boolean',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
+
+    // Jika discount_price kosong/null, isi dengan price
+    if (empty($validated['discount_price'])) {
+        $validated['discount_price'] = $validated['price'];
+    }
+
+    // Generate unique slug
+    $baseSlug = Str::slug($validated['name']);
+    $slug = $baseSlug;
+    $counter = 1;
+    while (Product::where('slug', $slug)->exists()) {
+        $slug = $baseSlug . '-' . $counter++;
+    }
+    $validated['slug'] = $slug;
+
+    // Handle image upload
+    if ($request->hasFile('image')) {
+        $validated['image_path'] = $request->file('image')->store('products', 'public');
+    }
+
+    $validated['is_featured'] = $request->has('is_featured') ? $validated['is_featured'] : false;
+
+    Product::create($validated);
+
+    return redirect()->route('dashboard.store')->with('success', 'Produk berhasil ditambahkan!');
+}
+
 }
