@@ -57,6 +57,22 @@
 
         <!-- User Section - Tetap di posisi semula -->
         <div class="flex items-center space-x-4 ml-auto">
+          @if(Auth::check() && Auth::user()->role == 'admin')
+          <a href="/dashboard" class="text-gray-800 hover:text-amber-400">
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 3.75h4.5v4.5h-4.5v-4.5zm0 6.75h4.5v4.5h-4.5v-4.5zm6.75-6.75h4.5v4.5h-4.5v-4.5zm0 6.75h4.5v4.5h-4.5v-4.5zm6.75-6.75h4.5v4.5h-4.5v-4.5zm0 6.75h4.5v4.5h-4.5v-4.5zm-13.5 6.75h4.5v4.5h-4.5v-4.5zm6.75 0h4.5v4.5h-4.5v-4.5zm6.75 0h4.5v4.5h-4.5v-4.5z"
+              />
+            </svg>
+          @endif
           <!-- Tambahkan ikon status pengiriman di sini -->
           <a href="/status" class="text-gray-800 hover:text-amber-400">
             <svg
@@ -138,6 +154,23 @@
       />
     </form>
     <div class="flex flex-col gap-4">
+          @if(Auth::check() && Auth::user()->role == 'admin')
+          <a href="/dashboard" class="flex items-center gap-2 text-gray-800 hover:text-amber-400">
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 3.75h4.5v4.5h-4.5v-4.5zm0 6.75h4.5v4.5h-4.5v-4.5zm6.75-6.75h4.5v4.5h-4.5v-4.5zm0 6.75h4.5v4.5h-4.5v-4.5zm6.75-6.75h4.5v4.5h-4.5v-4.5zm0 6.75h4.5v4.5h-4.5v-4.5zm-13.5 6.75h4.5v4.5h-4.5v-4.5zm6.75 0h4.5v4.5h-4.5v-4.5zm6.75 0h4.5v4.5h-4.5v-4.5z"
+              />
+            </svg> 
+            Admin Dashboard
+          @endif
       <a
         href="/status"
         class="flex items-center gap-2 text-gray-800 hover:text-amber-400"
