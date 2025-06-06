@@ -27,7 +27,7 @@
           <div class="flex items-center space-x-4">
             <img
               src="../img/{{ Auth::user()->image }}"
-              class="w-9 h-9 rounded-full"
+              class="w-9 h-9 rounded-full object-cover border-2 border-gray-300 group-hover:border-amber-400 transition"
               alt="Profile"
             />
           </div>

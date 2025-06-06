@@ -94,8 +94,11 @@
       <h3 class="text-lg font-semibold mb-4">Konfirmasi Keluar</h3>
       <p class="text-gray-700 mb-6">Apakah Anda yakin ingin keluar dari akun ini?</p>
       <div class="flex justify-end mt-4 space-x-2">
-        <button onclick="hideLogoutConfirmation()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>
-        <button onclick="performLogout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Keluar</button>
+            <button onclick="hideLogoutConfirmation()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>
+          <form id="logoutForm" method="POST" action="/logout">
+            @csrf
+            <button onclick="performLogout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Keluar</button>
+          </form>
       </div>
     </div>
   </div>
@@ -158,11 +161,7 @@ function closeModal() {
 }
 
   // Fungsi untuk melakukan logout
-  function performLogout() {
-    // Di sini Anda bisa menambahkan logika logout seperti:
-    // - Membersihkan session/local storage
-    // - Redirect ke halaman login
-    alert("Anda telah berhasil logout");
-    window.location.href = "/logout"; // Ganti dengan halaman login Anda
-  }
+function performLogout() {
+    document.getElementById('logoutForm').submit();
+}
 </script>
