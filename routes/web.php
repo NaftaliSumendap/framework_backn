@@ -1,5 +1,4 @@
 <?php
-
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Order;
@@ -13,7 +12,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\OrderController; // Tambahkan ini
+use App\Http\Controllers\OrderController;
 
 Route::middleware('auth')->group(function () {
 
@@ -21,111 +20,118 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/update-ajax', [UserController::class, 'updateField'])->name('profile.update.ajax');
 
     Route::get('/', function () {
-        return view('index', ['categories' => Category::all(), 'products' => Product::all(), 'reviews' => Review::all()]);
+        return view('index', [
+            'categories' => Category::all(),
+            'products' => Product::all(),
+            'reviews' => Review::all()
+        ]);
     })->name('index');
 
-    Route::get('/about-us', function () {
-        return view('about-us');
-    });
-
-    Route::get('/chat', function () {
-        return view('chat');
-    });
-    
+    Route::get('/about-us', fn() => view('about-us'));
+    Route::get('/chat', fn() => view('chat'));
     Route::get('/cart', function (Cart $cart) {
         $user_id = Auth::id();
-        return view('cart', ['cart' => $cart, 'carts' => Cart::with('product') -> where('user_id', $user_id)->get(), 'products' => Product::all(), 'categories' => Category::all()]);
-    })->name('cart.index'); // Pastikan ada name untuk rute cart
+        return view('cart', [
+            'cart' => $cart,
+            'carts' => Cart::with('product')->where('user_id', $user_id)->get(),
+            'products' => Product::all(),
+            'categories' => Category::all()
+        ]);
+    })->name('cart.index');
 
     Route::get('/detail/{product:slug}', function (Product $product) {
-        return view('detail', ['product' => $product, 'products' => Product::all()->except($product->id), 'categories' => Category::all(), 'reviews' => Review::where('product_id', $product->id)->get()]); 
+        return view('detail', [
+            'product' => $product,
+            'products' => Product::all()->except($product->id),
+            'categories' => Category::all(),
+            'reviews' => Review::where('product_id', $product->id)->get()
+        ]);
     });
 
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::put('/cart/update/{cart}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
 
-    Route::get('/privacy', function () {
-        return view('privacy');
-    });
-
+    Route::get('/privacy', fn() => view('privacy'));
     Route::get('/profil', function () {
-        $user = Auth::user();
-        $users = User::all();
-        return view('profil', ['user' => $user, 'users' => $users]);
+        return view('profil', [
+            'user' => Auth::user(),
+            'users' => User::all()
+        ]);
     });
-
-    Route::get('/search', function () {
-        return view('search');
-    });
-
+    Route::get('/search', fn() => view('search'));
     Route::get('/search/kategori={category:slug}', function (Category $category) {
         $products = Product::where('category_id', $category->id)->get();
-        return view('search', ['products' => $products, 'categories' => Category::all(), 'category' => $category]);
+        return view('search', [
+            'products' => $products,
+            'categories' => Category::all(),
+            'category' => $category
+        ]);
     });
 
-    // Rute untuk halaman transaksi (checkout form)
+    // Checkout & Order
     Route::get('/transaksi', [OrderController::class, 'showCheckoutForm'])->name('checkout.form');
-    // Rute untuk memproses pesanan
     Route::post('/transaksi/process', [OrderController::class, 'processOrder'])->name('checkout.process');
+    Route::get('/status/{order}', fn(Order $order) => view('status', ['order' => $order]))->name('status.order');
+    Route::get('/term', fn() => view('term'));
 
-    // Rute untuk halaman status pesanan (akan diperbarui nanti)
-    Route::get('/status/{order}', function (Order $order) { // Tambahkan Route Model Binding untuk Order
-        return view('status', ['order' => $order]);
-    })->name('status.order');
-
-
-    Route::get('/term', function () {
-        return view('term');
-    });
-
+    // Logout POST
     Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/index_guest');
+        Auth::logout();
+        return redirect('/index_guest');
     })->name('logout');
 
     // Group khusus untuk dashboard / admin panel (hanya admin yang bisa mengakses)
     Route::middleware('role:admin')->group(function () {
 
-        Route::get('/dashboard/orders', function () {
-            return view('dashboard/orders');
-        });
+        // Dashboard Home
+        Route::get('/dashboard/', [DashboardController::class, 'index'])->name('dashboard.index');
 
+        // Orders
+        Route::get('/dashboard/orders', fn() => view('dashboard/orders'));
+
+        // Store (Product Management)
         Route::get('/dashboard/store', function () {
-            return view('dashboard/store', ['categories' => Category::all(), 'products' => Product::all()]);
+            return view('dashboard/store', [
+                'categories' => Category::all(),
+                'products' => Product::all()
+            ]);
         });
-
-        Route::get('/dashboard/users', function () {
-            return view('dashboard/users', ['users' => User::all()]);
-        });
-
+        Route::get('/dashboard/store/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/dashboard/store', [ProductController::class, 'store'])->name('dashboard.store');
         Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-        Route::get('/dashboard/store/create', [ProductController::class, 'create'])->name('products.create');
+        // Users
+        Route::get('/dashboard/users', function () {
+            return view('dashboard/users', [
+                'users' => User::all(),
+                'user' => Auth::user(),
+            ]);
+        });
 
-        // Simpan produk baru
-
-        Route::post('/dashboard/store', [ProductController::class, 'store'])->name('dashboard.store');
-        Route::get('/dashboard/', [DashboardController::class, 'index'])->name('dashboard.index');
-
+        Route::put('/dashboard/users/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/dashboard/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        // (tambahkan route user edit/update/delete jika ada)
+        // Contoh:
+        // Route::put('/dashboard/users/{id}', [UserController::class, 'update'])->name('users.update');
+        // Route::delete('/dashboard/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     });
 
 });
 
-
-Route::middleware('guest')->group(function(){
-
-    Route::get('/sign-in',[Authentication::class, 'login'])->name('login');
-    Route::post('/sign-in',[Authentication::class, 'autentikasi']);
+// Guest routes
+Route::middleware('guest')->group(function () {
+    Route::get('/sign-in', [Authentication::class, 'login'])->name('login');
+    Route::post('/sign-in', [Authentication::class, 'autentikasi']);
     Route::get('/sign-up', [Authentication::class, 'register'])->name('register');
     Route::post('/sign-up', [Authentication::class, 'createuser']);
-
-    Route::get('/auth-google-redirect',[Authentication::class, 'google_redirect']);
-    Route::get('/auth-google-callback',[Authentication::class, 'google_callback']);
-    
+    Route::get('/auth-google-redirect', [Authentication::class, 'google_redirect']);
+    Route::get('/auth-google-callback', [Authentication::class, 'google_callback']);
     Route::get('/index_guest', function () {
-        return view('index_guest', ['categories' => Category::all(), 'products' => Product::all()]);
+        return view('index_guest', [
+            'categories' => Category::all(),
+            'products' => Product::all()
+        ]);
     });
-            
 });

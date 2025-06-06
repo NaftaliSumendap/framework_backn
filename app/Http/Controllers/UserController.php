@@ -90,4 +90,25 @@ class UserController extends Controller
             ], 500); // HTTP 500 Internal Server Error
         }
     }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role; // pastikan ini sesuai dengan field yang ada di model User
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'User berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->back()->with('success', 'User berhasil dihapus.');
+    }
 }

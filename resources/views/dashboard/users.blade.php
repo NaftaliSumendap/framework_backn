@@ -107,97 +107,41 @@
 
     <!-- Edit User Modal -->
     <div
-      id="editUserModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
+      id="editModal"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden"
     >
-      <div class="bg-white rounded-lg p-6 w-full max-w-md">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold">Edit Pengguna</h3>
-          <button id="closeEditModal" class="text-gray-500 hover:text-gray-700">
-            <i class="bx bx-x text-2xl"></i>
-          </button>
-        </div>
-        <form>
+      <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+        <h2 class="text-xl font-semibold mb-4 text-gray-800">Edit User</h2>
+        <form id="editForm" method="POST" action="" enctype="multipart/form-data">
+          @csrf
+          @method('PUT')
           <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Profil Pengguna</label>
-            <div
-              class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center"
-            >
-              <img
-                src="../../image/Foto Almamater Andro.png"
-                alt="Current User"
-                class="mx-auto mb-2 h-20 w-20 rounded-full object-cover"
-              />
-              <p class="text-gray-500">
-                Drag & drop gambar baru atau klik untuk memilih
-              </p>
-              <input type="file" class="hidden" id="editUserImage" />
-              <button
-                type="button"
-                onclick="document.getElementById('editUserImage').click()"
-                class="mt-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-sm"
-              >
-                Pilih Gambar Baru
-              </button>
-            </div>
+            <label for="editUsername" class="block text-gray-700">Username</label>
+            <input type="text" id="editUsername" name="name" class="w-full px-3 py-2 border rounded" required />
           </div>
           <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Username</label>
-            <input
-              type="text"
-              value="admin123"
-              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
-            />
+            <label for="editEmail" class="block text-gray-700">Email</label>
+            <input type="email" id="editEmail" name="email" class="w-full px-3 py-2 border rounded" required />
           </div>
           <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Nama Lengkap</label>
-            <input
-              type="text"
-              value="Admin Utama"
-              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
-            />
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Email</label>
-            <input
-              type="email"
-              value="admin@example.com"
-              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
-            />
-          </div>
-          <div class="mb-6">
-            <label class="block text-gray-700 mb-2">Role</label>
-            <select
-              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
-            >
-              <option value="admin" selected>Admin</option>
-              <option value="user">User</option>
-              <option value="guest">Guest</option>
+            <label for="editRole" class="block text-gray-700">Role</label>
+            <select id="editRole" name="role" class="w-full px-3 py-2 border rounded" required>
+              <option value="admin">Admin</option>
+              <option value="kasir">User</option>
             </select>
           </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2"
-              >Password (biarkan kosong jika tidak ingin mengubah)</label
-            >
-            <input
-              type="password"
-              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
-              placeholder="Masukkan password baru"
-            />
-          </div>
-          <div class="flex justify-end space-x-3">
+          <div class="flex justify-end gap-2">
             <button
               type="button"
-              id="cancelEdit"
-              class="px-4 py-2 border rounded-lg hover:bg-gray-100"
+              class="cancel-edit-btn border text-gray-800 px-4 py-2 rounded hover:bg-gray-100"
             >
               Batal
             </button>
             <button
               type="submit"
-              class="px-4 py-2 bg-amber-400 text-white rounded-lg hover:bg-amber-500"
+              class="bg-amber-400 text-white px-4 py-2 rounded hover:bg-amber-500"
             >
-              Simpan Perubahan
+              Simpan
             </button>
           </div>
         </form>
@@ -206,45 +150,32 @@
 
     <!-- Delete Confirmation Modal -->
     <div
-      id="deleteUserModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
-    >
-      <div class="bg-white rounded-lg p-6 w-full max-w-md">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold">Hapus Pengguna</h3>
-          <button
-            id="closeDeleteModal"
-            class="text-gray-500 hover:text-gray-700"
-          >
-            <i class="bx bx-x text-2xl"></i>
-          </button>
-        </div>
-        <div class="mb-6">
-          <p class="text-gray-700">
-            Apakah Anda yakin ingin menghapus pengguna
-            <span class="font-semibold">"admin123"</span>?
-          </p>
-          <p class="text-red-500 mt-2 text-sm">
-            Aksi ini tidak dapat dibatalkan!
-          </p>
-        </div>
-        <div class="flex justify-end space-x-3">
+    id="deleteModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden"
+  >
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+      <h2 class="text-xl font-semibold mb-4 text-gray-800">Konfirmasi Hapus</h2>
+      <p class="mb-6 text-gray-700">Apakah kamu yakin ingin menghapus user <span id="deleteUserName" class="font-bold"></span>?</p>
+      <form id="deleteForm" method="POST" action="dashboard/users/{{ $user->id }}">
+        @csrf
+        @method('DELETE')
+        <div class="flex justify-end gap-2">
           <button
             type="button"
-            id="cancelDelete"
-            class="px-4 py-2 border rounded-lg hover:bg-gray-100"
+            class="cancel-delete-btn bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
           >
             Batal
           </button>
           <button
-            type="button"
-            class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+            type="submit"
+            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
           >
-            Hapus Pengguna
+            Hapus
           </button>
         </div>
-      </div>
+      </form>
     </div>
+  </div>
 
     <div class="flex min-h-screen">
       <!-- Sidebar -->
@@ -273,6 +204,18 @@
           </div>
 
           <!-- Users Table -->
+            @if (session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative my-2" role="alert">
+                <strong class="font-bold">Berhasil!</strong>
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+            @endif
+            @if (session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative my-2" role="alert">
+                <strong class="font-bold">Gagal!</strong>
+                <span class="block sm:inline">{{ session('error') }}</span>
+            </div>
+            @endif
           <div class="bg-white p-4 rounded shadow">
             <div class="flex justify-between items-center mb-4">
               <h3 class="text-lg font-semibold">Daftar Pengguna</h3>
@@ -312,18 +255,23 @@
                     >
                   </td>
                   <td class="space-x-2">
-                    <button
-                      class="edit-btn bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-                      data-user="admin123"
-                    >
-                      <i class="bx bxs-edit"></i>
-                    </button>
-                    <button
-                      class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                      data-user="admin123"
-                    >
-                      <i class="bx bxs-trash"></i>
-                    </button>
+                  <button
+                    class="edit-btn bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500"
+                    data-id="{{ $user->id }}"
+                    data-name="{{ $user->name }}"
+                    data-email="{{ $user->email }}"
+                    data-role="{{ $user->role }}"
+                    type="button"
+                  >
+                    <i class="bx bxs-edit"></i>
+                  </button>
+                  <button
+                    class="delete-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                    data-id="{{ $user->id }}"
+                    data-name="{{ $user->name }}" 
+                  >
+                    <i class="bx bxs-trash"></i>
+                  </button>
                   </td>
                 </tr>
                 @endforeach
@@ -334,112 +282,76 @@
       </div>
     </div>
 
-    <script>
-      document
-        .getElementById("toggleSidebar")
-        ?.addEventListener("click", () => {
-          document.getElementById("sidebar")?.classList.toggle("hidden");
-        });
+<script>
+  // Toggle sidebar
+  document.getElementById("toggleSidebar")?.addEventListener("click", () => {
+    document.getElementById("sidebar")?.classList.toggle("hidden");
+  });
 
-      // Modal functionality
-      const addModal = document.getElementById("addUserModal");
-      const editModal = document.getElementById("editUserModal");
-      const deleteModal = document.getElementById("deleteUserModal");
+  document.addEventListener("DOMContentLoaded", () => {
+    const editButtons = document.querySelectorAll(".edit-btn");
+    const editModal = document.getElementById("editModal");
+    const editForm = document.getElementById("editForm");
+    const editUsername = document.getElementById("editUsername");
+    const editEmail = document.getElementById("editEmail");
+    const editRole = document.getElementById("editRole");
+    const cancelEditBtn = editModal.querySelector(".cancel-edit-btn");
 
-      // Add User Modal
-      const openAddBtn = document.getElementById("openAddUser");
-      const closeAddBtn = document.getElementById("closeAddModal");
-      const cancelAddBtn = document.getElementById("cancelAdd");
+    editButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = button.getAttribute("data-id");
+        const username = button.getAttribute("data-name");
+        const email = button.getAttribute("data-email");
+        const role = button.getAttribute("data-role");
 
-      openAddBtn.addEventListener("click", () => {
-        addModal.classList.remove("hidden");
+        editForm.action = `/dashboard/users/${id}`;
+        editUsername.value = username;
+        editEmail.value = email;
+        editRole.value = role;
+
+        editModal.classList.remove("hidden");
       });
+    });
 
-      closeAddBtn.addEventListener("click", () => {
-        addModal.classList.add("hidden");
-      });
+    cancelEditBtn.addEventListener("click", () => {
+      editModal.classList.add("hidden");
+    });
 
-      cancelAddBtn.addEventListener("click", () => {
-        addModal.classList.add("hidden");
-      });
-
-      // Edit User Modal
-      const editButtons = document.querySelectorAll(".edit-btn");
-      const closeEditBtn = document.getElementById("closeEditModal");
-      const cancelEditBtn = document.getElementById("cancelEdit");
-
-      editButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          const username = button.getAttribute("data-user");
-          // In a real app, you would fetch the user data here
-          editModal.classList.remove("hidden");
-        });
-      });
-
-      closeEditBtn.addEventListener("click", () => {
+    window.addEventListener("click", (e) => {
+      if (e.target === editModal) {
         editModal.classList.add("hidden");
+      }
+    });
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    const deleteButtons = document.querySelectorAll(".delete-btn");
+    const deleteModal = document.getElementById("deleteModal");
+    const deleteUserName = document.getElementById("deleteUserName");
+    const deleteForm = document.getElementById("deleteForm");
+    const cancelDeleteBtn = deleteModal.querySelector(".cancel-delete-btn");
+
+    deleteButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const userId = button.getAttribute("data-id");
+        const name = button.getAttribute("data-name");
+
+        deleteUserName.textContent = `"${name}"`;
+        deleteForm.action = `/dashboard/users/${userId}`;
+        deleteModal.classList.remove("hidden");
       });
+    });
 
-      cancelEditBtn.addEventListener("click", () => {
-        editModal.classList.add("hidden");
-      });
+    cancelDeleteBtn.addEventListener("click", () => {
+      deleteModal.classList.add("hidden");
+    });
 
-      // Delete User Modal
-      const deleteButtons = document.querySelectorAll(".delete-btn");
-      const closeDeleteBtn = document.getElementById("closeDeleteModal");
-      const cancelDeleteBtn = document.getElementById("cancelDelete");
-
-      deleteButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          const username = button.getAttribute("data-user");
-          // Update the username in the delete confirmation
-          const deleteText = deleteModal.querySelector("span");
-          deleteText.textContent = `"${username}"`;
-          deleteModal.classList.remove("hidden");
-        });
-      });
-
-      closeDeleteBtn.addEventListener("click", () => {
+    window.addEventListener("click", (e) => {
+      if (e.target === deleteModal) {
         deleteModal.classList.add("hidden");
-      });
+      }
+    });
+  });
+</script>
 
-      cancelDeleteBtn.addEventListener("click", () => {
-        deleteModal.classList.add("hidden");
-      });
-
-      // Close modals when clicking outside
-      window.addEventListener("click", (e) => {
-        if (e.target === addModal) {
-          addModal.classList.add("hidden");
-        }
-        if (e.target === editModal) {
-          editModal.classList.add("hidden");
-        }
-        if (e.target === deleteModal) {
-          deleteModal.classList.add("hidden");
-        }
-      });
-
-      const openLogoutModal = document.getElementById("openLogoutModal");
-      const logoutModal = document.getElementById("logoutModal");
-      const cancelLogout = document.getElementById("cancelLogout");
-
-      openLogoutModal.addEventListener("click", () => {
-        logoutModal.classList.remove("hidden");
-        logoutModal.classList.add("flex");
-      });
-
-      cancelLogout.addEventListener("click", () => {
-        logoutModal.classList.add("hidden");
-        logoutModal.classList.remove("flex");
-      });
-
-      logoutModal.addEventListener("click", (e) => {
-        if (e.target === logoutModal) {
-          logoutModal.classList.add("hidden");
-          logoutModal.classList.remove("flex");
-        }
-      });
-    </script>
   </body>
 </html>
