@@ -25,6 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',    // kalau kamu pakai role
         'phone',   // jika ada kolom ini
         'address',
+        'image',
     ];
 
     /**

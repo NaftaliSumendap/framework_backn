@@ -78,7 +78,10 @@ public function store(Request $request)
 
     // Handle image upload
     if ($request->hasFile('image')) {
-        $validated['image_path'] = $request->file('image')->store('products', 'public');
+        $file = $request->file('image');
+        $filename = $file->getClientOriginalName();
+        $file->storeAs('products', $filename, 'public');
+        $validated['image_path'] = $filename;
     }
 
     $validated['is_featured'] = $request->has('is_featured') ? $validated['is_featured'] : false;

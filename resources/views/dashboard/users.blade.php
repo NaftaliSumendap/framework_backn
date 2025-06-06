@@ -72,7 +72,6 @@
           <option value="">Pilih Role</option>
           <option value="admin">Admin</option>
           <option value="user">User</option>
-          <option value="guest">Guest</option>
         </select>
       </div>
       <div class="mb-4">
@@ -126,7 +125,7 @@
             <label for="editRole" class="block text-gray-700">Role</label>
             <select id="editRole" name="role" class="w-full px-3 py-2 border rounded" required>
               <option value="admin">Admin</option>
-              <option value="kasir">User</option>
+              <option value="user">User</option>
             </select>
           </div>
           <div class="flex justify-end gap-2">
@@ -239,7 +238,7 @@
                 <tr class="border-b hover:bg-gray-50">
                   <td class="py-2">
                     <img
-                      src="../img/{{$user['image']}}"
+                      src="{{ asset('storage/users/' . $user['image']) }}"
                       class="w-8 h-8 rounded-full object-cover"
                       alt="Profile"
                     />
@@ -361,6 +360,9 @@
   const addUserModal = document.getElementById("addUserModal");
   const closeAddModalBtn = document.getElementById("closeAddModal");
   const cancelAddBtn = document.getElementById("cancelAdd");
+  const userImageInput = document.getElementById("userImage");
+  const imagePreviewContainer = userImageInput?.closest(".border-dashed");
+  let previewImg = imagePreviewContainer?.querySelector("img");
 
   // Buka modal saat tombol "Tambah Pengguna" diklik
   openAddUserBtn?.addEventListener("click", () => {
@@ -393,6 +395,27 @@
     if (e.key === "Escape" && !addUserModal.classList.contains("hidden")) {
       addUserModal.classList.add("hidden");
       addUserModal.classList.remove("flex");
+    }
+  });
+  if (imagePreviewContainer && !previewImg) {
+    previewImg = document.createElement("img");
+    previewImg.className = "mx-auto mb-2 h-20 w-20 object-cover rounded-full";
+    previewImg.style.display = "none";
+    imagePreviewContainer.insertBefore(previewImg, imagePreviewContainer.firstChild);
+  }
+
+  userImageInput?.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file && previewImg) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        previewImg.src = e.target.result;
+        previewImg.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    } else if (previewImg) {
+      previewImg.src = "";
+      previewImg.style.display = "none";
     }
   });
 });

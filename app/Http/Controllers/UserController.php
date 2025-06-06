@@ -122,9 +122,11 @@ class UserController extends Controller
         'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
     ]);
 
-    // Handle upload gambar profil jika ada
     if ($request->hasFile('image')) {
-        $validated['image'] = $request->file('image')->store('users', 'public');
+        $file = $request->file('image');
+        $filename = $file->getClientOriginalName(); // hanya nama file
+        $file->storeAs('users', $filename, 'public'); // simpan file ke storage/app/public/users
+        $validated['image'] = $filename; // hanya nama file yang disimpan ke DB
     }
 
     $validated['password'] = bcrypt($validated['password']);
