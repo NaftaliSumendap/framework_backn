@@ -53,7 +53,7 @@
             <div class="flex items-center bg-white p-4 rounded shadow">
               <i class="bx bxs-user text-3xl text-amber-500 mr-4"></i>
               <div>
-                <h3 class="text-xl font-bold">123</h3>
+                <h3 class="text-xl font-bold">{{ number_format($totalUsers) }}</h3>
                 <p>Total Users</p>
               </div>
             </div>

@@ -9,6 +9,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentication;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
@@ -85,7 +86,7 @@ Route::middleware('auth')->group(function () {
 
     // Group khusus untuk dashboard / admin panel (hanya admin yang bisa mengakses)
     Route::middleware('role:admin')->group(function () {
-        Route::get('/dashboard', function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'], function () {
             return view('dashboard/dashboard');
         });
 
