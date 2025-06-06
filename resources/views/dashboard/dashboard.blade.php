@@ -126,6 +126,35 @@
       document.getElementById("toggleSidebar").addEventListener("click", () => {
         document.getElementById("sidebar").classList.toggle("hidden");
       });
+
+      const openLogoutModal = document.getElementById("openLogoutModal");
+      const logoutModal = document.getElementById("logoutModal");
+      const cancelLogout = document.getElementById("cancelLogout");
+
+      openLogoutModal.addEventListener("click", () => {
+        logoutModal.classList.remove("hidden");
+        logoutModal.classList.add("flex");
+      });
+
+      cancelLogout.addEventListener("click", () => {
+        logoutModal.classList.add("hidden");
+        logoutModal.classList.remove("flex");
+      });
+
+      logoutModal.addEventListener("click", (e) => {
+        if (e.target === logoutModal) {
+          logoutModal.classList.add("hidden");
+          logoutModal.classList.remove("flex");
+        }
+      });
+
+        // document.getElementById("logoutButton").addEventListener("click", () => {
+        //   document.getElementById("logoutModal").classList.remove("hidden");
+        // });
+
+        // document.getElementById("cancelLogout").addEventListener("click", () => {
+        //   document.getElementById("logoutModal").classList.add("hidden");
+        // });
     </script>
   </body>
 </html>

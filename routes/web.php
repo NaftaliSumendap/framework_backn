@@ -78,7 +78,10 @@ Route::middleware('auth')->group(function () {
         return view('term');
     });
 
-    Route::get('/logout', [Authentication::class, 'logout']);
+    Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/index_guest');
+    })->name('logout');
 
     // Group khusus untuk dashboard / admin panel (hanya admin yang bisa mengakses)
     Route::middleware('role:admin')->group(function () {
