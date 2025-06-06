@@ -67,7 +67,7 @@
             <div class="flex items-center bg-white p-4 rounded shadow">
               <i class="bx bxs-dollar-circle text-3xl text-orange-500 mr-4"></i>
               <div>
-                <h3 class="text-xl font-bold">Rp12,345,540</h3>
+                <h3 class="text-xl font-bold">Rp{{ number_format($totalTransaction, 0, ',', '.') }}</h3>
                 <p>Total Transaksi</p>
               </div>
             </div>
