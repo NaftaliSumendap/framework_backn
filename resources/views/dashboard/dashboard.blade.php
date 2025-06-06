@@ -36,7 +36,7 @@
               <div>
                 <h2 class="text-xl font-semibold mb-2">Data Pengguna</h2>
                 <p class="text-3xl font-bold text-amber-400">
-                  Total: 1,234 Akun
+                  Total: {{ number_format($totalUsers) }} Akun
                 </p>
               </div>
               <a
@@ -60,7 +60,7 @@
             <div class="flex items-center bg-white p-4 rounded shadow">
               <i class="bx bxs-cart text-3xl text-yellow-500 mr-4"></i>
               <div>
-                <h3 class="text-xl font-bold">23</h3>
+                <h3 class="text-xl font-bold">{{ number_format($totalOrders) }}</h3>
                 <p>Orderan Terbaru</p>
               </div>
             </div>
@@ -91,30 +91,31 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="border-b-2 hover:bg-gray-100">
-                  <td class="py-2">
-                    <i class="bx bx-user-circle text-2xl text-gray-400"></i>
-                    <span class="ml-3">John Doe</span>
-                  </td>
-                  <td>01-10-2021</td>
-                  <td>
-                    <span class="status-badge bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">
-                      Diterima
-                    </span>
-                  </td>
-                </tr>
-                <tr class="border-b-2 hover:bg-gray-100">
-                  <td class="py-2">
-                    <i class="bx bx-user-circle text-2xl text-gray-400"></i>
-                    <span class="ml-3">Jane Smith</span>
-                  </td>
-                  <td>02-10-2021</td>
-                  <td>
-                    <span class="status-badge bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">
-                      Dikonfirmasi
-                    </span>
-                  </td>
-                </tr>
+                @forelse ($recentOrders as $order)
+                  <tr class="border-b-2 hover:bg-gray-100">
+                    <td class="py-2 flex items-center">
+                      <i class="bx bx-user-circle text-2xl text-gray-400"></i>
+                      <span class="ml-3">{{ $order->user->name ?? '-' }}</span>
+                    </td>
+                    <td>{{ $order->created_at ? $order->created_at->format('d-m-Y') : '-' }}</td>
+                    <td>
+                      <span class="status-badge
+                        @if($order->status == 'Diterima') bg-green-100 text-green-800
+                        @elseif($order->status == 'Dikonfirmasi') bg-purple-100 text-purple-800
+                        @elseif($order->status == 'Packaging') bg-blue-100 text-blue-800
+                        @elseif($order->status == 'Pengantaran') bg-orange-100 text-orange-800
+                        @elseif($order->status == 'Dibatalkan') bg-red-100 text-red-800
+                        @else bg-yellow-100 text-yellow-800 @endif
+                        text-xs px-3 py-1 rounded-full">
+                        {{ $order->status }}
+                      </span>
+                    </td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="3" class="text-center py-4 text-gray-400">Belum ada order terbaru.</td>
+                  </tr>
+                @endforelse
               </tbody>
             </table>
           </div>
