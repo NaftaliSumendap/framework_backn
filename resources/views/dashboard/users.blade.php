@@ -290,6 +290,27 @@
     document.getElementById("sidebar")?.classList.toggle("hidden");
   });
 
+      const openLogoutModal = document.getElementById("openLogoutModal");
+      const logoutModal = document.getElementById("logoutModal");
+      const cancelLogout = document.getElementById("cancelLogout");
+
+      openLogoutModal.addEventListener("click", () => {
+        logoutModal.classList.remove("hidden");
+        logoutModal.classList.add("flex");
+      });
+
+      cancelLogout.addEventListener("click", () => {
+        logoutModal.classList.add("hidden");
+        logoutModal.classList.remove("flex");
+      });
+
+      logoutModal.addEventListener("click", (e) => {
+        if (e.target === logoutModal) {
+          logoutModal.classList.add("hidden");
+          logoutModal.classList.remove("flex");
+        }
+      });
+
   document.addEventListener("DOMContentLoaded", () => {
     const editButtons = document.querySelectorAll(".edit-btn");
     const editModal = document.getElementById("editModal");

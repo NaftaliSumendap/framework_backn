@@ -31,11 +31,8 @@
             @csrf
             <div>
               <label class="block font-semibold mb-1">Gambar Produk</label>
-              <input type="file" name="image" @change="previewImage" accept="image/*" 
-                    class="w-full border p-2 rounded @error('image') border-red-500 @enderror" required>
-              <template x-if="imageUrl">
-                <img :src="imageUrl" alt="Preview Gambar" class="mt-2 rounded w-32 h-32 object-cover">
-              </template>
+              <input type="file" id="addProductImage" name="image" accept="image/*" class="w-full border p-2 rounded @error('image') border-red-500 @enderror" required>
+              <img id="addProductImagePreview" src="#" alt="Preview Gambar" class="mt-2 rounded w-32 h-32 object-cover" style="display:none;">
               @error('image')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
               @enderror
@@ -515,6 +512,27 @@
       }
     });
   }
+  document.addEventListener("DOMContentLoaded", () => {
+  const imageInput = document.getElementById("addProductImage");
+  const previewImg = document.getElementById("addProductImagePreview");
+
+  if (imageInput && previewImg) {
+    imageInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewImg.src = e.target.result;
+          previewImg.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      } else {
+        previewImg.src = "#";
+        previewImg.style.display = "none";
+      }
+    });
+  }
+});
 </script>
 
   </body>
