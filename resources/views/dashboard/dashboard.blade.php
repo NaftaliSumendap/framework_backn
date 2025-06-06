@@ -13,93 +13,12 @@
   <body class="bg-gray-100 font-sans transition-colors duration-300">
     <div class="flex">
       <!-- Sidebar -->
-      <aside
-        id="sidebar"
-        class="w-72 bg-gray-50 min-h-screen p-4 transition-all duration-300"
-      >
-        <div class="flex items-center mb-10">
-          <span class="text-2xl font-bold text-amber-400">Panel Admin</span>
-        </div>
-        <nav>
-          <ul id="side-menu" class="space-y-2">
-            <li>
-              <a
-                href="#"
-                class="flex items-center p-3 text-amber-400 font-semibold bg-gray-100 rounded-full"
-              >
-                <i class="bx bxs-dashboard mr-2"></i> Dashboard
-              </a>
-            </li>
-            <li>
-              <a
-                href="/dashboard/store"
-                class="flex items-center hover:text-amber-400 p-3"
-              >
-                <i class="bx bxs-shopping-bag-alt mr-2"></i> My Store
-              </a>
-            </li>
-            <li>
-              <a
-                href="/dashboard/orders"
-                class="flex items-center hover:text-amber-400 p-3"
-              >
-                <i class="bx bxs-cart-alt mr-2"></i> Orders
-              </a>
-            </li>
-            <li>
-              <a
-                href="/dashboard/users"
-                class="flex items-center hover:text-amber-400 p-3"
-              >
-                <i class="bx bxs-user mr-2"></i> Users
-              </a>
-            </li>
-          </ul>
-          <div class="mt-10 border-t pt-4">
-            <a href="../logout" class="flex items-center text-red-600 p-3">
-              <i class="bx bxs-log-out-circle mr-2"></i> Logout
-            </a>
-          </div>
-        </nav>
-      </aside>
+      <x-sidebar-dashboard></x-sidebar-dashboard>
 
       <!-- Main content -->
       <div class="flex-1">
         <!-- Navbar -->
-        <nav
-          class="flex justify-between items-center bg-gray-50 p-4 shadow relative"
-        >
-          <i id="toggleSidebar" class="bx bx-menu text-xl cursor-pointer"></i>
-          <div class="relative flex items-center w-full max-w-lg">
-            <form action="/search" method="GET" class="w-full">
-              <div class="relative">
-                <input
-                  type="text"
-                  name="query"
-                  placeholder="Cari alat musik..."
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
-                />
-                <button
-                  type="submit"
-                  class="absolute right-0 top-0 mt-2 mr-3 text-gray-500 hover:text-amber-400"
-                >
-                  <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </form>
-          </div>
-          <div class="flex items-center space-x-4">
-            <img
-              src="../img/Foto Almamater Andro.png"
-              class="w-9 h-9 rounded-full"
-              alt="Profile"
-            />
-          </div>
-        </nav>
+        <x-navbar-dashboard></x-navbar-dashboard>
         <!-- Main section -->
         <main class="p-6">
           <div class="flex justify-between items-center mb-6">
