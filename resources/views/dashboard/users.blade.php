@@ -226,9 +226,10 @@
               <thead>
                 <tr class="text-gray-600 border-b">
                   <th class="py-2">Profil</th>
-                  <th>Username</th>
-                  <th>Nama Lengkap</th>
+                  <th>Nama</th>
                   <th>Email</th>
+                  <th>Nomor</th>
+                  <th>Alamat</th>
                   <th>Role</th>
                   <th>Aksi</th>
                 </tr>
@@ -244,8 +245,9 @@
                     />
                   </td>
                   <td>{{$user['name']}}</td>
-                  <td>{{$user['name']}}</td>
                   <td>{{$user['email']}}</td>
+                  <td>{{$user['phone']}}</td>
+                  <td>{{$user['address']}}</td>
                   <td>
                     <span
                       class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full"
@@ -284,7 +286,7 @@
   // Toggle sidebar
   setTimeout(() => {
     document.querySelectorAll('[role="alert"]').forEach(el => el.remove());
-  }, 3000);
+  }, 1000);
 
   document.getElementById("toggleSidebar")?.addEventListener("click", () => {
     document.getElementById("sidebar")?.classList.toggle("hidden");

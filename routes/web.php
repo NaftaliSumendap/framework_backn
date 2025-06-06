@@ -88,7 +88,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard/', [DashboardController::class, 'index'])->name('dashboard.index');
 
         // Orders
-        Route::get('/dashboard/orders', fn() => view('dashboard/orders'));
+        Route::get('/dashboard/orders', function () {
+            return view('dashboard.orders', [
+                'orders' => Order::with('product')->get()
+            ]);
+        });
+
+        Route::put('/dashboard/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
+        Route::delete('/dashboard/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
+        Order::with('product')->get();
 
         // Store (Product Management)
         Route::get('/dashboard/store', function () {

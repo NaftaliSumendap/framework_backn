@@ -118,4 +118,21 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memproses pesanan Anda. Silakan coba lagi.');
         }
     }
+
+    public function update(Request $request, $id)
+    {
+    $order = Order::findOrFail($id);
+    $order->status = $request->status;
+    $order->payment_status = $request->payment_status;
+    $order->save();
+
+    return redirect()->back()->with('success', 'Status pesanan berhasil diubah!');
+    }
+
+    public function destroy($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->delete();
+        return redirect()->back()->with('success', 'Pesanan berhasil dihapus!');
+    }
 }

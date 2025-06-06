@@ -372,7 +372,7 @@
   // Auto-remove alert
   setTimeout(() => {
     document.querySelectorAll('[role="alert"]').forEach(el => el.remove());
-  }, 3000);
+  }, 1000);
 
   // Helper untuk toggle modal
   function setupModal({ openBtnId, modalId, closeBtnId, cancelBtnId }) {
