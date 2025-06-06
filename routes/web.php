@@ -112,6 +112,7 @@ Route::middleware('auth')->group(function () {
 
         Route::put('/dashboard/users/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/dashboard/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::post('/dashboard/users', [UserController::class, 'store'])->name('users.store');
         // (tambahkan route user edit/update/delete jika ada)
         // Contoh:
         // Route::put('/dashboard/users/{id}', [UserController::class, 'update'])->name('users.update');

@@ -111,4 +111,26 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'User berhasil dihapus.');
     }
+
+    public function store(Request $request)
+    {
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'role' => 'required|string',
+        'password' => 'required|string|min:6',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
+
+    // Handle upload gambar profil jika ada
+    if ($request->hasFile('image')) {
+        $validated['image'] = $request->file('image')->store('users', 'public');
+    }
+
+    $validated['password'] = bcrypt($validated['password']);
+
+    User::create($validated);
+
+    return redirect()->back()->with('success', 'User berhasil ditambahkan.');
+    }
 }
