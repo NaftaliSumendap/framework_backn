@@ -14,7 +14,7 @@
     <!-- Konten Utama -->
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-20">
         <h2 class="text-lg md:text-xl font-semibold mt-6 mb-4">
-          Hasil pencarian untuk '<span class="text-red-500">{{$category['slug']}}</span>'
+          Hasil pencarian untuk '<span class="text-red-500">{{ $query }}</span>'
         </h2>
 
         <div class="flex flex-wrap gap-2 mb-6">
@@ -24,7 +24,11 @@
             <button class="bg-gray-100 hover:bg-gray-200 px-4 py-1.5 text-sm rounded">Harga</button>
         </div>
           
-
+@if($products->isEmpty())
+  <div class="text-center text-gray-500 py-10">
+    Tidak ada produk ditemukan untuk pencarian <span class="text-red-500 font-semibold">{{ $query }}</span>.
+  </div>
+@else
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
       <!-- Produk Card -->
        @foreach ($products as $product)
@@ -49,6 +53,7 @@
         </div>
         @endforeach
       </div>
+@endif
 
           <div class="flex justify-center mt-8 space-x-2">
             <button class="px-3 py-1 border rounded">←</button>

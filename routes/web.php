@@ -59,7 +59,7 @@ Route::middleware('auth')->group(function () {
             'users' => User::all()
         ]);
     });
-    Route::get('/search', fn() => view('search'));
+    Route::get('/search', [ProductController::class, 'search'])->name('search');
     Route::get('/search/kategori={category:slug}', function (Category $category) {
         $products = Product::where('category_id', $category->id)->get();
         return view('search', [

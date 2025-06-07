@@ -91,4 +91,14 @@ public function store(Request $request)
     return redirect()->route('dashboard.store')->with('success', 'Produk berhasil ditambahkan!');
 }
 
+public function search(Request $request)
+{
+    $query = $request->input('query');
+    $products = Product::where('name', 'like', "%{$query}%")
+        ->orWhere('description', 'like', "%{$query}%")
+        ->get();
+
+    return view('search', compact('products', 'query'));
+}
+
 }
