@@ -14,5 +14,7 @@ class Review extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    protected $fillable = ['user_id', 'product_id', 'rating', 'title', 'comment'];
 }
 ?>

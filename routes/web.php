@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ReviewController;
 
 Route::middleware('auth')->group(function () {
 
@@ -60,6 +61,9 @@ Route::middleware('auth')->group(function () {
             'users' => User::all()
         ]);
     });
+
+    Route::post('/reviews/{product}', [ReviewController::class, 'store'])->middleware('auth')->name('reviews.store');
+
     Route::get('/search', [ProductController::class, 'search'])->name('search');
     Route::get('/search/kategori={category:slug}', function (Category $category) {
         $products = Product::where('category_id', $category->id)->get();
