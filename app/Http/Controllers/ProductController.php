@@ -94,9 +94,29 @@ public function store(Request $request)
 public function search(Request $request)
 {
     $query = $request->input('query');
-    $products = Product::where('name', 'like', "%{$query}%")
-        ->orWhere('description', 'like', "%{$query}%")
-        ->get();
+    $sort = $request->input('sort', 'related');
+
+    $products = Product::query()
+        ->where('name', 'like', "%{$query}%")
+        ->orWhere('description', 'like', "%{$query}%");
+
+    // Sorting logic
+    switch ($sort) {
+        case 'newest':
+            $products->orderByDesc('created_at');
+            break;
+        case 'bestseller':
+            $products->orderByDesc('sold');
+            break;
+        case 'price':
+            $products->orderBy('discount_price');
+            break;
+        default: // related
+            // Bisa pakai relevansi atau biarkan default
+            break;
+    }
+
+    $products = $products->get();
 
     return view('search', compact('products', 'query'));
 }

@@ -17,18 +17,42 @@
           Hasil pencarian untuk '<span class="text-red-500">{{ $query }}</span>'
         </h2>
 
-        <div class="flex flex-wrap gap-2 mb-6">
-            <button class="bg-amber-400 text-white px-4 py-1.5 text-sm rounded shadow">Terkait</button>
-            <button class="bg-gray-100 hover:bg-gray-200 px-4 py-1.5 text-sm rounded">Terbaru</button>
-            <button class="bg-gray-100 hover:bg-gray-200 px-4 py-1.5 text-sm rounded">Terlaris</button>
-            <button class="bg-gray-100 hover:bg-gray-200 px-4 py-1.5 text-sm rounded">Harga</button>
-        </div>
+<div class="flex flex-wrap gap-2 mb-6">
+    <a href="{{ route('search', ['query' => $query, 'sort' => 'related']) }}"
+       class="px-4 py-1.5 text-sm rounded transition
+       {{ request('sort', 'related') == 'related'
+            ? 'bg-amber-400 text-white'
+            : 'bg-gray-100 hover:bg-gray-200 text-gray-800' }}">
+        Terkait
+    </a>
+    <a href="{{ route('search', ['query' => $query, 'sort' => 'newest']) }}"
+       class="px-4 py-1.5 text-sm rounded transition
+       {{ request('sort') == 'newest'
+            ? 'bg-amber-400 text-white'
+            : 'bg-gray-100 hover:bg-gray-200 text-gray-800' }}">
+        Terbaru
+    </a>
+    <a href="{{ route('search', ['query' => $query, 'sort' => 'bestseller']) }}"
+       class="px-4 py-1.5 text-sm rounded transition
+       {{ request('sort') == 'bestseller'
+            ? 'bg-amber-400 text-white'
+            : 'bg-gray-100 hover:bg-gray-200 text-gray-800' }}">
+        Terlaris
+    </a>
+    <a href="{{ route('search', ['query' => $query, 'sort' => 'price']) }}"
+       class="px-4 py-1.5 text-sm rounded transition
+       {{ request('sort') == 'price'
+            ? 'bg-amber-400 text-white'
+            : 'bg-gray-100 hover:bg-gray-200 text-gray-800' }}">
+        Harga
+    </a>
+</div>
           
-@if($products->isEmpty())
-  <div class="text-center text-gray-500 py-10">
-    Tidak ada produk ditemukan untuk pencarian <span class="text-red-500 font-semibold">{{ $query }}</span>.
-  </div>
-@else
+    @if($products->isEmpty())
+      <div class="text-center text-gray-500 py-10">
+        Tidak ada produk ditemukan untuk pencarian <span class="text-red-500 font-semibold">{{ $query }}</span>.
+      </div>
+    @else
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
       <!-- Produk Card -->
        @foreach ($products as $product)
@@ -55,12 +79,12 @@
       </div>
 @endif
 
-          <div class="flex justify-center mt-8 space-x-2">
-            <button class="px-3 py-1 border rounded">←</button>
-            <button class="px-3 py-1 border font-bold bg-gray-200">1</button>
-            <button class="px-3 py-1 border">2</button>
-            <button class="px-3 py-1 border">→</button>
-          </div>
+<div class="flex justify-center mt-8 space-x-2">
+    <button class="px-3 py-1 rounded">←</button>
+    <button class="px-3 py-1 font-bold bg-gray-200 rounded">1</button>
+    <button class="px-3 py-1 rounded">2</button>
+    <button class="px-3 py-1 rounded">→</button>
+</div>
     </div>
 </div>
       
