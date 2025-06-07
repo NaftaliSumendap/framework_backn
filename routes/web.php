@@ -65,7 +65,8 @@ Route::middleware('auth')->group(function () {
         return view('search', [
             'products' => $products,
             'categories' => Category::all(),
-            'category' => $category
+            'category' => $category,
+            'query' => $category->name // <-- tambahkan ini!
         ]);
     });
 
