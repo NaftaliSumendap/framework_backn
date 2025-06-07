@@ -13,6 +13,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CategoryController;
 
 Route::middleware('auth')->group(function () {
 
@@ -126,6 +127,8 @@ Route::middleware('auth')->group(function () {
         // Contoh:
         // Route::put('/dashboard/users/{id}', [UserController::class, 'update'])->name('users.update');
         // Route::delete('/dashboard/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+        Route::resource('dashboard/categories', CategoryController::class)->except(['show', 'create']);
     });
 
 });

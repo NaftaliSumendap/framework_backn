@@ -272,6 +272,92 @@
       </div>
     </div>
 
+    <!-- Modal Tambah Kategori -->
+    <div id="addCategoryModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Tambah Kategori</h3>
+          <button id="closeAddCategoryModal" class="text-gray-500 hover:text-gray-700">
+            <i class="bx bx-x text-2xl"></i>
+          </button>
+        </div>
+        <form method="POST" action="{{ route('categories.store') }}">
+          @csrf
+          <div class="mb-4">
+            <label class="block font-semibold mb-1">Nama Kategori</label>
+            <input type="text" name="name" class="w-full border p-2 rounded" required>
+          </div>
+          <div class="mb-4">
+            <label class="block font-semibold mb-1">Deskripsi</label>
+            <textarea name="description" class="w-full border p-2 rounded"></textarea>
+          </div>
+          <div class="flex justify-end gap-4">
+            <button type="submit" class="px-4 py-2 bg-amber-400 text-white rounded hover:bg-amber-500">Tambah</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Edit Kategori -->
+    <div id="editCategoryModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Edit Kategori</h3>
+          <button id="closeEditCategoryModal" class="text-gray-500 hover:text-gray-700">
+            <i class="bx bx-x text-2xl"></i>
+          </button>
+        </div>
+        <form id="editCategoryForm" method="POST" action="">
+          @csrf
+          @method('PUT')
+          <div class="mb-4">
+            <label class="block font-semibold mb-1">Nama Kategori</label>
+            <input type="text" name="name" id="editCategoryName" class="w-full border p-2 rounded" required>
+          </div>
+          <div class="mb-4">
+            <label class="block font-semibold mb-1">Deskripsi</label>
+            <textarea name="description" id="editCategoryDescription" class="w-full border p-2 rounded"></textarea>
+          </div>
+          <div class="flex justify-end gap-4">
+            <button type="submit" class="px-4 py-2 bg-amber-400 text-white rounded hover:bg-amber-500">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus Kategori -->
+    <div id="deleteCategoryModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Hapus Kategori</h3>
+          <button id="closeDeleteCategoryModal" class="text-gray-500 hover:text-gray-700">
+            <i class="bx bx-x text-2xl"></i>
+          </button>
+        </div>
+        <div class="mb-6">
+          <p class="text-gray-700">
+            Apakah Anda yakin ingin menghapus kategori
+            <span id="deleteCategoryName" class="font-semibold"></span>?
+          </p>
+          <p class="text-red-500 mt-2 text-sm">
+            Aksi ini tidak dapat dibatalkan!
+          </p>
+        </div>
+        <div class="flex justify-end space-x-3">
+          <button type="button" id="cancelDeleteCategory" class="px-4 py-2 border rounded-lg hover:bg-gray-100">
+            Batal
+          </button>
+          <form id="deleteCategoryForm" method="POST" action="">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+              Hapus Kategori
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div class="flex min-h-screen">
       <!-- Sidebar -->
       <x-sidebar-dashboard></x-sidebar-dashboard>
@@ -358,6 +444,59 @@
                   >
                     <i class="bx bxs-trash"></i>
                   </button>
+                  </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+          <div class="flex justify-end items-center px-6 mt-6">
+              <button
+                id="openAddCategory"
+                class="flex items-center bg-amber-400 text-white px-4 py-2 rounded-full hover:bg-amber-500"
+              >
+                <i class="bx bx-plus mr-2"></i> Tambah Kategori
+              </button>
+          </div>
+          <div class="bg-white p-4 rounded shadow px-6 mt-6">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="text-lg font-semibold">Daftar Kategori</h3>
+              <div class="space-x-2 text-gray-500">
+                <i class="bx bx-search"></i>
+                <i class="bx bx-filter"></i>
+              </div>
+            </div>
+            <table class="w-full text-left text-sm">
+              <thead>
+                <tr class="text-gray-600 border-b">
+                  <th class="py-2">Nama Kategori</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($categories as $category)
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="py-2">{{$category->name}}</td>
+                  <td>{{$category->description}}</td>
+                  <td class="space-x-2">
+                    <!-- Edit -->
+                    <button
+                      class="edit-category-btn bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                      data-id="{{ $category->id }}"
+                      data-name="{{ $category->name }}"
+                      data-description="{{ $category->description }}"
+                    >
+                      <i class="bx bxs-edit"></i>
+                    </button>
+                    <!-- Hapus -->
+                    <button
+                      type="button"
+                      class="delete-category-btn bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                      data-id="{{ $category->id }}"
+                      data-name="{{ $category->name }}"
+                    >
+                      <i class="bx bxs-trash"></i>
+                    </button>
                   </td>
                 </tr>
                 @endforeach
@@ -531,6 +670,56 @@
         previewImg.style.display = "none";
       }
     });
+  }
+});
+document.getElementById('openAddCategory')?.addEventListener('click', () => {
+  document.getElementById('addCategoryModal').classList.remove('hidden');
+});
+document.getElementById('closeAddCategoryModal')?.addEventListener('click', () => {
+  document.getElementById('addCategoryModal').classList.add('hidden');
+});
+
+// Edit kategori
+document.querySelectorAll('.edit-category-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.getElementById('editCategoryModal').classList.remove('hidden');
+    document.getElementById('editCategoryName').value = this.dataset.name;
+    document.getElementById('editCategoryDescription').value = this.dataset.description;
+    document.getElementById('editCategoryForm').action = '/dashboard/categories/' + this.dataset.id;
+  });
+});
+document.getElementById('closeEditCategoryModal')?.addEventListener('click', () => {
+  document.getElementById('editCategoryModal').classList.add('hidden');
+});
+
+// Modal Konfirmasi Hapus Kategori
+const deleteCategoryModal = document.getElementById("deleteCategoryModal");
+const closeDeleteCategoryModal = document.getElementById("closeDeleteCategoryModal");
+const cancelDeleteCategory = document.getElementById("cancelDeleteCategory");
+const deleteCategoryForm = document.getElementById("deleteCategoryForm");
+const deleteCategoryName = document.getElementById("deleteCategoryName");
+
+document.querySelectorAll('.delete-category-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    deleteCategoryModal.classList.remove('hidden');
+    deleteCategoryModal.classList.add('flex');
+    deleteCategoryName.textContent = `"${this.dataset.name}"`;
+    deleteCategoryForm.action = '/dashboard/categories/' + this.dataset.id;
+  });
+});
+
+[closeDeleteCategoryModal, cancelDeleteCategory].forEach(btn => {
+  btn?.addEventListener('click', () => {
+    deleteCategoryModal.classList.add('hidden');
+    deleteCategoryModal.classList.remove('flex');
+  });
+});
+
+// Klik luar modal untuk close
+window.addEventListener("click", (e) => {
+  if (e.target === deleteCategoryModal) {
+    deleteCategoryModal.classList.add("hidden");
+    deleteCategoryModal.classList.remove("flex");
   }
 });
 </script>
