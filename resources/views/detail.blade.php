@@ -119,19 +119,23 @@
                     </button>
                   </div>
                   <div class="mt-4 space-y-4">
+                    @if($reviews->isEmpty())
+                      <div class="text-gray-500 italic py-4">Belum ada ulasan untuk produk ini.</div>
+                    @endif
+
                     @foreach ($reviews as $review)
-                    <div class="flex items-center space-x-2 group">
-                      <img src="../img/{{$review->user->image}}" alt="Profile" class="w-9 h-9 rounded-full object-cover border-2 border-gray-300 group-hover:border-amber-400 transition-colors duration-200" />
-                      <span class="text-gray-800 font-medium">{{$review->user->name}}</span>
-                    </div>
-                    <div class="flex items-center">
-                      <i class="bx bxs-star text-amber-400"></i>
-                      <i class="bx bxs-star text-amber-400"></i>
-                      <i class="bx bxs-star text-amber-400"></i>
-                      <i class="bx bxs-star text-amber-400"></i>
-                      <i class="bx bxs-star text-gray-300"></i>
-                    </div>
-                    <p class="text-gray-600">{{$review->comment ?? 'belum ada review'}}</p>
+                      <div class="flex items-center space-x-2 group">
+                        <img src="../img/{{$review->user->image}}" alt="Profile" class="w-9 h-9 rounded-full object-cover border-2 border-gray-300 group-hover:border-amber-400 transition-colors duration-200" />
+                        <span class="text-gray-800 font-medium">{{$review->user->name}}</span>
+                      </div>
+                      <div class="flex items-center">
+                        <i class="bx bxs-star text-amber-400"></i>
+                        <i class="bx bxs-star text-amber-400"></i>
+                        <i class="bx bxs-star text-amber-400"></i>
+                        <i class="bx bxs-star text-amber-400"></i>
+                        <i class="bx bxs-star text-gray-300"></i>
+                      </div>
+                      <p class="text-gray-600">{{$review->comment ?? 'belum ada review'}}</p>
                     @endforeach
                   </div>
                 </div>  

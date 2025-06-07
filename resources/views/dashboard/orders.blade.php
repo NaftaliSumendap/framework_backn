@@ -141,12 +141,19 @@
                   <td>{{ $order->created_at ?? '-' }}</td>
                   <td>{{ $order->total_amount }}</td>
                   <td>
-                    <span class="status-badge status-payment bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">
-                      {{ $order->payment_status ? 'Lunas' : 'Pending' }}
-                    </span>
+                  <span class="status-badge status-payment text-xs px-3 py-1 rounded-full
+                    {{ $order->payment_status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                    {{ $order->payment_status ? 'Lunas' : 'Pending' }}
+                  </span>
                   </td>
                   <td>
-                    <span class="status-badge status-order bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full">
+                    <span class="status-badge status-order text-xs px-3 py-1 rounded-full
+                      @if($order->status == 'Dikonfirmasi') bg-purple-100 text-purple-800
+                      @elseif($order->status == 'Packaging') bg-blue-100 text-blue-800
+                      @elseif($order->status == 'Pengantaran') bg-orange-100 text-orange-800
+                      @elseif($order->status == 'Diterima') bg-green-100 text-green-800
+                      @elseif($order->status == 'Dibatalkan') bg-red-100 text-red-800
+                      @else bg-gray-100 text-gray-800 @endif">
                       {{ $order->status }}
                     </span>
                   </td>
