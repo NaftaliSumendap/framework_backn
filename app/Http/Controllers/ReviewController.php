@@ -43,4 +43,12 @@ public function store(Request $request, $productId)
     return back()->with('success', 'Ulasan berhasil ditambahkan!');
 }
 
+public function destroy($id)
+{
+    $review = \App\Models\Review::findOrFail($id);
+    $review->delete();
+
+    return back()->with('success', 'Review berhasil dihapus.');
+}
+
 }

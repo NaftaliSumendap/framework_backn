@@ -90,6 +90,8 @@ Route::middleware('auth')->group(function () {
     // Group khusus untuk dashboard / admin panel (hanya admin yang bisa mengakses)
     Route::middleware('role:admin')->group(function () {
 
+        Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+        
         // Dashboard Home
         Route::get('/dashboard/', [DashboardController::class, 'index'])->name('dashboard.index');
 

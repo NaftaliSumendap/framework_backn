@@ -157,6 +157,15 @@
               <img src="../img/{{$review->user->image}}" alt="Profile" class="w-9 h-9 rounded-full object-cover border-2 border-gray-300 group-hover:border-amber-400 transition-colors duration-200" />
               <span class="text-gray-800 font-medium">{{$review->user->name}}</span>
               <span class="text-xs text-gray-500">• {{ $review->created_at->diffForHumans() }}</span>
+              @if(auth()->check() && auth()->user()->role == 'admin')
+                <form action="{{ route('reviews.destroy', $review->id) }}" method="POST" onsubmit="return confirm('Hapus review ini?')" class="inline">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="ml-2 text-red-500 hover:text-red-700" title="Hapus Review">
+                    <i class="bx bx-trash"></i>
+                  </button>
+                </form>
+              @endif
             </div>
             <div class="flex items-center">
               @for ($i = 1; $i <= 5; $i++)
@@ -214,7 +223,7 @@
           <p class="mt-2 text-sm font-medium line-clamp-2">{{$product['name']}}</p>
           <p class="text-red-600 font-bold text-sm mt-1">Rp{{number_format($product['discount_price'], 0, ',', '.')}}</p>
           <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
-            <span class="text-yellow-500">★ 4.6 | {{$product['sold']}} Terjual</span>
+            <span class="text-yellow-500">★ {{ number_format($product->reviews->avg('rating'), 1) ?? '0.0' }} | {{$product['sold']}} Terjual</span>
           </div>
         </a>
         <button onclick="window.location.href='/cart'" class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
