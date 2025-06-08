@@ -15,9 +15,12 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ChatController;
 
 Route::middleware('auth')->group(function () {
 
+    Route::get('/chat/{userId?}', [ChatController::class, 'index'])->name('chat');
+    Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
     // Halaman umum yang bisa diakses admin dan user
     Route::post('/profile/update-ajax', [UserController::class, 'updateField'])->name('profile.update.ajax');
 
@@ -91,7 +94,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
 
         Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
-        
+
         // Dashboard Home
         Route::get('/dashboard/', [DashboardController::class, 'index'])->name('dashboard.index');
 
