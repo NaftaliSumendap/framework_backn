@@ -116,7 +116,7 @@ public function search(Request $request)
             break;
     }
 
-    $products = $products->get();
+    $products = Product::where('name', 'like', "%$query%")->paginate(8);
 
     return view('search', compact('products', 'query'));
 }

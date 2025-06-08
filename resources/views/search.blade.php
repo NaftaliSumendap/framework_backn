@@ -67,7 +67,7 @@
 
           <p class="text-red-600 font-bold text-sm mt-1">Rp{{number_format($product['discount_price'], 0, ',', '.')}}</p>
           <div class="flex flex-col mt-1 text-xs text-gray-500 space-y-0.5">
-              <span class="text-yellow-500">★ 4.6 | {{$product['sold']}} Terjual</span>
+              <span class="text-yellow-500">★ {{ number_format($product->reviews->avg('rating'), 1) ?? '0.0' }} | {{$product['sold']}} Terjual</span>
           </div>
           </a>
           <!-- Tombol Tambahkan tetap di luar <a> -->
@@ -79,12 +79,11 @@
       </div>
 @endif
 
-<div class="flex justify-center mt-8 space-x-2">
-    <button class="px-3 py-1 rounded">←</button>
-    <button class="px-3 py-1 font-bold bg-gray-200 rounded">1</button>
-    <button class="px-3 py-1 rounded">2</button>
-    <button class="px-3 py-1 rounded">→</button>
-</div>
+@if($products instanceof \Illuminate\Pagination\LengthAwarePaginator && $products->total() > 8)
+  <div class="flex justify-center mt-8">
+    {{ $products->links() }}
+  </div>
+@endif
     </div>
 </div>
       
