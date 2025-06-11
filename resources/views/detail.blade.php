@@ -10,10 +10,17 @@
 <body class="bg-gray-100">
 
 {{-- Popup sukses ulasan --}}
-@if(session('success'))
+@if(session('review_success'))
   <script>
     window.addEventListener('DOMContentLoaded', function() {
       document.getElementById('reviewSuccessModal').classList.remove('hidden');
+    });
+  </script>
+@endif
+@if(session('cart_success'))
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('successModal').classList.remove('hidden');
     });
   </script>
 @endif
@@ -102,7 +109,7 @@
   <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">
     <!-- Bagian Kiri: Gambar Produk -->
     <div class="w-full md:w-1/3">
-      <img src="../img/{{$product['image_path']}}" alt="Product Image" class="w-full h-full object-cover">
+      <img src="{{ asset('storage/products/' . $product['image_path']) }}" alt="Product Image" class="w-full h-full object-cover">
     </div>
 
     <!-- Bagian Tengah: Informasi Produk dan Ulasan -->
@@ -255,13 +262,16 @@
   });
 
   // Validasi saat form submit (opsional)
-  document.querySelector('form')?.addEventListener('submit', (e) => {
-    const quantity = parseInt(quantityInput.value);
-    if (quantity < 1 || isNaN(quantity)) {
-      e.preventDefault();
-      alert('Minimal pembelian adalah 1.');
-    }
-  });
+  const cartForm = document.querySelector('form[action*="cart.add"]');
+  if(cartForm) {
+    cartForm.addEventListener('submit', (e) => {
+      const quantity = parseInt(quantityInput.value);
+      if (quantity < 1 || isNaN(quantity)) {
+        e.preventDefault();
+        alert('Minimal pembelian adalah 1.');
+      }
+    });
+  }
 
   // Success Modal functionality
   const successModal = document.getElementById('successModal');
@@ -269,11 +279,14 @@
   const closeSuccessModal = document.getElementById('closeSuccessModal');
   const buyNowBtn = document.getElementById('buyNowBtn');
 
-  addToCartBtn.addEventListener('click', () => {
-    successModal.classList.remove('hidden');
-    setTimeout(() => {
-      successModal.classList.add('hidden');
-    }, 3000);
+  addToCartBtn.addEventListener('click', (e) => {
+      // Cek jika tombol ini ada di form keranjang
+      if (e.target.closest('form[action*="cart.add"]')) {
+          successModal.classList.remove('hidden');
+          setTimeout(() => {
+              successModal.classList.add('hidden');
+          }, 3000);
+      }
   });
   closeSuccessModal.addEventListener('click', () => {
     successModal.classList.add('hidden');

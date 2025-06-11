@@ -74,7 +74,7 @@ Route::middleware('auth')->group(function () {
             'products' => $products,
             'categories' => Category::all(),
             'category' => $category,
-            'query' => $category->name // <-- tambahkan ini!
+            'query' => $category->name
         ]);
     });
 

@@ -40,7 +40,7 @@ public function store(Request $request, $productId)
         'comment' => $request->comment,
     ]);
 
-    return back()->with('success', 'Ulasan berhasil ditambahkan!');
+    return back()->with('cart_success', 'Produk berhasil ditambahkan ke keranjang!');
 }
 
 public function destroy($id)

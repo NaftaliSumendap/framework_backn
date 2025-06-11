@@ -88,7 +88,7 @@ public function store(Request $request)
 
     Product::create($validated);
 
-    return redirect()->route('dashboard.store')->with('success', 'Produk berhasil ditambahkan!');
+    return redirect()->route('dashboard.store')->with('success', 'Produk berhasil ditambahkan ke keranjang!');
 }
 
 public function search(Request $request)

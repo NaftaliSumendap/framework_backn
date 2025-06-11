@@ -67,7 +67,7 @@ class CartController extends Controller
         }
 
         // Kembali ke halaman sebelumnya dengan pesan sukses
-        return redirect()->back()->with('success', $message);
+        return redirect()->back()->with('cart_success', $message);
     }
 
     /**
