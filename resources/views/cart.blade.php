@@ -22,7 +22,7 @@
       <div class="bg-white p-4 rounded-lg shadow-md flex items-start justify-between">
         <div class="flex items-start">
           {{-- Checkbox removed as per original request --}}
-          <img src="img/{{$cart->product->image_path}}" alt="{{$cart->product->name}}" class="w-24 h-24 object-cover rounded mr-4" />
+          <img src="{{ asset('storage/products/' . $cart->product->image_path) }}" alt="{{$cart->product->name}}" class="w-24 h-24 object-cover rounded mr-4" />
           <div>
             <h3 class="text-lg font-semibold">{{$cart->product->name}}</h3>
             <p class="text-gray-600">Harga: Rp{{number_format($cart->product->discount_price, 0, ',', '.')}}</p>

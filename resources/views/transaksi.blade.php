@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Transaksi - SounDeal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    {{-- Perbaikan: Menggunakan <script> untuk Boxicons JS --}}
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
   </head>
   <body class="bg-gray-100">
@@ -14,6 +13,18 @@
 
     <!-- Konten Utama Halaman Transaksi -->
     <main class="pt-20 pb-12 px-4 md:px-10">
+      
+          @if(session('success'))
+      <script>
+        showSuccessModal("{{ session('success') }}");
+      </script>
+    @endif
+    @if(session('error'))
+      <script>
+        showErrorModal("{{ session('error') }}");
+      </script>
+    @endif
+
       <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">
           Ringkasan Transaksi
@@ -40,7 +51,7 @@
             @foreach ($carts as $cart)
             <div class="flex items-center justify-between border-b border-t-0 border-gray-200 py-4 first:border-t">
               <div class="flex items-center">
-                <img src="img/{{$cart->product->image_path}}" alt="{{$cart->product->name}}" class="w-16 h-16 object-cover rounded mr-4" />
+                <img src="{{ asset('storage/products/' . $cart->product->image_path) }} "alt="{{$cart->product->name}}" class="w-16 h-16 object-cover rounded mr-4" />
                 <div>
                   <h3 class="text-lg font-semibold text-gray-800">{{$cart->product->name}}</h3>
                   <p class="text-gray-600 text-sm">Jumlah: {{ $cart->quantity }}</p>
@@ -211,7 +222,6 @@
   <!-- Footer -->
   <x-footer></x-footer>
   <script>
-    // Fungsi untuk menampilkan modal sukses
     function showSuccessModal(message, orderId = null) {
         const successModal = document.getElementById('successModal');
         const successModalTitle = document.getElementById('successModalTitle');
@@ -345,13 +355,4 @@
     });
 
     // Tampilkan pesan sukses/error dari session Laravel saat halaman dimuat
-    @if(session('success'))
-        showSuccessModal('{{ session('success') }}'); // Ini akan menampilkan pesan sukses umum
-    @endif
-
-    @if(session('error'))
-        showErrorModal('{{ session('error') }}');
-    @endif
-
   </script>
-</html>
