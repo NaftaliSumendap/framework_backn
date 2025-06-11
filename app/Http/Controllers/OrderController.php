@@ -1,40 +1,39 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\Product;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB; // Import DB facade for transactions
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log; // Pastikan ini di-import
 
 class OrderController extends Controller
 {
     /**
      * Menampilkan halaman ringkasan transaksi (checkout).
+     * Akan menampilkan item keranjang atau pesanan pending.
      *
      * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function showCheckoutForm()
     {
         $user = Auth::user();
+
         // Ambil item keranjang pengguna yang sedang login
         $carts = Cart::where('user_id', $user->id)->with('product')->get();
 
-        // Jika keranjang kosong, alihkan kembali ke halaman keranjang dengan pesan error
-        if ($carts->isEmpty()) {
-            return redirect()->route('cart.index')->with('error', 'Keranjang belanja Anda kosong.');
-        }
+        // Ambil pesanan yang sedang menunggu pembayaran untuk pengguna ini
+        $pendingOrders = Order::where('user_id', $user->id)
+                                ->where('status', 'pending')
+                                ->with('orderItems.product') // Eager load order items dan produknya
+                                ->get();
 
-        // Hitung total jumlah dari semua item di keranjang
-        $totalAmount = $carts->sum(function ($cart) {
-            return $cart->product->discount_price * $cart->quantity;
-        });
-
-        // Kirim data ke view
-        return view('transaksi', compact('carts', 'totalAmount', 'user'));
+        // Kirim data ke view. View akan memutuskan apa yang ditampilkan.
+        return view('transaksi', compact('carts', 'pendingOrders', 'user'));
     }
 
     /**
@@ -48,6 +47,8 @@ class OrderController extends Controller
         $user = Auth::user();
 
         // Validasi input dari form checkout
+        // Laravel secara otomatis akan mengalihkan kembali (redirect back)
+        // dengan error validasi ke halaman form jika validasi gagal.
         $request->validate([
             'shipping_address' => 'required|string|max:255',
             'shipping_method' => 'required|string|in:JNE,POS,TIKI', // Sesuaikan metode pengiriman yang Anda dukung
@@ -57,12 +58,11 @@ class OrderController extends Controller
         // Ambil item keranjang pengguna
         $carts = Cart::where('user_id', $user->id)->with('product')->get();
 
-        // Jika keranjang kosong, kembalikan dengan error
+        // Jika keranjang kosong, kembalikan dengan error (redirect)
         if ($carts->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Keranjang belanja Anda kosong, tidak dapat memproses pesanan.');
         }
 
-        // Gunakan transaksi database untuk memastikan semua operasi berhasil atau tidak sama sekali
         DB::beginTransaction();
         try {
             // Hitung total jumlah pesanan
@@ -109,30 +109,33 @@ class OrderController extends Controller
             DB::commit(); // Konfirmasi transaksi
 
             // Redirect ke halaman status pesanan dengan ID pesanan
-            return redirect()->route('status.order', ['order' => $order->id])->with('success', 'Pesanan Anda berhasil dibuat!');
+            // Menggunakan with('order_id') agar JS bisa membaca dan memicu modal
+            return redirect()->route('status.order', ['order' => $order->id])->with('success', 'Pesanan Anda berhasil dibuat!')->with('order_id', $order->id);
 
         } catch (\Exception $e) {
             DB::rollBack(); // Batalkan transaksi jika terjadi kesalahan
             // Log error untuk debugging
             Log::error('Gagal memproses pesanan: ' . $e->getMessage());
+            // Redirect kembali dengan pesan error
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memproses pesanan Anda. Silakan coba lagi.');
         }
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Menampilkan daftar semua pesanan pengguna yang sedang login.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function myOrders()
     {
-    $order = Order::findOrFail($id);
-    $order->status = $request->status;
-    $order->payment_status = $request->payment_status;
-    $order->save();
+        $user = Auth::user();
+        // Ambil semua pesanan untuk pengguna yang sedang login, diurutkan dari terbaru
+        // Eager load orderItems dan product agar bisa ditampilkan di view
+        $orders = Order::where('user_id', $user->id)
+                       ->with('orderItems.product')
+                       ->orderBy('created_at', 'desc')
+                       ->get();
 
-    return redirect()->back()->with('success', 'Status pesanan berhasil diubah!');
-    }
-
-    public function destroy($id)
-    {
-        $order = Order::findOrFail($id);
-        $order->delete();
-        return redirect()->back()->with('success', 'Pesanan berhasil dihapus!');
+        return view('my_orders', compact('orders')); // Akan menampilkan di file my_orders.blade.php
     }
 }

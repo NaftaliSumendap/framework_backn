@@ -57,24 +57,8 @@
 
         <!-- User Section - Tetap di posisi semula -->
         <div class="flex items-center space-x-4 ml-auto">
-          @if(Auth::check() && Auth::user()->role == 'admin')
-          <a href="/dashboard" class="text-gray-800 hover:text-amber-400">
-            <svg
-              class="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3.75 3.75h4.5v4.5h-4.5v-4.5zm0 6.75h4.5v4.5h-4.5v-4.5zm6.75-6.75h4.5v4.5h-4.5v-4.5zm0 6.75h4.5v4.5h-4.5v-4.5zm6.75-6.75h4.5v4.5h-4.5v-4.5zm0 6.75h4.5v4.5h-4.5v-4.5zm-13.5 6.75h4.5v4.5h-4.5v-4.5zm6.75 0h4.5v4.5h-4.5v-4.5zm6.75 0h4.5v4.5h-4.5v-4.5z"
-              />
-            </svg>
-          @endif
-          <!-- Tambahkan ikon status pengiriman di sini -->
-          <a href="/status" class="text-gray-800 hover:text-amber-400">
+          <!-- Mengubah link status pengiriman ke daftar semua pesanan -->
+          <a href="{{ route('my.orders.index') }}" class="text-gray-800 hover:text-amber-400">
             <svg
               class="h-6 w-6"
               fill="none"
@@ -126,7 +110,6 @@
               class="text-gray-800 font-medium group-hover:text-amber-400 transition"
               >
               {{ Auth::user()->name }}
-              
               </span
             >
             <img
@@ -154,25 +137,9 @@
       />
     </form>
     <div class="flex flex-col gap-4">
-          @if(Auth::check() && Auth::user()->role == 'admin')
-          <a href="/dashboard" class="flex items-center gap-2 text-gray-800 hover:text-amber-400">
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3.75 3.75h4.5v4.5h-4.5v-4.5zm0 6.75h4.5v4.5h-4.5v-4.5zm6.75-6.75h4.5v4.5h-4.5v-4.5zm0 6.75h4.5v4.5h-4.5v-4.5zm6.75-6.75h4.5v4.5h-4.5v-4.5zm0 6.75h4.5v4.5h-4.5v-4.5zm-13.5 6.75h4.5v4.5h-4.5v-4.5zm6.75 0h4.5v4.5h-4.5v-4.5zm6.75 0h4.5v4.5h-4.5v-4.5z"
-              />
-            </svg> 
-            Admin Dashboard
-          @endif
+      <!-- Mengubah link status pengiriman di mobile ke daftar semua pesanan -->
       <a
-        href="/status"
+        href="{{ route('my.orders.index') }}"
         class="flex items-center gap-2 text-gray-800 hover:text-amber-400"
       >
         <svg
@@ -188,7 +155,7 @@
             d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
           />
         </svg>
-        Status Pengiriman
+        Pesanan Saya
       </a>
       <a
         href="/chat"
@@ -240,7 +207,6 @@
           class="w-6 h-6 rounded-full border border-gray-300"
         />
         {{ Auth::user()->name }}
-        
       </a>
     </div>
   </div>
