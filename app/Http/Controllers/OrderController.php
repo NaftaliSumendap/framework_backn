@@ -147,4 +147,25 @@ class OrderController extends Controller
     $orders = Order::with('orderItems.product')->where('user_id', Auth::id())->latest()->get();
     return view('status', compact('orders'));
 }
+
+public function uploadScreenshot(Request $request, $orderId)
+{
+    $request->validate([
+        'screenshot' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
+
+    $order = Order::findOrFail($orderId);
+
+    // Simpan file ke storage/app/public/screenshots
+    if ($request->hasFile('screenshot')) {
+        $file = $request->file('screenshot');
+        $filename = uniqid().'_'.$file->getClientOriginalName();
+        $file->storeAs('public/screenshots', $filename);
+        $order->screenshot = $filename; // Simpan hanya nama file
+    }
+
+    $order->save();
+
+    return back()->with('success', 'Bukti pembayaran berhasil diupload!');
+}
 }

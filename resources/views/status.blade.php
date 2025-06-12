@@ -104,6 +104,18 @@
       @if($order->description)
         <div class="mb-2"><span class="font-semibold">Catatan:</span> {{ $order->description }}</div>
       @endif
+        <form action="{{ route('orders.upload_screenshot', $order->id) }}" method="POST" enctype="multipart/form-data" class="mt-6">
+    @csrf
+    <label class="block mb-2 font-semibold text-gray-700">Upload Bukti Pembayaran / Screenshot</label>
+    <input type="file" name="screenshot" accept="image/*" required class="block w-full mb-2 border border-gray-300 rounded px-3 py-2">
+    <button type="submit" class="bg-amber-400 text-white px-4 py-2 rounded hover:bg-amber-500 transition">Kirim ke Admin</button>
+    @if($order->screenshot)
+        <div class="mt-2">
+            <span class="text-green-600 text-sm">Sudah upload bukti:</span>
+            <a href="{{ asset('storage/screenshots/'.$order->screenshot) }}" target="_blank">Lihat Bukti</a>
+        </div>
+    @endif
+</form>
     </div>
 <div>
   <h4 class="font-semibold mb-2">Item Pesanan:</h4>

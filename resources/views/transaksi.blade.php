@@ -91,23 +91,26 @@
           </div>
 
           <!-- Metode Pembayaran -->
-          <div class="mt-8">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">Metode Pembayaran</h3>
-            <div class="space-y-3">
-              <label class="flex items-center bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition">
-                <input type="radio" name="payment_method" value="Transfer Bank" class="form-radio text-amber-400 h-5 w-5" checked />
-                <span class="ml-3 text-gray-700 font-medium">Transfer Bank</span>
-              </label>
-              <label class="flex items-center bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition">
-                <input type="radio" name="payment_method" value="Kartu Kredit" class="form-radio text-amber-400 h-5 w-5" />
-                <span class="ml-3 text-gray-700 font-medium">Kartu Kredit</span>
-              </label>
-              <label class="flex items-center bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition">
-                <input type="radio" name="payment_method" value="E-Wallet" class="form-radio text-amber-400 h-5 w-5" />
-                <span class="ml-3 text-gray-700 font-medium">E-Wallet</span>
-              </label>
-            </div>
-          </div>
+<div class="mt-8">
+  <h3 class="text-xl font-bold text-gray-800 mb-4">Metode Pembayaran</h3>
+  <div class="space-y-3">
+    <label class="flex items-center bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition">
+      <input type="radio" name="payment_method" value="Transfer Bank" class="form-radio text-amber-400 h-5 w-5" checked />
+      <span class="ml-3 text-gray-700 font-medium">Transfer Bank</span>
+      <span class="ml-3 text-xs text-gray-500">
+        (BCA 1234567890 a.n. PT SounDeal)
+      </span>
+    </label>
+    <label class="flex items-center bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition">
+      <input type="radio" name="payment_method" value="Kartu Kredit" class="form-radio text-amber-400 h-5 w-5" />
+      <span class="ml-3 text-gray-700 font-medium">Kartu Kredit</span>
+    </label>
+    <label class="flex items-center bg-gray-50 p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition">
+      <input type="radio" name="payment_method" value="E-Wallet" class="form-radio text-amber-400 h-5 w-5" />
+      <span class="ml-3 text-gray-700 font-medium">E-Wallet</span>
+    </label>
+  </div>
+</div>
 
           <!-- Tombol Bayar Sekarang -->
           <div class="mt-8">

@@ -83,6 +83,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/update/photo', [ProfileController::class, 'updatePhoto'])->name('profile.update.photo');
 
 Route::post('/cart/add', [CartController::class, 'addAjax'])->name('cart.add.ajax');
+
+Route::post('/orders/{order}/upload-screenshot', [OrderController::class, 'uploadScreenshot'])->name('orders.upload_screenshot');
     // Checkout & Order
     Route::get('/transaksi', [OrderController::class, 'showCheckoutForm'])->name('checkout.form');
 Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');

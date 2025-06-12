@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('shipping_address');
             $table->string('shipping_method');
             $table->string('payment_method');
+            $table->string('screenshot')->nullable();
             $table->boolean('payment_status')->default(false);
             $table->timestamps();
         });

@@ -291,7 +291,8 @@
   closeSuccessModal.addEventListener('click', () => {
     successModal.classList.add('hidden');
   });
- buyNowBtn.addEventListener('click', () => {
+  
+buyNowBtn.addEventListener('click', () => {
   const quantity = document.getElementById('quantity').value || 1;
   const productId = "{{ $product['id'] }}";
   window.location.href = `/transaksi?product_id=${productId}&quantity=${quantity}`;

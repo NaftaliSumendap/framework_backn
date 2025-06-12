@@ -130,6 +130,7 @@
                 <th>Total</th>
                 <th>Status</th>
                 <th>Status Pembayaran</th>
+                <th>Screenshot</th>
                 <th>Aksi</th>
               </tr>
             </thead>
@@ -167,6 +168,13 @@
                       {{ $order->status }}
                     </span>
                   </td>
+                  <td>
+  @if($order->screenshot)
+    <a href="{{ asset('storage/screenshots/'.$order->screenshoot) }}" target="_blank" class="underline text-blue-500">Lihat</a>
+  @else
+    <span class="text-gray-400 text-xs italic">Belum ada</span>
+  @endif
+</td>
                   <td class="space-x-2">
                     <button class="update-status-btn bg-amber-400 text-white px-3 py-1 rounded hover:bg-amber-500">
                       <i class="bx bx-edit"></i>
