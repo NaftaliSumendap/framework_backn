@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('shipping_method');
             $table->string('payment_method');
             $table->boolean('payment_status')->default(false);
-            $table->string('color');
             $table->timestamps();
         });
     }

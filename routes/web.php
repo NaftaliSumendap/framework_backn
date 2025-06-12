@@ -80,6 +80,8 @@ Route::middleware('auth')->group(function () {
         ]);
     });
 
+    Route::post('/profile/update/photo', [ProfileController::class, 'updatePhoto'])->name('profile.update.photo');
+
     // Checkout & Order
     Route::get('/transaksi', [OrderController::class, 'showCheckoutForm'])->name('checkout.form');
 Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
