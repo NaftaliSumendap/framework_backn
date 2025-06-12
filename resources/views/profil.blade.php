@@ -34,7 +34,7 @@
   </label>
 </form>
           <!-- Logout Button -->
-<button onclick="showLogoutConfirmation()" class="bg-red-500 hover:bg-red-600 text-white rounded-md px-4 py-2 text-sm mt-4 w-full transition-colors duration-200">
+<button onclick="showLogoutConfirmation()" class="bg-red-500 hover:bg-red-600 text-white rounded-md px-7 py-2 w-fit text-sm mt-4 transition-colors duration-200">
   Keluar
 </button>
         </div>
