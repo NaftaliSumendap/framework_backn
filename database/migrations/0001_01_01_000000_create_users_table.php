@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->text('address')->nullable();
             $table->string('image')->nullable();
+            $table->enum('gender', ['Laki-laki', 'Perempuan'])->nullable(); // Tambahkan ini
+            $table->date('birth_date')->nullable(); // Tambahkan ini
             $table->rememberToken();
             $table->timestamps();
         });

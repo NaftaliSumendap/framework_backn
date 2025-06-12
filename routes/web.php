@@ -17,6 +17,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProfileController;
 
 Route::middleware('auth')->group(function () {
 
@@ -84,6 +85,9 @@ Route::middleware('auth')->group(function () {
 Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/status/{order}', fn(Order $order) => view('status', ['order' => $order]))->name('status.order');
     Route::get('/term', fn() => view('term'));
+
+
+    Route::post('/profile/update/ajax', [ProfileController::class, 'updateAjax'])->name('profile.update.ajax');
 
     Route::get('/status', [OrderController::class, 'showStatus'])->name('status.order');
 

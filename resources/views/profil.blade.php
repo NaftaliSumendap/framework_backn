@@ -127,6 +127,36 @@
 </html>
 
 <script>
+  document.getElementById('editForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const field = formData.get('field');
+    const value = formData.get('value');
+
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            },
+            body: formData
+        });
+        const data = await response.json();
+        if (data.success) {
+            // Update tampilan profil secara langsung
+            document.getElementById(field.replace('_', '-') + '-value').textContent = value;
+            closeModal();
+            alert('Profil berhasil diperbarui!');
+        } else {
+            alert(data.message || 'Gagal memperbarui profil.');
+        }
+    } catch (err) {
+        alert('Terjadi kesalahan.');
+    }
+});
+
   let currentFieldId = null;
   let currentInputType = null;
 
