@@ -138,7 +138,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Mendapatkan status pesanan dari data yang dikirimkan oleh controller
-        const orderStatus = "{{ $order->status }}"; // Contoh: 'pending', 'processing', 'shipped', 'delivered'
+         // Contoh: 'pending', 'processing', 'shipped', 'delivered'
         let currentStep = 0;
 
         // Menentukan langkah saat ini berdasarkan status pesanan
