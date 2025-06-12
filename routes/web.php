@@ -46,14 +46,28 @@ Route::middleware('auth')->group(function () {
         ]);
     })->name('cart.index');
 
-    Route::get('/detail/{product:slug}', function (Product $product) {
-        return view('detail', [
-            'product' => $product,
-            'products' => Product::all()->except($product->id),
-            'categories' => Category::all(),
-            'reviews' => Review::where('product_id', $product->id)->get()
-        ]);
-    });
+Route::get('/detail/{product:slug}', function (Product $product) {
+    $alreadyReviewed = \App\Models\Review::where('user_id', Auth::id())
+        ->where('product_id', $product->id)
+        ->exists();
+
+    // Cek apakah user punya order dengan status Diterima untuk produk ini
+    $orders = \App\Models\Order::where('user_id', Auth::id())
+        ->whereHas('orderItems', function($q) use ($product) {
+            $q->where('product_id', $product->id);
+        })
+        ->where('status', 'Diterima')
+        ->exists();
+
+    return view('detail', [
+        'product' => $product,
+        'products' => \App\Models\Product::all()->except($product->id),
+        'categories' => \App\Models\Category::all(),
+        'reviews' => \App\Models\Review::where('product_id', $product->id)->get(),
+        'orders' => $orders,
+        'alreadyReviewed' => $alreadyReviewed,
+    ]);
+});
 
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::put('/cart/update/{cart}', [CartController::class, 'update'])->name('cart.update');

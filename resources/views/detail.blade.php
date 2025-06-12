@@ -146,9 +146,10 @@
         <div class="flex justify-between items-center">
           <h3 class="text-lg font-semibold text-gray-700 pt-6">Ulasan</h3>
           @php
-            $alreadyReviewed = $reviews->where('user_id', auth()->id())->where('product_id', $product['id'])->count() > 0;
+            $canReview = $orders && !$alreadyReviewed;
           @endphp
-          @if(auth()->check() && !$alreadyReviewed)
+
+          @if(auth()->check() && $canReview)
             <button id="openReviewModal" class="flex items-center text-amber-400 hover:text-amber-500">
               <i class="bx bx-edit mr-1"></i> Buat Ulasan
             </button>

@@ -157,12 +157,15 @@ public function uploadScreenshot(Request $request, $orderId)
     $order = Order::findOrFail($orderId);
 
     // Simpan file ke storage/app/public/screenshots
-    if ($request->hasFile('screenshot')) {
-        $file = $request->file('screenshot');
-        $filename = uniqid().'_'.$file->getClientOriginalName();
-        $file->storeAs('public/screenshots', $filename);
-        $order->screenshot = $filename; // Simpan hanya nama file
+if ($request->hasFile('screenshot')) {
+    $file = $request->file('screenshot');
+    $filename = $file->getClientOriginalName();
+    $result = $file->storeAs('public/screenshots', $filename);
+    if (!$result) {
+        dd('Gagal upload file!');
     }
+    $order->screenshot = $filename;
+}
 
     $order->save();
 
