@@ -160,10 +160,8 @@ public function uploadScreenshot(Request $request, $orderId)
 if ($request->hasFile('screenshot')) {
     $file = $request->file('screenshot');
     $filename = $file->getClientOriginalName();
-    $result = $file->storeAs('public/screenshots', $filename);
-    if (!$result) {
-        dd('Gagal upload file!');
-    }
+    // Simpan ke public/screenshots/
+    $file->move(public_path('screenshots'), $filename);
     $order->screenshot = $filename;
 }
 

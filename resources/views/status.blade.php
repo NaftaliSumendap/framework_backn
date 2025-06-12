@@ -112,7 +112,7 @@
     @if($order->screenshot)
         <div class="mt-2">
             <span class="text-green-600 text-sm">Sudah upload bukti:</span>
-            <a href="{{ asset('storage/screenshots/'.$order->screenshot) }}" target="_blank">Lihat Bukti</a>
+            <a href="../screenshots/{{$order->screenshot }}" target="_blank">Lihat Bukti</a>
         </div>
     @endif
 </form>
