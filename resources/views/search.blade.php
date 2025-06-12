@@ -60,7 +60,7 @@
           <!-- Link ke product.html -->
           <a href="/detail/{{$product['slug']}}">
           <div class="relative w-full h-64">
-              <img src="../img/{{$product['image_path']}}" alt="Produk" class="w-full h-full object-cover rounded">
+              <img src="{{ asset('storage/products/' . $product['image_path']) }}" alt="Produk" class="w-full h-full object-cover rounded">
           </div>
           <!-- Konten Produk -->
           <p class="mt-2 text-sm font-medium line-clamp-2">{{$product['name']}}</p>

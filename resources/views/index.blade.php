@@ -60,12 +60,37 @@
           </div>
           </a>
           <!-- Tombol Tambahkan tetap di luar <a> -->
-          <button class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300">
-          <a href="/cart/{{$product['slug']}}">Tambahkan</a>
-          </button>
+<button
+  class="mt-2 text-xs bg-amber-400 text-black px-5 py-2 rounded hover:bg-yellow-300"
+  onclick="addToCart({{ $product['id'] }})"
+  type="button"
+>
+  Tambahkan
+</button>
       </div>
       @endforeach
       </div>
     </div>
   </div>
 </x-layout>
+<script>
+function addToCart(productId) {
+  fetch("{{ route('cart.add.ajax') }}", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": "{{ csrf_token() }}"
+    },
+    body: JSON.stringify({ product_id: productId })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert(data.message); // Ganti dengan modal/toast jika ingin
+    } else {
+      alert('Gagal menambahkan ke keranjang');
+    }
+  })
+  .catch(() => alert('Terjadi kesalahan'));
+}
+</script>

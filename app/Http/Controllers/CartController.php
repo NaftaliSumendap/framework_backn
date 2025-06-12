@@ -118,4 +118,21 @@ class CartController extends Controller
         // Kembali ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Produk berhasil dihapus dari keranjang!');
     }
+
+    public function addAjax(Request $request)
+{
+    $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'quantity' => 'nullable|integer|min:1'
+    ]);
+    $user = auth()->user();
+    $cart = \App\Models\Cart::firstOrCreate(
+        ['user_id' => $user->id, 'product_id' => $request->product_id],
+        ['quantity' => 0]
+    );
+    $cart->quantity += $request->input('quantity', 1);
+    $cart->save();
+
+    return response()->json(['success' => true, 'message' => 'Produk berhasil ditambahkan ke keranjang!']);
+}
 }

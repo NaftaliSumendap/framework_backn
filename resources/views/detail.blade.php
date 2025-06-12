@@ -225,7 +225,7 @@
       <div class="bg-white rounded shadow hover:shadow-md transition p-4 w-full">
         <a href="/detail/{{$product['slug']}}">
           <div class="relative w-full h-64">
-            <img src="../img/{{$product['image_path']}}" alt="Produk" class="w-full h-full object-cover rounded">
+            <img src="{{ asset('storage/products/' . $product['image_path']) }}" alt="Produk" class="w-full h-full object-cover rounded">
           </div>
           <p class="mt-2 text-sm font-medium line-clamp-2">{{$product['name']}}</p>
           <p class="text-red-600 font-bold text-sm mt-1">Rp{{number_format($product['discount_price'], 0, ',', '.')}}</p>
@@ -291,9 +291,11 @@
   closeSuccessModal.addEventListener('click', () => {
     successModal.classList.add('hidden');
   });
-  buyNowBtn.addEventListener('click', () => {
-    window.location.href = '/transaksi';
-  });
+ buyNowBtn.addEventListener('click', () => {
+  const quantity = document.getElementById('quantity').value || 1;
+  const productId = "{{ $product['id'] }}";
+  window.location.href = `/transaksi?product_id=${productId}&quantity=${quantity}`;
+});
 
   // Review Modal functionality
   const reviewModal = document.getElementById('reviewModal');

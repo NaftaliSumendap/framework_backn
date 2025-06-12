@@ -61,37 +61,37 @@
   <!-- Garis horizontal penuh -->
   <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 z-0" style="transform: translateY(-50%);"></div>
   @php
-    $steps = [
-      ['icon' => 'bx-check', 'title' => 'Dikonfirmasi'],
-      ['icon' => 'bx-package', 'title' => 'Dikemas'],
-      ['icon' => 'bx-truck', 'title' => 'Dikirim'],
-      ['icon' => 'bx-home', 'title' => 'Diterima'],
-    ];
-    $statusMap = ['pending'=>1, 'processing'=>2, 'shipped'=>3, 'delivered'=>4];
-    $currentStep = $statusMap[$order->status] ?? 1;
+  $steps = [
+    ['icon' => 'bx-time', 'title' => 'Menunggu'],
+    ['icon' => 'bx-check-circle', 'title' => 'Dikonfirmasi'],
+    ['icon' => 'bx-package', 'title' => 'Packaging'],
+    ['icon' => 'bx-car', 'title' => 'Pengantaran'],
+    ['icon' => 'bx-home', 'title' => 'Diterima'],
+  ];
+    $statusMap = [
+    'Menunggu'     => 1,
+    'Dikonfirmasi' => 2,
+    'Packaging'    => 3,
+    'Pengantaran'  => 4,
+    'Diterima'     => 5,
+    'Dibatalkan'   => 0, // (opsional, jika ingin handle dibatalkan)
+  ];
+  $currentStep = $statusMap[$order->status] ?? 2;
   @endphp
-  @foreach($steps as $i => $step)
-    <div class="relative flex flex-col items-center z-10 w-1/4">
-      <!-- Bulatan step -->
-      <div class="w-12 h-12 flex items-center justify-center rounded-full
-        {{ $i+1 < $currentStep ? 'bg-green-400 text-white' : ($i+1 == $currentStep ? 'bg-amber-400 text-white' : 'bg-gray-200 text-gray-400') }}
-        shadow mb-2 border-4 border-white z-10">
-        <i class="bx {{ $step['icon'] }} text-2xl"></i>
-      </div>
-      <!-- Label step -->
-      <span class="text-xs font-semibold mt-1
-        {{ $i+1 <= $currentStep ? 'text-amber-500' : 'text-gray-400' }}">
-        {{ $step['title'] }}
-      </span>
-      <!-- Garis aktif di belakang bulatan, kecuali step terakhir -->
-      @if($i < count($steps)-1)
-        <div class="absolute top-1/2 left-1/2 w-full h-1
-          {{ $i+1 < $currentStep ? 'bg-green-400' : 'bg-gray-200' }}"
-          style="z-index:0; transform: translateY(-50%); left: 50%; right: 0;">
-        </div>
-      @endif
+ @foreach($steps as $i => $step)
+  <div class="relative flex flex-col items-center z-10 w-1/4 progress-step">
+    <div class="step-icon w-12 h-12 flex items-center justify-center rounded-full
+      {{ $i+1 < $currentStep ? 'bg-green-400 text-white' : ($i+1 == $currentStep ? 'bg-amber-400 text-white' : 'bg-gray-200 text-gray-400') }}
+      shadow mb-2 border-4 border-white z-10">
+      <i class="bx {{ $step['icon'] }} text-2xl"></i>
     </div>
-  @endforeach
+    <span class="step-label text-xs font-semibold mt-1
+      {{ $i+1 <= $currentStep ? 'text-amber-500' : 'text-gray-400' }}">
+      {{ $step['title'] }}
+    </span>
+    <!-- ...garis... -->
+  </div>
+@endforeach
 </div>
 
   <!-- Detail Pesanan -->
@@ -136,66 +136,27 @@
 <!-- Footer -->
 <x-footer></x-footer>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Mendapatkan status pesanan dari data yang dikirimkan oleh controller
-         // Contoh: 'pending', 'processing', 'shipped', 'delivered'
-        let currentStep = 0;
+    function updateOrderStatus(newStatus) {
+    // Map status ke step
+    const statusMap = { 'Dikonfirmasi ': 1, 'Packaging': 2, 'Pengantaran': 3, 'Diterima': 4 };
+    const currentStep = statusMap[newStatus] || 1;
 
-        // Menentukan langkah saat ini berdasarkan status pesanan
-        if (orderStatus === 'pending') {
-            currentStep = 1;
-        } else if (orderStatus === 'processing') {
-            currentStep = 2;
-        } else if (orderStatus === 'shipped') {
-            currentStep = 3;
-        } else if (orderStatus === 'delivered') {
-            currentStep = 4;
-        }
-
-        // Memperbarui tinggi progress bar
-        const progressBar = document.getElementById('progressBar');
-        if (currentStep === 1) {
-            progressBar.style.height = '25%';
-        } else if (currentStep === 2) {
-            progressBar.style.height = '50%';
-        } else if (currentStep === 3) {
-            progressBar.style.height = '75%';
-        } else if (currentStep === 4) {
-            progressBar.style.height = '100%';
+    // Update step tampilan
+    document.querySelectorAll('.progress-step').forEach((step, i) => {
+        const icon = step.querySelector('.step-icon');
+        const label = step.querySelector('.step-label');
+        if (i + 1 < currentStep) {
+            icon.className = 'step-icon bg-green-400 text-white w-12 h-12 flex items-center justify-center rounded-full shadow mb-2 border-4 border-white z-10';
+            label.className = 'step-label text-xs font-semibold mt-1 text-amber-500';
+        } else if (i + 1 === currentStep) {
+            icon.className = 'step-icon bg-amber-400 text-white w-12 h-12 flex items-center justify-center rounded-full shadow mb-2 border-4 border-white z-10';
+            label.className = 'step-label text-xs font-semibold mt-1 text-amber-500';
         } else {
-            progressBar.style.height = '0%'; // Jika status tidak dikenal atau belum dimulai
-        }
-
-        // Menyorot langkah yang sudah selesai dan aktif
-        for (let i = 1; i <= 4; i++) {
-            const step = document.getElementById(`step${i}`);
-            const icon = step.querySelector('div:first-child');
-            const text = step.querySelector('p:first-child');
-
-            if (i < currentStep) {
-                // Langkah yang sudah selesai
-                step.classList.add('step-completed');
-                icon.classList.remove('bg-gray-300');
-                icon.classList.add('step-icon-completed');
-                text.classList.remove('text-gray-500');
-                text.classList.add('step-completed');
-            } else if (i === currentStep) {
-                // Langkah saat ini
-                step.classList.add('step-active');
-                icon.classList.remove('bg-gray-300');
-                icon.classList.add('step-icon-active');
-                text.classList.remove('text-gray-500');
-                text.classList.add('step-active');
-            } else {
-                // Langkah yang belum tercapai
-                step.classList.remove('step-active', 'step-completed');
-                icon.classList.remove('step-icon-active', 'step-icon-completed');
-                icon.classList.add('bg-gray-300');
-                text.classList.remove('step-active', 'step-completed');
-                text.classList.add('text-gray-500');
-            }
+            icon.className = 'step-icon bg-gray-200 text-gray-400 w-12 h-12 flex items-center justify-center rounded-full shadow mb-2 border-4 border-white z-10';
+            label.className = 'step-label text-xs font-semibold mt-1 text-gray-400';
         }
     });
+}
 
     // Tampilkan pesan sukses/error dari session Laravel (jika ada)
     @if(session('success'))
