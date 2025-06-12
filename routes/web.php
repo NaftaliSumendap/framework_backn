@@ -16,6 +16,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\CheckoutController;
 
 Route::middleware('auth')->group(function () {
 
@@ -80,9 +81,11 @@ Route::middleware('auth')->group(function () {
 
     // Checkout & Order
     Route::get('/transaksi', [OrderController::class, 'showCheckoutForm'])->name('checkout.form');
-    Route::post('/transaksi/process', [OrderController::class, 'processOrder'])->name('checkout.process');
+Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/status/{order}', fn(Order $order) => view('status', ['order' => $order]))->name('status.order');
     Route::get('/term', fn() => view('term'));
+
+    Route::get('/status', [OrderController::class, 'showStatus'])->name('status.order');
 
     // Logout POST
     Route::post('/logout', function () {

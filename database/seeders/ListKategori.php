@@ -21,9 +21,9 @@ class ListKategori extends Seeder
                 'image' => null, // Jika tidak ada gambar, bisa di-set NULL
             ],
             [
-                'name' => 'Piano',
-                'slug' => 'piano',
-                'description' => 'Pilihan Piano yang terbaik',
+                'name' => 'Keyboard',
+                'slug' => 'kerboard',
+                'description' => 'Pilihan Keybpard yang terbaik',
                 'image' => null,
             ],
             [

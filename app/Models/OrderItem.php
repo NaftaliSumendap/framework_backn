@@ -2,18 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
-    use HasFactory;
+    protected $table = 'order_items';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'order_id',
         'product_id',
@@ -21,17 +15,13 @@ class OrderItem extends Model
         'price',
     ];
 
-    /**
-     * Get the order that owns the order item.
-     */
+    // Relasi ke Order
     public function order()
     {
         return $this->belongsTo(Order::class);
     }
 
-    /**
-     * Get the product associated with the order item.
-     */
+    // Relasi ke Product
     public function product()
     {
         return $this->belongsTo(Product::class);

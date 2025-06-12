@@ -137,9 +137,19 @@
               @foreach ($orders as $order)
                 <tr class="border-b hover:bg-gray-50" data-order-id="{{ $order->id }}">
                   <td class="py-2">{{ $order->user->name }}</td>
-                  <td>{{ $order->product->name ?? '-' }}</td>
+                  <td>
+                  @if($order->orderItems->count())
+                    @foreach($order->orderItems as $item)
+                      <span class="inline-block bg-gray-100 rounded px-2 py-1 mr-1 mb-1">
+                        {{ $item->product->name }} <span class="text-xs text-gray-400">x{{ $item->quantity }}</span>
+                      </span>
+                    @endforeach
+                  @else
+                    -
+                  @endif
+                </td>
                   <td>{{ $order->created_at ?? '-' }}</td>
-                  <td>{{ $order->total_amount }}</td>
+                  <td>Rp{{ number_format($order->total_amount, 0, ',', '.') }}</td>
                   <td>
                   <span class="status-badge status-payment text-xs px-3 py-1 rounded-full
                     {{ $order->payment_status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">

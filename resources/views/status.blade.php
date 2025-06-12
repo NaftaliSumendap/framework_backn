@@ -38,135 +38,100 @@
 
   <!-- Main Content -->
   <main class="flex-grow container mx-auto px-4 py-20 space-y-6">
-    <!-- Tracking Order Section -->
-    <div class="bg-white p-6 rounded-lg shadow-md">
-      <h2 class="text-2xl font-bold mb-6">Status Pengiriman Pesanan #{{ $order->order_number }}</h2>
-      <p class="text-gray-600 mb-4">Status saat ini: <span class="font-semibold text-amber-500">{{ ucfirst($order->status) }}</span></p>
-
-      <div class="relative flex flex-col items-center py-4">
-        <!-- Progress Bar (Vertical) -->
-        <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gray-200 rounded-full">
-          <div id="progressBar" class="absolute bottom-0 w-full bg-amber-400 rounded-full transition-all duration-500 ease-in-out" style="height: 0%;"></div>
-        </div>
-
-        <!-- Steps -->
-        <div class="flex flex-col items-center w-full">
-          <!-- Step 1: Dikonfirmasi -->
-          <div id="step1" class="flex items-center w-full py-4 relative">
-            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center z-10 transition-colors duration-300">
-              <i class="bx bx-check text-white text-xl"></i>
-            </div>
-            <div class="ml-4 flex-grow">
-              <p class="text-gray-500 font-medium">Pesanan Dikonfirmasi</p>
-              <p class="text-gray-400 text-sm">Pesanan Anda telah diterima dan dikonfirmasi.</p>
-            </div>
-          </div>
-
-          <!-- Step 2: Packaging -->
-          <div id="step2" class="flex items-center w-full py-4 relative">
-            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center z-10 transition-colors duration-300">
-              <i class="bx bx-package text-white text-xl"></i>
-            </div>
-            <div class="ml-4 flex-grow">
-              <p class="text-gray-500 font-medium">Sedang Dikemas</p>
-              <p class="text-gray-400 text-sm">Produk Anda sedang disiapkan untuk pengiriman.</p>
-            </div>
-          </div>
-
-          <!-- Step 3: Pengantaran -->
-          <div id="step3" class="flex items-center w-full py-4 relative">
-            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center z-10 transition-colors duration-300">
-              <i class="bx bx-truck text-white text-xl"></i>
-            </div>
-            <div class="ml-4 flex-grow">
-              <p class="text-gray-500 font-medium">Dalam Pengantaran</p>
-              <p class="text-gray-400 text-sm">Pesanan Anda sedang dalam perjalanan.</p>
-            </div>
-          </div>
-
-          <!-- Step 4: Diterima -->
-          <div id="step4" class="flex items-center w-full py-4 relative">
-            <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center z-10 transition-colors duration-300">
-              <i class="bx bx-home text-white text-xl"></i>
-            </div>
-            <div class="ml-4 flex-grow">
-              <p class="text-gray-500 font-medium">Pesanan Diterima</p>
-              <p class="text-gray-400 text-sm">Pesanan Anda telah berhasil diterima.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Detail Pesanan -->
-      <div class="bg-white p-6 rounded-lg shadow-md mt-6">
-        <h3 class="text-xl font-bold mb-4">Detail Pesanan</h3>
-        <div class="space-y-2 text-gray-700">
-          <p><strong>Nomor Pesanan:</strong> {{ $order->order_number }}</p>
-          <p><strong>Tanggal Pesanan:</strong> {{ $order->created_at->translatedFormat('d F Y H:i') }}</p>
-          <p><strong>Total Pembayaran:</strong> Rp{{ number_format($order->total_amount, 0, ',', '.') }}</p>
-          <p><strong>Metode Pengiriman:</strong> {{ $order->shipping_method }}</p>
-          <p><strong>Metode Pembayaran:</strong> {{ $order->payment_method }}</p>
-          <p><strong>Alamat Pengiriman:</strong> {{ $order->shipping_address }}</p>
-        </div>
-
-        <h4 class="text-lg font-semibold mt-6 mb-3">Item Pesanan:</h4>
-        <ul class="space-y-2">
-          @foreach ($order->orderItems as $item)
-          <li class="flex justify-between items-center text-gray-600 border-b pb-2">
-            <span>{{ $item->product->name }} (x{{ $item->quantity }})</span>
-            <span>Rp{{ number_format($item->price * $item->quantity, 0, ',', '.') }}</span>
-          </li>
-          @endforeach
-        </ul>
-      </div>
-
-<<<<<<< HEAD
-      <!-- Tombol Kembali ke Beranda -->
-      <button class="w-full mt-6 bg-amber-400 text-white py-2 px-6 rounded-lg hover:bg-amber-500 transition">
-        <a href="{{ route('index') }}">
-          <i class="bx bx-home mr-2"></i>Kembali ke Beranda
-=======
-      <!-- Order Summary -->
-      <div class="mt-6 space-y-3">
-        <div class="flex justify-between">
-          <span class="text-gray-600">Subtotal</span>
-          <span>Rp3.000.000</span>
-        </div>
-        <div class="flex justify-between font-bold text-lg mt-4">
-          <span>Total Pembayaran</span>
-          <span class="text-amber-400">Rp3.000.000</span>
-        </div>
-      </div>
-
-      <!-- Payment Info -->
-      <div class="mt-6 border-t pt-6">
-        <h3 class="font-semibold mb-4">Informasi Pembayaran</h3>
-        <div class="flex justify-between">
-          <span class="text-gray-600">Metode Pembayaran</span>
-          <span>Transfer Bank BCA</span>
-        </div>
-        <div class="flex justify-between mt-2">
-          <span class="text-gray-600">Status Pembayaran</span>
-          <span class="text-green-500 font-semibold">Lunas</span>
-        </div>
-      </div>
+  @forelse($orders as $order)
+<div class="bg-white p-8 rounded-xl shadow-lg mb-10 border border-gray-100">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+    <div>
+      <h2 class="text-xl md:text-2xl font-bold mb-1 text-amber-500">#{{ $order->order_number }}</h2>
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold
+        {{ $order->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+        {{ $order->status === 'processing' ? 'bg-blue-100 text-blue-700' : '' }}
+        {{ $order->status === 'shipped' ? 'bg-purple-100 text-purple-700' : '' }}
+        {{ $order->status === 'delivered' ? 'bg-green-100 text-green-700' : '' }}">
+        {{ ucfirst($order->status) }}
+      </span>
     </div>
-
-    <!-- Action Buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 mt-6">
-      <button class="bg-white border border-gray-300 text-gray-700 py-2 px-6 rounded-lg hover:bg-gray-50 transition">
-        <a href="/chat">
-          <i class="fas fa-question-circle mr-2"></i>Butuh Bantuan?
-        </a>
-      </button>
-      <button class="bg-amber-400 text-white py-2 px-6 rounded-lg hover:bg-amber-500 transition">
-        <a href="/">
-          <i class="fas fa-home mr-2"></i>Kembali ke Beranda
->>>>>>> 60722fea16dc7dec8838775e05b780c37f792fc1
-        </a>
-      </button>
+    <div class="text-gray-400 text-sm mt-2 md:mt-0">
+      {{ $order->created_at->translatedFormat('d F Y H:i') }}
     </div>
-  </main>
+  </div>
+
+  <!-- Progress Steps -->
+  <div class="relative flex items-center justify-between mb-8 px-2">
+  <!-- Garis horizontal penuh -->
+  <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 z-0" style="transform: translateY(-50%);"></div>
+  @php
+    $steps = [
+      ['icon' => 'bx-check', 'title' => 'Dikonfirmasi'],
+      ['icon' => 'bx-package', 'title' => 'Dikemas'],
+      ['icon' => 'bx-truck', 'title' => 'Dikirim'],
+      ['icon' => 'bx-home', 'title' => 'Diterima'],
+    ];
+    $statusMap = ['pending'=>1, 'processing'=>2, 'shipped'=>3, 'delivered'=>4];
+    $currentStep = $statusMap[$order->status] ?? 1;
+  @endphp
+  @foreach($steps as $i => $step)
+    <div class="relative flex flex-col items-center z-10 w-1/4">
+      <!-- Bulatan step -->
+      <div class="w-12 h-12 flex items-center justify-center rounded-full
+        {{ $i+1 < $currentStep ? 'bg-green-400 text-white' : ($i+1 == $currentStep ? 'bg-amber-400 text-white' : 'bg-gray-200 text-gray-400') }}
+        shadow mb-2 border-4 border-white z-10">
+        <i class="bx {{ $step['icon'] }} text-2xl"></i>
+      </div>
+      <!-- Label step -->
+      <span class="text-xs font-semibold mt-1
+        {{ $i+1 <= $currentStep ? 'text-amber-500' : 'text-gray-400' }}">
+        {{ $step['title'] }}
+      </span>
+      <!-- Garis aktif di belakang bulatan, kecuali step terakhir -->
+      @if($i < count($steps)-1)
+        <div class="absolute top-1/2 left-1/2 w-full h-1
+          {{ $i+1 < $currentStep ? 'bg-green-400' : 'bg-gray-200' }}"
+          style="z-index:0; transform: translateY(-50%); left: 50%; right: 0;">
+        </div>
+      @endif
+    </div>
+  @endforeach
+</div>
+
+  <!-- Detail Pesanan -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div>
+      <div class="mb-2"><span class="font-semibold">Metode Pengiriman:</span> {{ $order->shipping_method }}</div>
+      <div class="mb-2"><span class="font-semibold">Metode Pembayaran:</span> {{ $order->payment_method }}</div>
+      <div class="mb-2"><span class="font-semibold">Alamat Pengiriman:</span> {{ $order->shipping_address }}</div>
+      <div class="mb-2"><span class="font-semibold">Total Pembayaran:</span> <span class="text-amber-500 font-bold">Rp{{ number_format($order->total_amount, 0, ',', '.') }}</span></div>
+      @if($order->description)
+        <div class="mb-2"><span class="font-semibold">Catatan:</span> {{ $order->description }}</div>
+      @endif
+    </div>
+<div>
+  <h4 class="font-semibold mb-2">Item Pesanan:</h4>
+  <ul class="divide-y divide-gray-100">
+    @forelse ($order->orderItems as $item)
+      <li class="flex items-center justify-between py-2">
+        <div class="flex items-center">
+          @if($item->product->image_path)
+            <img src="{{ asset('storage/products/' . $item->product->image_path) }}" alt="{{ $item->product->name }}" class="w-10 h-10 object-cover rounded mr-3" />
+          @endif
+          <div>
+            <div class="font-medium">{{ $item->product->name }}</div>
+            <div class="text-xs text-gray-400">x{{ $item->quantity }}</div>
+          </div>
+        </div>
+        <span class="font-semibold text-gray-700">Rp{{ number_format($item->price * $item->quantity, 0, ',', '.') }}</span>
+      </li>
+    @empty
+      <li class="text-gray-400 italic">Tidak ada item.</li>
+    @endforelse
+  </ul>
+</div>
+  </div>
+</div>
+  @empty
+    <div class="text-center text-gray-500 py-12">Belum ada pesanan.</div>
+  @endforelse
+</main>
 </body>
 <!-- Footer -->
 <x-footer></x-footer>

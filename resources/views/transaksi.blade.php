@@ -14,17 +14,6 @@
     <!-- Konten Utama Halaman Transaksi -->
     <main class="pt-20 pb-12 px-4 md:px-10">
       
-          @if(session('success'))
-      <script>
-        showSuccessModal("{{ session('success') }}");
-      </script>
-    @endif
-    @if(session('error'))
-      <script>
-        showErrorModal("{{ session('error') }}");
-      </script>
-    @endif
-
       <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">
           Ringkasan Transaksi
@@ -132,6 +121,26 @@
         </form>
       </div>
     </main>
+
+<!-- Modal Pesanan Berhasil -->
+<div id="orderSuccessModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+  <div class="bg-white rounded-lg p-6 w-full max-w-sm">
+    <div class="text-center">
+      <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+        <i class="bx bx-check text-green-600 text-2xl"></i>
+      </div>
+      <h3 class="text-lg font-medium text-gray-900 mt-3">Pesanan Berhasil!</h3>
+      <div class="mt-2">
+        <p class="text-sm text-gray-500">Pesanan Anda berhasil dibuat. Silakan cek status pesanan Anda di bawah ini.</p>
+      </div>
+      <div class="mt-4">
+        <button type="button" onclick="closeOrderSuccessModal()" class="w-full bg-amber-400 text-white py-2 rounded hover:bg-amber-500 transition">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
     <!-- Success Modal (untuk pesan sukses umum dan pembuatan pesanan) -->
     <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
@@ -318,41 +327,19 @@
         }
     }
 
-
-    // Tangani submit form pembayaran
-    document.getElementById('paymentForm').addEventListener('submit', async function(e) {
-        e.preventDefault(); // Mencegah submit form default
-
-        const formData = new FormData(this);
-        const requestBody = {};
-        formData.forEach((value, key) => {
-            requestBody[key] = value;
-        });
-
-        try {
-            const response = await fetch(this.action, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify(requestBody)
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                // Jika berhasil, tampilkan modal sukses dan redirect ke halaman status
-                showSuccessModal('Pesanan Anda berhasil dibuat!', result.order_id); // Pass pesan dan orderId
-            } else {
-                // Jika ada error (misal validasi), tampilkan modal error
-                showErrorModal(result.message || 'Terjadi kesalahan saat memproses pembayaran.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            showErrorModal('Terjadi kesalahan jaringan atau server.');
-        }
+      function showOrderSuccessModal(orderId) {
+    document.getElementById('orderSuccessModal').classList.remove('hidden');
+    // Ganti link ke status pesanan
+    document.getElementById('orderStatusBtn').href = "{{ route('status.order', ['order' => 'ORDER_ID']) }}".replace('ORDER_ID', orderId);
+  }
+  function closeOrderSuccessModal() {
+    document.getElementById('orderSuccessModal').classList.add('hidden');
+  }
+  @if(session('success') && session('order_id'))
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('orderSuccessModal').classList.remove('hidden');
     });
+  @endif
 
     // Tampilkan pesan sukses/error dari session Laravel saat halaman dimuat
   </script>

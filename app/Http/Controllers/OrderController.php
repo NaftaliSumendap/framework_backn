@@ -57,6 +57,12 @@ class OrderController extends Controller
         // Ambil item keranjang pengguna
         $carts = Cart::where('user_id', $user->id)->with('product')->get();
 
+            foreach ($carts as $cart) {
+        if ($cart->quantity > $cart->product->stock) {
+            return back()->with('error', 'Stok produk ' . $cart->product->name . ' tidak mencukupi.');
+        }
+    }
+
         // Jika keranjang kosong, kembalikan dengan error
         if ($carts->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Keranjang belanja Anda kosong, tidak dapat memproses pesanan.');
@@ -135,4 +141,10 @@ class OrderController extends Controller
         $order->delete();
         return redirect()->back()->with('success', 'Pesanan berhasil dihapus!');
     }
+
+    public function showStatus()
+{
+    $orders = Order::with('orderItems.product')->where('user_id', Auth::id())->latest()->get();
+    return view('status', compact('orders'));
+}
 }

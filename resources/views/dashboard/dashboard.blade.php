@@ -61,7 +61,7 @@
               <i class="bx bxs-cart text-3xl text-yellow-500 mr-4"></i>
               <div>
                 <h3 class="text-xl font-bold">{{ number_format($totalOrders) }}</h3>
-                <p>Orderan Terbaru</p>
+                <p>Total Order</p>
               </div>
             </div>
             <div class="flex items-center bg-white p-4 rounded shadow">
