@@ -19,28 +19,32 @@ public function store(Request $request, $productId)
 {
     $request->validate([
         'rating' => 'required|integer|min:1|max:5',
-        'title' => 'nullable|string|max:255',
-        'comment' => 'required|string|max:1000',
+        'comment' => 'nullable|string|max:1000',
     ]);
 
-    // Cek apakah user sudah pernah review produk ini
-    $existing = \App\Models\Review::where('user_id', Auth::id())
-        ->where('product_id', $productId)
-        ->first();
+    $product = Product::findOrFail($productId);
 
-    if ($existing) {
+    // Cek apakah user sudah pernah review produk ini
+    $alreadyReviewed = Review::where('user_id', auth()->id())
+        ->where('product_id', $productId)
+        ->exists();
+
+    if ($alreadyReviewed) {
         return back()->with('error', 'Anda sudah pernah memberikan ulasan untuk produk ini.');
     }
 
-    \App\Models\Review::create([
-        'user_id' => Auth::id(),
+    // Simpan review
+    Review::create([
+        'user_id' => auth()->id(),
         'product_id' => $productId,
         'rating' => $request->rating,
-        'title' => $request->title,
         'comment' => $request->comment,
     ]);
 
-    return back()->with('cart_success', 'Produk berhasil ditambahkan ke keranjang!');
+    // Tambahkan jumlah terjual (sold) +1
+    $product->increment('sold');
+
+    return back()->with('success', 'Ulasan berhasil dikirim dan jumlah terjual terupdate!');
 }
 
 public function destroy($id)
